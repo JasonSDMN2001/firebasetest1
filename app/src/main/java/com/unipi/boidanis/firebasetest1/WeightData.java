@@ -1,32 +1,36 @@
 package com.unipi.boidanis.firebasetest1;
 
+import java.util.Date;
+
 public class WeightData {
-    private String date,week,weight;
+    private Date date;
+    private int week;
+    private float weight;
     public WeightData(){}
-    public WeightData(String date,String week,String weight){
+    public WeightData(Date date,int week,float weight){
         this.date=date;
         this.week=week;
         this.weight=weight;
     }
-    public String getDate(){
+    public Date getDate(){
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
-    public String getWeek(){
+    public int getWeek(){
         return week;
     }
 
-    public void setWeek(String week) {
+    public void setWeek(int week) {
         this.week = week;
     }
-    public String getWeight(){
+    public float getWeight(){
         return weight;
     }
 
-    public void setWeight(String weight) {
+    public void setWeight(float weight) {
         this.weight = weight;
     }
 }

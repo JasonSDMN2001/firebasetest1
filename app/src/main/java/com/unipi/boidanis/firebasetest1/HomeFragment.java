@@ -1,6 +1,7 @@
 package com.unipi.boidanis.firebasetest1;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 
@@ -10,6 +11,8 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -68,12 +71,17 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         TextView dateTimeDisplay = (TextView) view.findViewById(R.id.textView2);
         dateTimeDisplay.setText("" + DateFormat.format("EEE,d MMM", System.currentTimeMillis()));
+        ImageButton ibutton = (ImageButton) view.findViewById(R.id.profile_button3);
+        ibutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MainActivity5.class);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 
     public void profileChange(View view) {
-    }
-
-    public void profileChangeBaby(View view) {
     }
 }

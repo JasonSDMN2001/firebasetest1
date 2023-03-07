@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
@@ -32,7 +33,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         WeightData weightData=list.get(position);
-        holder.date.setText(weightData.getDate());
+        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(context);
+        holder.date.setText(dateFormat.format(weightData.getDate()).toString());
         holder.week.setText(String.valueOf(weightData.getWeek()));
         holder.weight.setText(String.valueOf(weightData.getWeight()));
     }

@@ -33,9 +33,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -45,9 +48,9 @@ public class WeightFragment extends Fragment {
     FirebaseDatabase database;
     DatabaseReference ref2,reference;
     ActivityResultLauncher<Intent> resultLauncher;
-    private String date;
-    private String week;
-    private String weight;
+    private Date date;
+    private int week;
+    private float weight;
     private String key;
     RecyclerView recyclerView;
     MyAdapter  myAdapter;
@@ -99,7 +102,7 @@ public class WeightFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_weight, container, false);
-        TextView test = (TextView) view.findViewById(R.id.textView12);
+
 
 
         database = FirebaseDatabase.getInstance();
@@ -114,15 +117,12 @@ public class WeightFragment extends Fragment {
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode()== Activity.RESULT_OK){
                             Intent intent = result.getData();
-                            weight = intent.getStringExtra("weight");
-                            //data.setText((int) weight);
-                            date= (String)DateFormat.format("EEE,d MMM", System.currentTimeMillis());
-                            week = "10";
-                            showMessage("Returned data", String.valueOf(weight));
+                            weight = Float.parseFloat(intent.getStringExtra("weight"));
+                            date= Calendar.getInstance().getTime();
+                            week = 1;
                             WeightData weightData = new WeightData(date,week,weight);
                             key = ref2.push().getKey();
                             ref2.child(mAuth.getUid()).child(key).setValue(weightData);
-                            showMessage("", key);
                            }
                     }
                 });
@@ -146,9 +146,19 @@ public class WeightFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
+                DataPoint[] dp = new DataPoint[(int) snapshot.getChildrenCount()];
+                int index=0;
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     WeightData weightData = dataSnapshot.getValue(WeightData.class);
                     list.add(weightData);
+                    if(dp.length>2) {
+                        WeightGraphPoints points = new WeightGraphPoints(weightData.getWeek(), weightData.getWeight());
+                        dp[index] = new DataPoint(points.x, points.y);
+                        index++;
+                    }
+                }
+                if(dp.length>2){
+                    series.resetData(dp);
                 }
                 myAdapter.notifyDataSetChanged();
             }
@@ -161,24 +171,17 @@ public class WeightFragment extends Fragment {
         graphView=(GraphView) view.findViewById(R.id.graphview);
         series= new LineGraphSeries();
         graphView.addSeries(series);
+        graphView.setTitle("Weight History");
+        graphView.getGridLabelRenderer().setVerticalAxisTitle("Weight in kg");
+        graphView.getGridLabelRenderer().setHorizontalAxisTitle("Week");
+        graphView.getViewport().setScalable(true);
+        graphView.getViewport().setScrollable(true);
+        graphView.getViewport().setScalableY(true);
+        graphView.getViewport().setScrollableY(true);
         return view;
     }
 
 
-
-    public void read(View view){
-        ref2.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                showMessage("DB data change", snapshot.getValue().toString());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
     void showMessage(String title, String message){
         new AlertDialog.Builder(getActivity()).setTitle(title).setMessage(message).setCancelable(true).show();
     }

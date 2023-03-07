@@ -1,18 +1,18 @@
 package com.unipi.boidanis.firebasetest1;
 
 public class WeightGraphPoints {
-    int x,y;
+    float x,y;
     public WeightGraphPoints(){
     }
-    public WeightGraphPoints(int x,int y){
+    public WeightGraphPoints(float x,float y){
         this.x=x;
         this.y=y;
     }
-    public int getX(){
+    public float getX(){
         return x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 }
