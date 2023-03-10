@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.material.imageview.ShapeableImageView;
+
 import java.text.SimpleDateFormat;
 
 /**
@@ -71,8 +73,8 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         TextView dateTimeDisplay = (TextView) view.findViewById(R.id.textView2);
         dateTimeDisplay.setText("" + DateFormat.format("EEE,d MMM", System.currentTimeMillis()));
-        ImageButton ibutton = (ImageButton) view.findViewById(R.id.profile_button3);
-        ibutton.setOnClickListener(new View.OnClickListener() {
+        ShapeableImageView shapeableImageView = (ShapeableImageView) view.findViewById(R.id.profile_button3);
+        shapeableImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), MainActivity5.class);

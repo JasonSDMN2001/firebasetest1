@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,15 +41,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class WeightFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseUser user;
     FirebaseDatabase database;
-    DatabaseReference ref2,reference;
+    DatabaseReference ref,ref2,reference;
     ActivityResultLauncher<Intent> resultLauncher;
-    private Date date;
+    private Date date,birthdate;
     private int week;
     private float weight;
     private String key;
@@ -57,6 +59,8 @@ public class WeightFragment extends Fragment {
     ArrayList<WeightData>list;
     GraphView graphView;
     LineGraphSeries series;
+    String[] babyName = new String[2];
+    Button button;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -104,63 +108,24 @@ public class WeightFragment extends Fragment {
         View view =inflater.inflate(R.layout.fragment_weight, container, false);
 
 
-
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        ref2 = database.getReference("Users");
-
-
-        resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode()== Activity.RESULT_OK){
-                            Intent intent = result.getData();
-                            weight = Float.parseFloat(intent.getStringExtra("weight"));
-                            date= Calendar.getInstance().getTime();
-                            week = 1;
-                            WeightData weightData = new WeightData(date,week,weight);
-                            key = ref2.push().getKey();
-                            ref2.child(mAuth.getUid()).child(key).setValue(weightData);
-                           }
-                    }
-                });
-        Button button = (Button) view.findViewById(R.id.button10);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resultLauncher.launch(new Intent(getActivity(),MainActivity4.class));
-            }
-        });
-
-        reference = database.getReference("Users").child(mAuth.getUid());
-        recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        list =new ArrayList<>();
-        myAdapter =new MyAdapter(getContext(),list);
-        recyclerView.setAdapter(myAdapter);
-
-        reference.addValueEventListener(new ValueEventListener() {
+        ref = database.getReference("Users").child(mAuth.getUid());
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                DataPoint[] dp = new DataPoint[(int) snapshot.getChildrenCount()];
                 int index=0;
-                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    WeightData weightData = dataSnapshot.getValue(WeightData.class);
-                    list.add(weightData);
-                    if(dp.length>2) {
-                        WeightGraphPoints points = new WeightGraphPoints(weightData.getWeek(), weightData.getWeight());
-                        dp[index] = new DataPoint(points.x, points.y);
-                        index++;
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    babyName[index] = dataSnapshot.getKey();
+
+                    if(babyName[index]!=null){
+                        RecyclerUpdate();
+                        ref2 = database.getReference("Users").child(mAuth.getUid()).child(babyName[0]).child("weightData");
+                        BirthDayFind();
                     }
+                    index++;
                 }
-                if(dp.length>2){
-                    series.resetData(dp);
-                }
-                myAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -168,6 +133,40 @@ public class WeightFragment extends Fragment {
 
             }
         });
+
+
+        button = view.findViewById(R.id.button10);
+        resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode()== Activity.RESULT_OK){
+                            Intent intent = result.getData();
+                            weight = Float.parseFloat(intent.getStringExtra("weight"));
+                            date = (Date)intent.getExtras().getSerializable("date");
+                            week = WeekCalculation(date);
+                            WeightData weightData = new WeightData(date,week,weight);
+                            key = ref2.push().getKey();
+                            ref2.child(key).setValue(weightData);
+                        }
+                    }
+                });
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resultLauncher.launch(new Intent(getActivity(),MainActivity4.class));
+            }
+        });
+
+        recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        list =new ArrayList<>();
+        myAdapter =new MyAdapter(getContext(),list);
+        recyclerView.setAdapter(myAdapter);
+
+
+
         graphView=(GraphView) view.findViewById(R.id.graphview);
         series= new LineGraphSeries();
         graphView.addSeries(series);
@@ -180,8 +179,64 @@ public class WeightFragment extends Fragment {
         graphView.getViewport().setScrollableY(true);
         return view;
     }
+    public void RecyclerUpdate(){
 
+        reference = database.getReference("Users").child(mAuth.getUid()).child(babyName[0]).child("weightData");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
+                DataPoint[] dp = new DataPoint[(int) snapshot.getChildrenCount()];
+                int index = 0;
 
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    WeightData weightData = dataSnapshot.getValue(WeightData.class);
+                    list.add(weightData);
+                    if (dp.length > 2) {
+                        WeightGraphPoints points = new WeightGraphPoints(weightData.getWeek(), weightData.getWeight());
+                        dp[index] = new DataPoint(points.x, points.y);
+                        index++;
+                    }
+                }
+                if (dp.length > 2) {
+                    series.resetData(dp);
+                }
+                myAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void BirthDayFind(){
+        DatabaseReference reference2 = database.getReference("Users").child(mAuth.getUid()).child(babyName[0]);
+        reference2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                    if (!dataSnapshot.getKey().matches("weightData")) {
+                        ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
+                        birthdate = childInfo.birthDate;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public int WeekCalculation(Date weightDate){
+            long i = birthdate.getTime();
+            long j = weightDate.getTime();
+            long daysDiff = TimeUnit.DAYS.convert(j-i, TimeUnit.MILLISECONDS);//604800//1 week
+            long k = (long) Math.floor(daysDiff%7);
+
+        return (int) k;
+    }
     void showMessage(String title, String message){
         new AlertDialog.Builder(getActivity()).setTitle(title).setMessage(message).setCancelable(true).show();
     }
