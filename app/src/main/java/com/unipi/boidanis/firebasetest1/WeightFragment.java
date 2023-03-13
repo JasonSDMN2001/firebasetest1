@@ -231,7 +231,7 @@ public class WeightFragment extends Fragment {
             long i = birthdate.getTime();
             long j = weightDate.getTime();
             long daysDiff = TimeUnit.DAYS.convert(j-i, TimeUnit.MILLISECONDS);//604800//1 week
-            long k = (long) Math.floor(daysDiff%6);
+            long k = (long) Math.floor(daysDiff%7);
 
         return (int) k;
     }
