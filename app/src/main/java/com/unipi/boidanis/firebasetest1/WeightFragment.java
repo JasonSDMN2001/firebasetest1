@@ -118,11 +118,10 @@ public class WeightFragment extends Fragment {
                 int index=0;
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     babyName[index] = dataSnapshot.getKey();
-
                     if(babyName[index]!=null){
-                        RecyclerUpdate();
+                        RecyclerUpdate(index);
                         ref2 = database.getReference("Users").child(mAuth.getUid()).child(babyName[0]).child("weightData");
-                        BirthDayFind();
+                        BirthDayFind(index);
                     }
                     index++;
                 }
@@ -179,9 +178,8 @@ public class WeightFragment extends Fragment {
         graphView.getViewport().setScrollableY(true);
         return view;
     }
-    public void RecyclerUpdate(){
-
-        reference = database.getReference("Users").child(mAuth.getUid()).child(babyName[0]).child("weightData");
+    public void RecyclerUpdate(int i){
+        reference = database.getReference("Users").child(mAuth.getUid()).child(babyName[i]).child("weightData");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -210,8 +208,8 @@ public class WeightFragment extends Fragment {
             }
         });
     }
-    public void BirthDayFind(){
-        DatabaseReference reference2 = database.getReference("Users").child(mAuth.getUid()).child(babyName[0]);
+    public void BirthDayFind(int i){
+        DatabaseReference reference2 = database.getReference("Users").child(mAuth.getUid()).child(babyName[i]);
         reference2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

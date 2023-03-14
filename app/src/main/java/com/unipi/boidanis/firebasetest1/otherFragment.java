@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -95,9 +96,10 @@ public class otherFragment extends Fragment implements View.OnClickListener {
             case R.id.imageButton2:
                 if (mAuth.getCurrentUser() != null) {
                     FirebaseAuth.getInstance().signOut();
-                    showMessage("Signed out", "successfully");
+                    Toast.makeText(getContext(), "Signed out successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), MainActivity2.class);
                     startActivity(intent);
+                    getActivity().finish();
                 }
                 break;
 

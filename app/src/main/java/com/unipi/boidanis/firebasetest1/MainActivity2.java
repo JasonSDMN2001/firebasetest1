@@ -4,12 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -44,7 +48,7 @@ public class MainActivity2 extends AppCompatActivity {
         myRef = database.getReference("myMessage");
         reference = database.getReference("message");
         ImageView mImageView ;
-        mImageView = (ImageView)findViewById(R.id.imageView); //this is your imageView
+        mImageView = (ImageView)findViewById(R.id.imageView);
         mImageView .setImageDrawable(getResources().getDrawable( R.drawable.blink));
         AnimationDrawable frameAnimation = (AnimationDrawable) mImageView.getDrawable(); frameAnimation.start();
     }
@@ -75,7 +79,7 @@ public class MainActivity2 extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                     .addOnCompleteListener((task) -> {
                         if (task.isSuccessful()) {
-                            showMessage("Success!", "Ok");
+                            Toast.makeText(MainActivity2.this, "Success", Toast.LENGTH_SHORT).show();
 
                             Intent intent = new Intent(this, MainActivity3.class);
                             startActivity(intent);
@@ -86,9 +90,25 @@ public class MainActivity2 extends AppCompatActivity {
                     });
 
         }else {
-            showMessage("Please fill","the remaining fields");
+            Toast.makeText(MainActivity2.this, "Please fill the remaining fields", Toast.LENGTH_SHORT).show();
         }
 
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent( event );
     }
     private void changeUserProfile(String displayName, String imageUrl, FirebaseUser user){
         UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
