@@ -5,6 +5,15 @@ import java.util.Date;
 public class ChildInfo {
     String name;
     Date birthDate;
+    String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public Date getbirthDate() {
         return birthDate;
@@ -23,8 +32,9 @@ public class ChildInfo {
     public void setName(String name) {
         this.name = name;
     }
-    public ChildInfo(String name,Date birthDate){
+    public ChildInfo(String name,Date birthDate,String imageUrl){
         this.name=name;
         this.birthDate=birthDate;
+        this.imageUrl=imageUrl;
     }
 }

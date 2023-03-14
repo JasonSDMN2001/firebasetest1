@@ -3,6 +3,7 @@ package com.unipi.boidanis.firebasetest1;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.icu.util.Calendar;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,9 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 
@@ -24,7 +28,13 @@ import java.text.SimpleDateFormat;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class HomeFragment extends Fragment {
+    Button uploadBtn;
+    private Uri imageUri;
+    StorageReference storareference = FirebaseStorage.getInstance().getReference();
+    private final int GALLERY_REQ_CODE = 1000;
+    ProgressBar progressBar;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
