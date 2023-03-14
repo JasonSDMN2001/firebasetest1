@@ -19,8 +19,10 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,8 +61,9 @@ public class WeightFragment extends Fragment {
     ArrayList<WeightData>list;
     GraphView graphView;
     LineGraphSeries series;
-    String[] babyName = new String[2];
+    //String[] babyName = new String[2];
     Button button;
+    String babyname="";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -111,13 +114,19 @@ public class WeightFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        ref = database.getReference("Users").child(mAuth.getUid());
+
+        Spinner getbabyname = (Spinner) getActivity().findViewById(R.id.spinner);
+        babyname = getbabyname.getSelectedItem().toString();
+        whichBaby();
+
+        /*ref = database.getReference("Users").child(mAuth.getUid());
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int index=0;
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     babyName[index] = dataSnapshot.getKey();
+
                     if(babyName[index]!=null){
                         RecyclerUpdate(index);
                         ref2 = database.getReference("Users").child(mAuth.getUid()).child(babyName[0]).child("weightData");
@@ -131,7 +140,7 @@ public class WeightFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        });*/
 
 
         button = view.findViewById(R.id.button10);
@@ -178,8 +187,17 @@ public class WeightFragment extends Fragment {
         graphView.getViewport().setScrollableY(true);
         return view;
     }
-    public void RecyclerUpdate(int i){
-        reference = database.getReference("Users").child(mAuth.getUid()).child(babyName[i]).child("weightData");
+
+    private void whichBaby() {
+        if(!babyname.matches("")){
+            RecyclerUpdate(babyname);
+            ref2 = database.getReference("Users").child(mAuth.getUid()).child(babyname).child("weightData");
+            BirthDayFind(babyname);
+        }
+    }
+
+    public void RecyclerUpdate(String s){
+        reference = database.getReference("Users").child(mAuth.getUid()).child(s).child("weightData");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -208,8 +226,8 @@ public class WeightFragment extends Fragment {
             }
         });
     }
-    public void BirthDayFind(int i){
-        DatabaseReference reference2 = database.getReference("Users").child(mAuth.getUid()).child(babyName[i]);
+    public void BirthDayFind(String s){
+        DatabaseReference reference2 = database.getReference("Users").child(mAuth.getUid()).child(s);
         reference2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

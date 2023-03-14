@@ -31,7 +31,7 @@ public class otherFragment extends Fragment implements View.OnClickListener {
     FirebaseUser user;
     ImageButton imageButton;
     FirebaseDatabase database;
-    TextView textView4;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -80,8 +80,6 @@ public class otherFragment extends Fragment implements View.OnClickListener {
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        textView4 = (TextView) view.findViewById(R.id.textView4);
-        textView4.setText(user.getDisplayName());
         imageButton = (ImageButton) view.findViewById(R.id.imageButton2);
         imageButton.setOnClickListener(this);
         return view;
