@@ -2,10 +2,12 @@ package com.unipi.boidanis.firebasetest1;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.format.DateFormat;
@@ -14,10 +16,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -30,11 +43,8 @@ import java.text.SimpleDateFormat;
  */
 
 public class HomeFragment extends Fragment {
-    Button uploadBtn;
-    private Uri imageUri;
-    StorageReference storareference = FirebaseStorage.getInstance().getReference();
-    private final int GALLERY_REQ_CODE = 1000;
-    ProgressBar progressBar;
+    FirebaseAuth mAuth;
+    FirebaseDatabase database;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -84,6 +94,7 @@ public class HomeFragment extends Fragment {
         TextView dateTimeDisplay = (TextView) view.findViewById(R.id.textView2);
         dateTimeDisplay.setText("" + DateFormat.format("EEE,d MMM", System.currentTimeMillis()));
         ShapeableImageView shapeableImageView = (ShapeableImageView) view.findViewById(R.id.profile_button3);
+        shapeableImageView.setScaleType(ImageView.ScaleType.CENTER);
         shapeableImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +102,29 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        //shapeableImageView.setImageURI(null);
+        database = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        Spinner getbabyname = (Spinner) getActivity().findViewById(R.id.spinner);
+        String babyname = getbabyname.getSelectedItem().toString();
+        DatabaseReference reference = database.getReference("Users").child(mAuth.getUid()).child(babyname);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                    if (!dataSnapshot.getKey().matches("weightData")) {
+                        ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
+                        Glide.with(getContext()).load(childInfo.getImageUrl()).into(shapeableImageView);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         return view;
     }
 

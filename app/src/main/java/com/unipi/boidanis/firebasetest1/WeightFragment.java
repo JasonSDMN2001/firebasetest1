@@ -60,7 +60,7 @@ public class WeightFragment extends Fragment {
     MyAdapter  myAdapter;
     ArrayList<WeightData>list;
     GraphView graphView;
-    LineGraphSeries series;
+    LineGraphSeries series,series2;
     //String[] babyName = new String[2];
     Button button;
     String babyname="";
@@ -156,6 +156,9 @@ public class WeightFragment extends Fragment {
                             WeightData weightData = new WeightData(date,week,weight);
                             key = ref2.push().getKey();
                             ref2.child(key).setValue(weightData);
+                            DatabaseReference reference = database.getReference("All Weight Data");
+                            String key2 = reference.push().getKey();
+                            reference.child(key2).setValue(weightData);
                         }
                     }
                 });
