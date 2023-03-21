@@ -14,11 +14,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,7 +38,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivity5 extends AppCompatActivity {
+public class MainActivity5 extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     FirebaseAuth mAuth;
     FirebaseUser user;
     FirebaseDatabase database;
@@ -49,6 +52,7 @@ public class MainActivity5 extends AppCompatActivity {
     StorageReference storreference = FirebaseStorage.getInstance().getReference();
     private final int GALLERY_REQ_CODE = 1000;
     ProgressBar progressBar;
+    String gender;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +90,15 @@ public class MainActivity5 extends AppCompatActivity {
 
             }
         });
+        Spinner spinner = (Spinner) findViewById(R.id.spinner2);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.gender_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
         Button button = (Button) findViewById(R.id.button13);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +112,7 @@ public class MainActivity5 extends AppCompatActivity {
                             fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
-                                    ChildInfo childInfo = new ChildInfo(editText.getText().toString(),date,uri.toString());
+                                    ChildInfo childInfo = new ChildInfo(editText.getText().toString(),date,uri.toString(),gender);
                                     WeightData weightData = new WeightData(date,0,Float.parseFloat(editText2.getText().toString()));
                                     String key1 = reference.push().getKey();
                                     reference.child(childInfo.name).child("weightData").child(key1).setValue(weightData);
@@ -107,6 +120,9 @@ public class MainActivity5 extends AppCompatActivity {
                                     reference.child(childInfo.name).child(key).setValue(childInfo);
                                     progressBar.setVisibility(View.INVISIBLE);
                                     imageview.setImageResource(R.drawable.ic_baseline_add_photo_alternate_24);
+                                    /*DatabaseReference reference = database.getReference("All Weight Data");
+                                    String key2 = reference.push().getKey();
+                                    reference.child(key2).setValue(weightData);*/
                                 }
                             });
                         }
@@ -145,5 +161,16 @@ public class MainActivity5 extends AppCompatActivity {
         ContentResolver cr = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cr.getType(mUri));
+    }
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        gender = (String) adapterView.getItemAtPosition(i);
+        Toast.makeText(this, gender, Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }

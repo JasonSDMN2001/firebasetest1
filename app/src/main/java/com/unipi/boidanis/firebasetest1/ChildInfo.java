@@ -6,6 +6,15 @@ public class ChildInfo {
     String name;
     Date birthDate;
     String imageUrl;
+    String gender;
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
     public String getImageUrl() {
         return imageUrl;
@@ -32,9 +41,10 @@ public class ChildInfo {
     public void setName(String name) {
         this.name = name;
     }
-    public ChildInfo(String name,Date birthDate,String imageUrl){
+    public ChildInfo(String name,Date birthDate,String imageUrl,String gender){
         this.name=name;
         this.birthDate=birthDate;
         this.imageUrl=imageUrl;
+        this.gender=gender;
     }
 }

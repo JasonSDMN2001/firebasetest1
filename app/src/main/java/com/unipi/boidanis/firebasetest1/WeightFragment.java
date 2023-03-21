@@ -1,7 +1,9 @@
 package com.unipi.boidanis.firebasetest1;
 
 import android.app.Activity;
+
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 
@@ -50,20 +54,20 @@ public class WeightFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseUser user;
     FirebaseDatabase database;
-    DatabaseReference ref,ref2,reference;
+    DatabaseReference ref, ref2, reference;
     ActivityResultLauncher<Intent> resultLauncher;
-    private Date date,birthdate;
+    private Date date, birthdate;
     private int week;
     private float weight;
     private String key;
     RecyclerView recyclerView;
-    MyAdapter  myAdapter;
-    ArrayList<WeightData>list;
+    MyAdapter myAdapter;
+    ArrayList<WeightData> list;
     GraphView graphView;
-    LineGraphSeries series,series2;
+    LineGraphSeries series, series2;
     //String[] babyName = new String[2];
     Button button;
-    String babyname="";
+    String babyname = "";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -108,7 +112,7 @@ public class WeightFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =inflater.inflate(R.layout.fragment_weight, container, false);
+        View view = inflater.inflate(R.layout.fragment_weight, container, false);
 
 
         database = FirebaseDatabase.getInstance();
@@ -148,38 +152,38 @@ public class WeightFragment extends Fragment {
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode()== Activity.RESULT_OK){
+                        if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent intent = result.getData();
                             weight = Float.parseFloat(intent.getStringExtra("weight"));
-                            date = (Date)intent.getExtras().getSerializable("date");
+                            date = (Date) intent.getExtras().getSerializable("date");
                             week = WeekCalculation(date);
-                            WeightData weightData = new WeightData(date,week,weight);
+                            WeightData weightData = new WeightData(date, week, weight);
                             key = ref2.push().getKey();
                             ref2.child(key).setValue(weightData);
-                            DatabaseReference reference = database.getReference("All Weight Data");
+                            /*DatabaseReference reference = database.getReference("All Weight Data");
                             String key2 = reference.push().getKey();
-                            reference.child(key2).setValue(weightData);
+                            reference.child(key2).setValue(weightData);*/
                         }
                     }
                 });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resultLauncher.launch(new Intent(getActivity(),MainActivity4.class));
+                resultLauncher.launch(new Intent(getActivity(), MainActivity4.class));
             }
         });
 
-        recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        list =new ArrayList<>();
-        myAdapter =new MyAdapter(getContext(),list);
+        list = new ArrayList<>();
+        myAdapter = new MyAdapter(getContext(), list);
         recyclerView.setAdapter(myAdapter);
 
 
-
-        graphView=(GraphView) view.findViewById(R.id.graphview);
-        series= new LineGraphSeries();
+        graphView = (GraphView) view.findViewById(R.id.graphview);
+        series = new LineGraphSeries();
+        series.setColor(Color.CYAN);
         graphView.addSeries(series);
         graphView.setTitle("Weight History");
         graphView.getGridLabelRenderer().setVerticalAxisTitle("Weight in kg");
@@ -188,18 +192,75 @@ public class WeightFragment extends Fragment {
         graphView.getViewport().setScrollable(true);
         graphView.getViewport().setScalableY(true);
         graphView.getViewport().setScrollableY(true);
+        series2 = new LineGraphSeries();
+        graphView.addSeries(series2);
         return view;
     }
 
     private void whichBaby() {
-        if(!babyname.matches("")){
+        if (!babyname.matches("")) {
             RecyclerUpdate(babyname);
             ref2 = database.getReference("Users").child(mAuth.getUid()).child(babyname).child("weightData");
             BirthDayFind(babyname);
         }
     }
 
-    public void RecyclerUpdate(String s){
+    /*private void StatisticsCalculation() {
+        DatabaseReference statisticsInitialisation = database.getReference("Total weight Data per week");
+        for(int week_index=0;week_index<53;week_index++){
+            WeightStatisticsData stats = new WeightStatisticsData(0,0);
+            statisticsInitialisation.child("week:"+week_index).setValue(stats);
+        }
+        DatabaseReference reference = database.getReference("All Weight Data");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    WeightData weightData = dataSnapshot.getValue(WeightData.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        //reference.setValue(weightData.getWeight());
+
+
+        /*DatabaseReference reference2 = database.getReference("All Weight Data");
+        reference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //DataPoint[] dp = new DataPoint[(int) snapshot.getChildrenCount()];
+                //int index = 0;
+                float[] total_weight=new float[52];
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    WeightData weightData = dataSnapshot.getValue(WeightData.class);
+                    for(int week_index=0;week_index<53;week_index++){
+                        if (weightData.getWeek()==week_index){
+                            total_weight[week_index]=weightData.getWeight();
+                        }
+                    }
+                    /*if (dp.length > 2) {
+                        WeightGraphPoints points = new WeightGraphPoints(weightData.getWeek(), weightData.getWeight());
+                        dp[index] = new DataPoint(points.x, points.y);
+                        index++;
+                    }
+                }
+                /*if (dp.length > 2) {
+                    series2.resetData(dp);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }*/
+
+    public void RecyclerUpdate(String s) {
         reference = database.getReference("Users").child(mAuth.getUid()).child(s).child("weightData");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -229,15 +290,54 @@ public class WeightFragment extends Fragment {
             }
         });
     }
-    public void BirthDayFind(String s){
+
+    public void BirthDayFind(String s) {
         DatabaseReference reference2 = database.getReference("Users").child(mAuth.getUid()).child(s);
         reference2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     if (!dataSnapshot.getKey().matches("weightData")) {
                         ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
-                        birthdate = childInfo.birthDate;
+                        birthdate = childInfo.getbirthDate();
+                        String gender = childInfo.getGender();
+                        if(Objects.equals(gender, "Boy")){
+                            series2.setColor(Color.BLUE);
+                            DataPoint[] dp = new DataPoint[14];
+                            dp[0] = new DataPoint(0, 3.3);
+                            dp[1] = new DataPoint(4, 4.5);
+                            dp[2] = new DataPoint(8, 5.6);
+                            dp[3] = new DataPoint(12, 6.4);
+                            dp[4] = new DataPoint(16, 7.0);
+                            dp[5] = new DataPoint(20, 7.5);
+                            dp[6] = new DataPoint(24, 7.9);
+                            dp[7] = new DataPoint(28, 8.3);
+                            dp[8] = new DataPoint(32, 8.45);
+                            dp[9] = new DataPoint(36, 8.6);
+                            dp[10] = new DataPoint(40, 8.8);
+                            dp[11] = new DataPoint(44, 9.0);
+                            dp[12] = new DataPoint(48, 9.4);
+                            dp[13] = new DataPoint(52, 9.6);
+                            series2.resetData(dp);
+                        }else if (Objects.equals(gender, "Girl")){
+                            series2.setColor(Color.MAGENTA);
+                            DataPoint[] dp = new DataPoint[14];
+                            dp[0] = new DataPoint(0, 3.2);
+                            dp[1] = new DataPoint(4, 4.2);
+                            dp[2] = new DataPoint(8, 5.1);
+                            dp[3] = new DataPoint(12, 5.8);
+                            dp[4] = new DataPoint(16, 6.4);
+                            dp[5] = new DataPoint(20, 6.6);
+                            dp[6] = new DataPoint(24, 6.9);
+                            dp[7] = new DataPoint(28, 7.3);
+                            dp[8] = new DataPoint(32, 7.6);
+                            dp[9] = new DataPoint(36, 7.9);
+                            dp[10] = new DataPoint(40, 8.2);
+                            dp[11] = new DataPoint(44, 8.5);
+                            dp[12] = new DataPoint(48, 8.7);
+                            dp[13] = new DataPoint(52, 8.9);
+                            series2.resetData(dp);
+                        }
                     }
                 }
             }
@@ -248,15 +348,19 @@ public class WeightFragment extends Fragment {
             }
         });
     }
-    public int WeekCalculation(Date weightDate){
-            long i = birthdate.getTime();
-            long j = weightDate.getTime();
-            long daysDiff = TimeUnit.DAYS.convert(j-i, TimeUnit.MILLISECONDS);//604800//1 week
-            long k = (long) Math.floor(daysDiff%7);
+
+    public int WeekCalculation(Date weightDate) {
+        long i = birthdate.getTime();
+        long j = weightDate.getTime();
+        long daysDiff = TimeUnit.DAYS.convert(j - i, TimeUnit.MILLISECONDS);//604800//1 week
+        long k = (long) Math.floor(daysDiff % 7);
 
         return (int) k;
     }
-    void showMessage(String title, String message){
+
+    void showMessage(String title, String message) {
         new AlertDialog.Builder(getActivity()).setTitle(title).setMessage(message).setCancelable(true).show();
     }
+
+
 }

@@ -114,7 +114,9 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
                     if (!dataSnapshot.getKey().matches("weightData")) {
                         ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
-                        Glide.with(getContext()).load(childInfo.getImageUrl()).into(shapeableImageView);
+                        if(getActivity()!=null) {
+                            Glide.with(getContext()).load(childInfo.getImageUrl()).into(shapeableImageView);
+                        }
                     }
                 }
             }
