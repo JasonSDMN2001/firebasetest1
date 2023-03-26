@@ -104,39 +104,45 @@ public class MainActivity5 extends AppCompatActivity implements AdapterView.OnIt
             @Override
             public void onClick(View view) {
                 if(!editText.getText().toString().matches("")&&!editText2.getText().toString().matches("")&&imageUri != null){
+                    String weight = editText2.getText().toString();
+                    boolean check = validateinfo(weight);
+                    if(check){
+                        StorageReference fileRef = storreference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+                        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        ChildInfo childInfo = new ChildInfo(editText.getText().toString(),date,uri.toString(),gender);
+                                        String key1 = reference.push().getKey();
+                                        WeightData weightData = new WeightData(key1,date,0,Float.parseFloat(editText2.getText().toString()),childInfo.name);
+                                        reference.child(childInfo.name).child("weightData").child(key1).setValue(weightData);
+                                        String key = reference.push().getKey();
+                                        reference.child(childInfo.name).child(key).setValue(childInfo);
+                                        progressBar.setVisibility(View.INVISIBLE);
+                                        imageview.setImageResource(R.drawable.ic_baseline_add_photo_alternate_24);
+                                        /*DatabaseReference reference = database.getReference("All Weight Data");
+                                        String key2 = reference.push().getKey();
+                                        reference.child(key2).setValue(weightData);*/
+                                    }
+                                });
+                            }
+                        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                                progressBar.setVisibility(View.VISIBLE);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressBar.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Check your parameters", Toast.LENGTH_SHORT).show();
 
-                    StorageReference fileRef = storreference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
-                    fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    ChildInfo childInfo = new ChildInfo(editText.getText().toString(),date,uri.toString(),gender);
-                                    WeightData weightData = new WeightData(date,0,Float.parseFloat(editText2.getText().toString()));
-                                    String key1 = reference.push().getKey();
-                                    reference.child(childInfo.name).child("weightData").child(key1).setValue(weightData);
-                                    String key = reference.push().getKey();
-                                    reference.child(childInfo.name).child(key).setValue(childInfo);
-                                    progressBar.setVisibility(View.INVISIBLE);
-                                    imageview.setImageResource(R.drawable.ic_baseline_add_photo_alternate_24);
-                                    /*DatabaseReference reference = database.getReference("All Weight Data");
-                                    String key2 = reference.push().getKey();
-                                    reference.child(key2).setValue(weightData);*/
-                                }
-                            });
-                        }
-                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            progressBar.setVisibility(View.VISIBLE);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressBar.setVisibility(View.INVISIBLE);
-                        }
-                    });
+                    }
                 }else{
                     Toast.makeText(getApplicationContext(), "Incorrect arguments", Toast.LENGTH_SHORT).show();
                 }
@@ -156,6 +162,15 @@ public class MainActivity5 extends AppCompatActivity implements AdapterView.OnIt
                     }
                 }
             });
+    private boolean validateinfo(String weight) {
+        if(!weight.matches("[0-9]\\.[0-9]{1,2}$")){
+            editText2.requestFocus();
+            editText2.setError("weight between 0.1-10kg");
+            return false;
+        }else{
+            return true;
+        }
+    }
     private String getFileExtension(Uri mUri){
 
         ContentResolver cr = getContentResolver();
@@ -165,7 +180,6 @@ public class MainActivity5 extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         gender = (String) adapterView.getItemAtPosition(i);
-        Toast.makeText(this, gender, Toast.LENGTH_SHORT).show();
 
     }
 

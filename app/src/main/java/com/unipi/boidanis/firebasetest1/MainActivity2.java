@@ -3,9 +3,11 @@ package com.unipi.boidanis.firebasetest1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.Image;
@@ -49,7 +51,8 @@ public class MainActivity2 extends AppCompatActivity {
         reference = database.getReference("message");
         ImageView mImageView ;
         mImageView = (ImageView)findViewById(R.id.imageView);
-        mImageView .setImageDrawable(getResources().getDrawable( R.drawable.blink));
+        //mImageView .setImageDrawable(getResources().getDrawable( R.drawable.blink));
+        mImageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.blink,null));
         AnimationDrawable frameAnimation = (AnimationDrawable) mImageView.getDrawable(); frameAnimation.start();
     }
     void showMessage(String title, String message){

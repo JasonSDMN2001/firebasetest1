@@ -2,6 +2,7 @@ package com.unipi.boidanis.firebasetest1;
 
 import android.app.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -157,8 +158,8 @@ public class WeightFragment extends Fragment {
                             weight = Float.parseFloat(intent.getStringExtra("weight"));
                             date = (Date) intent.getExtras().getSerializable("date");
                             week = WeekCalculation(date);
-                            WeightData weightData = new WeightData(date, week, weight);
                             key = ref2.push().getKey();
+                            WeightData weightData = new WeightData(key,date, week, weight,babyname);
                             ref2.child(key).setValue(weightData);
                             /*DatabaseReference reference = database.getReference("All Weight Data");
                             String key2 = reference.push().getKey();

@@ -33,9 +33,6 @@ public class MainActivity4 extends AppCompatActivity {
                                             int dayOfMonth) {
                 Calendar c = Calendar.getInstance();
                 c.set(year,month,dayOfMonth);
-
-                //Toast.makeText(getApplicationContext(),year +"+" + month+"+"+dayOfMonth, Toast.LENGTH_SHORT).show();
-
                 if(year==0||dayOfMonth==0||month==0){
                     c=Calendar.getInstance();
                 }
@@ -47,16 +44,33 @@ public class MainActivity4 extends AppCompatActivity {
     public void go2(View view){
         if(!editText.getText().toString().matches("")) {
             weight = editText.getText().toString();
-            Intent intent = new Intent();
-            intent.putExtra("weight",weight);
-            intent.putExtra("date",date);
-            setResult(Activity.RESULT_OK, intent);
-            finish();
+            boolean check = validateinfo(weight);
+            if(check){
+                Intent intent = new Intent();
+                intent.putExtra("weight",weight);
+                intent.putExtra("date",date);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            }else{
+                Toast.makeText(this, "Check your parameters", Toast.LENGTH_SHORT).show();
+
+            }
         }else {
             showMessage("Please","Enter weight");
         }
 
     }
+
+    private boolean validateinfo(String weight) {
+        if(!weight.matches("[0-9]\\.[0-9]{1,2}$")){
+            editText.requestFocus();
+            editText.setError("weight between 0.1-10kg");
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     void showMessage(String title, String message){
         new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
     }
