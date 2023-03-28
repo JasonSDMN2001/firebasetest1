@@ -83,7 +83,7 @@ public class MainActivity2 extends AppCompatActivity {
                     .addOnCompleteListener((task) -> {
                         if (task.isSuccessful()) {
                             Toast.makeText(MainActivity2.this, "Success", Toast.LENGTH_SHORT).show();
-
+                            finish();
                             Intent intent = new Intent(this, MainActivity3.class);
                             startActivity(intent);
                             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

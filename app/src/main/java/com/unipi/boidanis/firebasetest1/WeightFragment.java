@@ -40,6 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -185,6 +186,7 @@ public class WeightFragment extends Fragment {
         graphView = (GraphView) view.findViewById(R.id.graphview);
         series = new LineGraphSeries();
         series.setColor(Color.CYAN);
+        series.setTitle(babyname+"'s weight");
         graphView.addSeries(series);
         graphView.setTitle("Weight History");
         graphView.getGridLabelRenderer().setVerticalAxisTitle("Weight in kg");
@@ -194,7 +196,12 @@ public class WeightFragment extends Fragment {
         graphView.getViewport().setScalableY(true);
         graphView.getViewport().setScrollableY(true);
         series2 = new LineGraphSeries();
+        series2.setTitle("average weight percentile");
         graphView.addSeries(series2);
+        if(!babyname.matches("Add child")){
+            graphView.getLegendRenderer().setVisible(true);
+            graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.BOTTOM);
+        }
         return view;
     }
 

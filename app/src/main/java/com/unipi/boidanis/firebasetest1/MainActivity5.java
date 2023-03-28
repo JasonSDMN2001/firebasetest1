@@ -125,6 +125,9 @@ public class MainActivity5 extends AppCompatActivity implements AdapterView.OnIt
                                         /*DatabaseReference reference = database.getReference("All Weight Data");
                                         String key2 = reference.push().getKey();
                                         reference.child(key2).setValue(weightData);*/
+                                        finish();
+                                        Intent intent = new Intent(getApplicationContext(), MainActivity3.class);
+                                        startActivity(intent);
                                     }
                                 });
                             }

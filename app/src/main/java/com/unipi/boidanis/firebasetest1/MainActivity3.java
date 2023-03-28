@@ -120,11 +120,12 @@ public class MainActivity3 extends AppCompatActivity {
 
             }
         });
-        list.add("Add child?");
+        list.add("Add child");
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+                replaceFragment(getFragment(integerDeque.peek()));
             }
 
             @Override
