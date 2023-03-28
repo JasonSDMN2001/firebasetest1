@@ -61,7 +61,7 @@ public class WeightFragment extends Fragment {
     private Date date, birthdate;
     private int week;
     private float weight;
-    private String key;
+    private String key,gender;
     RecyclerView recyclerView;
     MyAdapter myAdapter;
     ArrayList<WeightData> list;
@@ -125,28 +125,6 @@ public class WeightFragment extends Fragment {
         babyname = getbabyname.getSelectedItem().toString();
         whichBaby();
 
-        /*ref = database.getReference("Users").child(mAuth.getUid());
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int index=0;
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    babyName[index] = dataSnapshot.getKey();
-
-                    if(babyName[index]!=null){
-                        RecyclerUpdate(index);
-                        ref2 = database.getReference("Users").child(mAuth.getUid()).child(babyName[0]).child("weightData");
-                        BirthDayFind(index);
-                    }
-                    index++;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
 
 
         button = view.findViewById(R.id.button10);
@@ -162,9 +140,7 @@ public class WeightFragment extends Fragment {
                             key = ref2.push().getKey();
                             WeightData weightData = new WeightData(key,date, week, weight,babyname);
                             ref2.child(key).setValue(weightData);
-                            /*DatabaseReference reference = database.getReference("All Weight Data");
-                            String key2 = reference.push().getKey();
-                            reference.child(key2).setValue(weightData);*/
+                            StatisticsCalculation(weight,week);
                         }
                     }
                 });
@@ -213,19 +189,13 @@ public class WeightFragment extends Fragment {
         }
     }
 
-    /*private void StatisticsCalculation() {
-        DatabaseReference statisticsInitialisation = database.getReference("Total weight Data per week");
-        for(int week_index=0;week_index<53;week_index++){
-            WeightStatisticsData stats = new WeightStatisticsData(0,0);
-            statisticsInitialisation.child("week:"+week_index).setValue(stats);
-        }
-        DatabaseReference reference = database.getReference("All Weight Data");
+    private void StatisticsCalculation(float weight,int week) {
+        DatabaseReference reference = database.getReference("All weight data").child(gender).child("week "+week).child("weight");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    WeightData weightData = dataSnapshot.getValue(WeightData.class);
-                }
+                float stat_weight = Float.parseFloat(snapshot.getValue().toString());
+                reference.setValue(stat_weight+weight);
             }
 
             @Override
@@ -233,32 +203,12 @@ public class WeightFragment extends Fragment {
 
             }
         });
-        //reference.setValue(weightData.getWeight());
-
-
-        /*DatabaseReference reference2 = database.getReference("All Weight Data");
-        reference2.addValueEventListener(new ValueEventListener() {
+        DatabaseReference reference2 = database.getReference("All weight data").child(gender).child("week "+week).child("babies");
+        reference2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //DataPoint[] dp = new DataPoint[(int) snapshot.getChildrenCount()];
-                //int index = 0;
-                float[] total_weight=new float[52];
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    WeightData weightData = dataSnapshot.getValue(WeightData.class);
-                    for(int week_index=0;week_index<53;week_index++){
-                        if (weightData.getWeek()==week_index){
-                            total_weight[week_index]=weightData.getWeight();
-                        }
-                    }
-                    /*if (dp.length > 2) {
-                        WeightGraphPoints points = new WeightGraphPoints(weightData.getWeek(), weightData.getWeight());
-                        dp[index] = new DataPoint(points.x, points.y);
-                        index++;
-                    }
-                }
-                /*if (dp.length > 2) {
-                    series2.resetData(dp);
-                }
+                int babies=Integer.parseInt(snapshot.getValue().toString());
+                reference2.setValue(babies+1);
             }
 
             @Override
@@ -266,7 +216,29 @@ public class WeightFragment extends Fragment {
 
             }
         });
-    }*/
+        DatabaseReference graphReference = database.getReference("All weight data").child(gender);
+        graphReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                DataPoint[] dp =new DataPoint[(int)snapshot.getChildrenCount()];
+                int index=0;
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    //float found_week = Float.parseFloat(dataSnapshot.getKey());
+                    float found_weight = Float.parseFloat(dataSnapshot.child("weight").getValue().toString());
+
+                    WeightGraphPoints points = new WeightGraphPoints(1,found_weight);
+                    dp[index] = new DataPoint(points.x, points.y);
+                    index++;
+                }
+                series.resetData(dp);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
     public void RecyclerUpdate(String s) {
         reference = database.getReference("Users").child(mAuth.getUid()).child(s).child("weightData");
@@ -308,7 +280,7 @@ public class WeightFragment extends Fragment {
                     if (!dataSnapshot.getKey().matches("weightData")) {
                         ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
                         birthdate = childInfo.getbirthDate();
-                        String gender = childInfo.getGender();
+                        gender = childInfo.getGender();
                         if(Objects.equals(gender, "Boy")){
                             series2.setColor(Color.BLUE);
                             DataPoint[] dp = new DataPoint[14];

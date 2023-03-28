@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -101,6 +102,12 @@ public class MainActivity3 extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton3);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
         ArrayList<String> list = new ArrayList<String>();
         spinner = findViewById(R.id.spinner);
         DatabaseReference reference =  database.getReference("Users").child(mAuth.getUid());

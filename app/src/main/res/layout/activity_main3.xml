@@ -32,35 +32,28 @@
                 app:title="Home"
                 app:titleTextColor="#FFFFFF" />
 
-            <EditText
-                android:id="@+id/editTextTextPersonName7"
-                android:layout_width="198dp"
-                android:layout_height="49dp"
-                android:autofillHints=""
-                android:background="@drawable/custom_input2"
-                android:drawableStart="@drawable/ic_search"
-                android:ems="10"
-                android:hint="  search"
-                android:inputType="text"
-                android:textColorHint="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/myToolbar"
-                app:layout_constraintHorizontal_bias="0.413"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.571" />
-
 
             <Spinner
                 android:id="@+id/spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
                 android:background="#2ECFB0"
+                android:textColor="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName7"
+                app:layout_constraintStart_toStartOf="@+id/myToolbar"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/imageButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/spinner"
+                app:layout_constraintTop_toTopOf="parent"
+                android:backgroundTint="#2ECFB0"
+                app:srcCompat="@android:drawable/ic_menu_help" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
