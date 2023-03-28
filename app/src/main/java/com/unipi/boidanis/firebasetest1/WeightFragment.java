@@ -66,7 +66,7 @@ public class WeightFragment extends Fragment {
     MyAdapter myAdapter;
     ArrayList<WeightData> list;
     GraphView graphView;
-    LineGraphSeries series, series2;
+    LineGraphSeries series, series2,series3;
     //String[] babyName = new String[2];
     Button button;
     String babyname = "";
@@ -178,6 +178,10 @@ public class WeightFragment extends Fragment {
             graphView.getLegendRenderer().setVisible(true);
             graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.BOTTOM);
         }
+        series3 = new LineGraphSeries();
+        series3.setColor(Color.RED);
+        series3.setTitle("Users avarage");
+        graphView.addSeries(series3);
         return view;
     }
 
@@ -186,16 +190,22 @@ public class WeightFragment extends Fragment {
             RecyclerUpdate(babyname);
             ref2 = database.getReference("Users").child(mAuth.getUid()).child(babyname).child("weightData");
             BirthDayFind(babyname);
+
         }
     }
 
     private void StatisticsCalculation(float weight,int week) {
-        DatabaseReference reference = database.getReference("All weight data").child(gender).child("week "+week).child("weight");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference statreference;
+        if(week<10){
+            statreference = database.getReference("All weight data").child(gender).child("week 0"+week).child("weight");
+        }else{
+            statreference = database.getReference("All weight data").child(gender).child("week "+week).child("weight");
+        }
+        statreference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 float stat_weight = Float.parseFloat(snapshot.getValue().toString());
-                reference.setValue(stat_weight+weight);
+                statreference.setValue(stat_weight+weight);
             }
 
             @Override
@@ -203,11 +213,17 @@ public class WeightFragment extends Fragment {
 
             }
         });
-        DatabaseReference reference2 = database.getReference("All weight data").child(gender).child("week "+week).child("babies");
+        DatabaseReference reference2;
+        if(week<10){
+            reference2 = database.getReference("All weight data").child(gender).child("week 0"+week).child("babies");
+        }else{
+            reference2 = database.getReference("All weight data").child(gender).child("week "+week).child("babies");
+        }
+
         reference2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int babies=Integer.parseInt(snapshot.getValue().toString());
+                int babies = Integer.parseInt(snapshot.getValue().toString());
                 reference2.setValue(babies+1);
             }
 
@@ -216,6 +232,9 @@ public class WeightFragment extends Fragment {
 
             }
         });
+
+    }
+    public void StatsGraph(String gender){
         DatabaseReference graphReference = database.getReference("All weight data").child(gender);
         graphReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -223,14 +242,13 @@ public class WeightFragment extends Fragment {
                 DataPoint[] dp =new DataPoint[(int)snapshot.getChildrenCount()];
                 int index=0;
                 for(DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    //float found_week = Float.parseFloat(dataSnapshot.getKey());
-                    float found_weight = Float.parseFloat(dataSnapshot.child("weight").getValue().toString());
-
-                    WeightGraphPoints points = new WeightGraphPoints(1,found_weight);
+                    float found_weight =Float.parseFloat(dataSnapshot.child("weight").getValue().toString());
+                    int baby_population = Integer.parseInt(dataSnapshot.child("babies").getValue().toString());
+                    WeightGraphPoints points = new WeightGraphPoints(index,found_weight/baby_population);
                     dp[index] = new DataPoint(points.x, points.y);
                     index++;
                 }
-                series.resetData(dp);
+                series3.resetData(dp);
             }
 
             @Override
@@ -281,6 +299,7 @@ public class WeightFragment extends Fragment {
                         ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
                         birthdate = childInfo.getbirthDate();
                         gender = childInfo.getGender();
+                        StatsGraph(gender);
                         if(Objects.equals(gender, "Boy")){
                             series2.setColor(Color.BLUE);
                             DataPoint[] dp = new DataPoint[14];
@@ -333,11 +352,9 @@ public class WeightFragment extends Fragment {
         long i = birthdate.getTime();
         long j = weightDate.getTime();
         long daysDiff = TimeUnit.DAYS.convert(j - i, TimeUnit.MILLISECONDS);//604800//1 week
-        long k = (long) Math.floor(daysDiff % 7);
-
+        long k = (long) Math.floor(daysDiff / 7.0);
         return (int) k;
     }
-
     void showMessage(String title, String message) {
         new AlertDialog.Builder(getActivity()).setTitle(title).setMessage(message).setCancelable(true).show();
     }

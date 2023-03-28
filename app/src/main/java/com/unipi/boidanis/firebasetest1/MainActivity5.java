@@ -28,8 +28,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -125,6 +128,7 @@ public class MainActivity5 extends AppCompatActivity implements AdapterView.OnIt
                                         /*DatabaseReference reference = database.getReference("All Weight Data");
                                         String key2 = reference.push().getKey();
                                         reference.child(key2).setValue(weightData);*/
+                                        StatisticsCalculation(Float.parseFloat(weight),0);
                                         finish();
                                         Intent intent = new Intent(getApplicationContext(), MainActivity3.class);
                                         startActivity(intent);
@@ -165,6 +169,46 @@ public class MainActivity5 extends AppCompatActivity implements AdapterView.OnIt
                     }
                 }
             });
+    private void StatisticsCalculation(float weight,int week) {
+        DatabaseReference statreference;
+        if(week<10){
+            statreference = database.getReference("All weight data").child(gender).child("week 0"+week).child("weight");
+        }else{
+            statreference = database.getReference("All weight data").child(gender).child("week "+week).child("weight");
+        }
+        statreference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                float stat_weight = Float.parseFloat(snapshot.getValue().toString());
+                statreference.setValue(stat_weight+weight);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        DatabaseReference reference2;
+        if(week<10){
+            reference2 = database.getReference("All weight data").child(gender).child("week 0"+week).child("babies");
+        }else{
+            reference2 = database.getReference("All weight data").child(gender).child("week "+week).child("babies");
+        }
+
+        reference2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int babies = Integer.parseInt(snapshot.getValue().toString());
+                reference2.setValue(babies+1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
     private boolean validateinfo(String weight) {
         if(!weight.matches("[0-9]\\.[0-9]{1,2}$")){
             editText2.requestFocus();
