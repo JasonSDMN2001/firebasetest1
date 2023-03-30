@@ -128,9 +128,34 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        ShapeableImageView shapeableImageView2 = (ShapeableImageView) view.findViewById(R.id.profile_button2);
+        shapeableImageView2.setScaleType(ImageView.ScaleType.CENTER);
+        shapeableImageView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+                Intent intent = new Intent(getContext(), MainActivity6.class);
+                startActivity(intent);
+            }
+        });
+        DatabaseReference ref2 = database.getReference("Users").child(mAuth.getUid()).child("parent info and settings");
+        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    ParentInfo parentInfo = dataSnapshot.getValue(ParentInfo.class);
+                    if(getActivity()!=null){
+                        Glide.with(getContext()).load(parentInfo.getImageUrl()).into(shapeableImageView2);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         return view;
     }
 
-    public void profileChange(View view) {
-    }
 }
