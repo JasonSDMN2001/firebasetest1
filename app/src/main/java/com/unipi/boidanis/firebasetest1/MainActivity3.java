@@ -116,7 +116,7 @@ public class MainActivity3 extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     babyname = dataSnapshot.getKey();
-                    if(babyname!=null){
+                    if(babyname!=null&&!babyname.matches("parent info and settings")){
                         list.add(babyname);
                     }
                 }
