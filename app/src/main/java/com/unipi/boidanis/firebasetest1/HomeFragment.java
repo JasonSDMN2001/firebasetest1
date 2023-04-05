@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment {
         shapeableImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+
                 Intent intent = new Intent(getContext(), MainActivity5.class);
                 startActivity(intent);
             }
@@ -133,7 +133,7 @@ public class HomeFragment extends Fragment {
         shapeableImageView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+
                 Intent intent = new Intent(getContext(), MainActivity6.class);
                 startActivity(intent);
             }

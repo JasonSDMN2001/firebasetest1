@@ -73,6 +73,8 @@ public class WeightFragment extends Fragment {
     Button button;
     String babyname = "";
     DataPoint[] weightdp = new DataPoint[14];
+    Date[] temp_date;
+    TextView textView9,textView10,textView15,textView16,textView23;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -150,7 +152,10 @@ public class WeightFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resultLauncher.launch(new Intent(getActivity(), MainActivity4.class));
+                Intent intent = new Intent(getActivity(),MainActivity4.class);
+                intent.putExtra("last date",temp_date[temp_date.length-1]);
+                resultLauncher.launch(intent);
+                //resultLauncher.launch(new Intent(getActivity(), MainActivity4.class));
             }
         });
 
@@ -166,6 +171,7 @@ public class WeightFragment extends Fragment {
         series = new LineGraphSeries();
         series.setColor(Color.CYAN);
         series.setTitle(babyname+"'s weight");
+        series.setThickness(14);
         graphView.addSeries(series);
         graphView.setTitle("Weight History");
         graphView.getGridLabelRenderer().setVerticalAxisTitle("Weight in kg");
@@ -182,6 +188,7 @@ public class WeightFragment extends Fragment {
         series3 = new LineGraphSeries();
         series3.setColor(Color.YELLOW);
         series3.setTitle("Users average");
+        series3.setThickness(14);
         graphView.addSeries(series3);
         series4 = new LineGraphSeries();
         series4.setTitle("3rd percentile");
@@ -214,6 +221,20 @@ public class WeightFragment extends Fragment {
         series11.setTitle("97th percentile");
         graphView.addSeries(series11);
 
+        textView9 = view.findViewById(R.id.textView9);
+        textView10 = view.findViewById(R.id.textView10);
+        textView15=view.findViewById(R.id.textView15);
+        textView16=view.findViewById(R.id.textView16);
+        textView23 = view.findViewById(R.id.textView23);
+        ImageButton imageButton = (ImageButton) view.findViewById(R.id.imageButton4);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMessage("How to use growth chart:","The growth tracker is a dynamic chart" +
+                        " that displays the World Health Organisation(WHO)" +
+                        "Child Growth Standards. ");
+            }
+        });
         return view;
     }
 
@@ -297,25 +318,32 @@ public class WeightFragment extends Fragment {
                 list.clear();
                 DataPoint[] dp = new DataPoint[(int) snapshot.getChildrenCount()];
                 int index = 0;
-
+                temp_date = new Date[(int) snapshot.getChildrenCount()];
+                float[] temp_weight = new float[(int) snapshot.getChildrenCount()];
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     WeightData weightData = dataSnapshot.getValue(WeightData.class);
                     list.add(weightData);
                     if (dp.length > 2) {
+                        temp_date[index]=weightData.getDate();
+                        temp_weight[index]=weightData.getWeight();
                         WeightGraphPoints points = new WeightGraphPoints(weightData.getWeek(), weightData.getWeight());
                         dp[index] = new DataPoint(points.x, points.y);
                         index++;
                     }
                 }
                 if(weightdp[(int)(Math.floor((int)snapshot.getChildrenCount()/4.0) )]!=null) {
-                    //showMessage("avarage weight", String.valueOf(weightdp[(int) (Math.floor((int) snapshot.getChildrenCount() / 4.0)) ].getY()));
-                    //showMessage("my weight", String.valueOf(dp[((int) snapshot.getChildrenCount())-1].getY()));
                     if (Math.abs(dp[((int) snapshot.getChildrenCount())-1].getY()
-                            - weightdp[(int) (Math.floor((int) snapshot.getChildrenCount() / 4.0)) ].getY()) > 0.15) {
+                            - weightdp[(int) (Math.floor((int) snapshot.getChildrenCount() / 4.0)) ].getY()) > 0.65) {
                         WeightNotification();
                     }
                 }
-
+                if(dp[0]!=null&&temp_date[(int) snapshot.getChildrenCount()-1]!=null){
+                    textView9.setText(dp[0].getY()+" kg");
+                    textView15.setText(temp_weight[(int) snapshot.getChildrenCount()-1]+" kg");
+                    java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
+                    textView16.setText(dateFormat.format(temp_date[(int) snapshot.getChildrenCount()-1]));
+                    textView23.setText(String.format("%.2f",  temp_weight[(int) snapshot.getChildrenCount()-1]-dp[0].getY())+" kg");
+                }
                 if (dp.length > 2) {
                     series.resetData(dp);
                 }
@@ -358,6 +386,8 @@ public class WeightFragment extends Fragment {
                     if (!dataSnapshot.getKey().matches("weightData")) {
                         ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
                         birthdate = childInfo.getbirthDate();
+                        java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
+                        textView10.setText(dateFormat.format(birthdate));
                         gender = childInfo.getGender();
                         StatsGraph(gender);
                         if(Objects.equals(gender, "Boy")){

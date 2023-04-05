@@ -52,7 +52,7 @@ public class MainActivity4 extends AppCompatActivity {
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             }else{
-                Toast.makeText(this, "Check your parameters", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Check your parameters or remove space", Toast.LENGTH_SHORT).show();
 
             }
         }else {
