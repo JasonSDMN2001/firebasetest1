@@ -153,7 +153,7 @@ public class WeightFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),MainActivity4.class);
-                intent.putExtra("last date",temp_date[temp_date.length-1]);
+                intent.putExtra("last date",String.valueOf( temp_date[temp_date.length-1].getTime()));
                 resultLauncher.launch(intent);
                 //resultLauncher.launch(new Intent(getActivity(), MainActivity4.class));
             }
@@ -338,7 +338,7 @@ public class WeightFragment extends Fragment {
                     }
                 }
                 if(dp[0]!=null&&temp_date[(int) snapshot.getChildrenCount()-1]!=null){
-                    textView9.setText(dp[0].getY()+" kg");
+                    textView9.setText(String.format("%.2f",dp[0].getY())+" kg");
                     textView15.setText(temp_weight[(int) snapshot.getChildrenCount()-1]+" kg");
                     java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
                     textView16.setText(dateFormat.format(temp_date[(int) snapshot.getChildrenCount()-1]));

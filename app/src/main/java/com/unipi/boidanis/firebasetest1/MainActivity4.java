@@ -14,18 +14,21 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity4 extends AppCompatActivity {
     EditText editText;
     CalendarView calendarView;
     private String weight;
     Date date;
+    long date1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
         editText = findViewById(R.id.editTextTextPersonName8);
         calendarView = findViewById(R.id.calendarView);
+        date1 = Long.parseLong(getIntent().getStringExtra("last date"));
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
             @Override
@@ -46,11 +49,17 @@ public class MainActivity4 extends AppCompatActivity {
             weight = editText.getText().toString();
             boolean check = validateinfo(weight);
             if(check){
-                Intent intent = new Intent();
-                intent.putExtra("weight",weight);
-                intent.putExtra("date",date);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+
+                int difference = WeekCalculation(date1,date);
+                if(date.getTime()>date1&&difference<=1){
+                    Intent intent = new Intent();
+                    intent.putExtra("weight",weight);
+                    intent.putExtra("date",date);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                }else{
+                    Toast.makeText(this, "Please enter a later date than your last recorded:"+date + "and no more than 7 days away from the last", Toast.LENGTH_SHORT).show();
+                }
             }else{
                 Toast.makeText(this, "Check your parameters or remove space", Toast.LENGTH_SHORT).show();
 
@@ -60,7 +69,13 @@ public class MainActivity4 extends AppCompatActivity {
         }
 
     }
-
+    public int WeekCalculation(Long date1,Date date) {
+        long i = date1;
+        long j = date.getTime();
+        long daysDiff = TimeUnit.DAYS.convert(j - i, TimeUnit.MILLISECONDS);//604800//1 week
+        long k = (long) Math.floor(daysDiff / 7.0);
+        return (int) k;
+    }
     private boolean validateinfo(String weight) {
         if(!weight.matches("[0-9]\\.[0-9]{1,2}$")){
             editText.requestFocus();
