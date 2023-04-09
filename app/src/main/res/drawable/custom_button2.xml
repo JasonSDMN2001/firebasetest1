@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+<!--<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
 
     <corners android:radius="20dp"/>
     <stroke android:width="5px" android:color="#2ECFB0"/>
 
-</shape>
+</shape>-->
+
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+android:color="#666666" android:radius="60dp">
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle" android:innerRadius="20dp">
+            <corners android:radius="20dp" />
+            <stroke android:width="5px" android:color="#2ECFB0"/>
+
+        </shape>
+    </item>
+<item android:id="@android:id/mask" >
+    <shape android:shape="rectangle"  >
+        <gradient
+            android:angle="45"
+            android:endColor="#919199"
+            android:startColor="#919199"
+            android:type="linear" />
+        <!--<solid android:color="#009EFD"/>-->
+        <stroke android:color="#636565"/>
+        <!--<stroke android:color="#636565"/>-->
+    </shape>
+</item>
+
+
+</ripple>
