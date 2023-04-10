@@ -37,4 +37,64 @@
 
 
     </FrameLayout>
+    <FrameLayout
+        android:id="@+id/idFrame2"
+        android:layout_width="111dp"
+        android:layout_height="110dp"
+        android:layout_marginBottom="556dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.78"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="70dp"
+            android:clickable="false"
+            android:text="Milestones"
+            android:textColor="#9D9E9E"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_button2"
+            android:padding="5dp"
+            android:src="@drawable/ic_baseline_star" />
+
+
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/idFrame3"
+        android:layout_width="111dp"
+        android:layout_height="110dp"
+        android:layout_marginBottom="390dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="70dp"
+            android:clickable="false"
+            android:text="Moments"
+            android:textColor="#9D9E9E"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_button2"
+            android:padding="5dp"
+            android:src="@drawable/ic_baseline_photo_library_24" />
+
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

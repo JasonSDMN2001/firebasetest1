@@ -18,7 +18,7 @@ import android.widget.TextView;
  * create an instance of this fragment.
  */
 public class growthFragment extends Fragment {
-    protected ImageButton imageButton;
+    protected ImageButton imageButton,imageButton3;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -71,6 +71,17 @@ public class growthFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = getActivity()
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout,new growth2Fragment());
+                //fragmentTransaction.replace(R.id.frame_layout,new growth2Fragment()).addToBackStack( "tag" );
+                fragmentTransaction.commit();
+            }
+        });
+        imageButton3 = (ImageButton) view.findViewById(R.id.imageButton3);
+        imageButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout,new MomentFragment());
                 //fragmentTransaction.replace(R.id.frame_layout,new growth2Fragment()).addToBackStack( "tag" );
                 fragmentTransaction.commit();
             }
