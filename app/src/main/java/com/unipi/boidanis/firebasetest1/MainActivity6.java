@@ -84,8 +84,8 @@ public class MainActivity6 extends AppCompatActivity {
                                     progressBar.setVisibility(View.INVISIBLE);
                                     imageview.setImageResource(R.drawable.ic_baseline_add_photo_alternate_24);
                                     finish();
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity3.class);
-                                    startActivity(intent);
+                                    //Intent intent = new Intent(getApplicationContext(), MainActivity3.class);
+                                    //startActivity(intent);
                                 }
                             });
                         }

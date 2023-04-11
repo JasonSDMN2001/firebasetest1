@@ -4,4 +4,15 @@
         <item>Boy</item>
         <item>Girl</item>
     </string-array>
+
+    <string-array name="moment_array">
+        <item>Im home!</item>
+        <item>First smile</item>
+        <item>First snack</item>
+        <item>Sleeping</item>
+        <item>Bath time</item>
+        <item>Going outside for the first time</item>
+        <item>First Laugh</item>
+    </string-array>
+
 </resources>

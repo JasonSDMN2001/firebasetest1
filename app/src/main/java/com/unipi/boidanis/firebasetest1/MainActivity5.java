@@ -130,8 +130,8 @@ public class MainActivity5 extends AppCompatActivity implements AdapterView.OnIt
                                         reference.child(key2).setValue(weightData);*/
                                         StatisticsCalculation(Float.parseFloat(weight),0);
                                         finish();
-                                        Intent intent = new Intent(getApplicationContext(), MainActivity3.class);
-                                        startActivity(intent);
+                                        //Intent intent = new Intent(getApplicationContext(), MainActivity3.class);
+                                        //startActivity(intent);
                                     }
                                 });
                             }
