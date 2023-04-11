@@ -181,7 +181,7 @@ public class WeightFragment extends Fragment {
         graphView.getViewport().setScalableY(true);
         graphView.getViewport().setScrollableY(true);
 
-        if(!babyname.matches("Add child")){
+        if(!babyname.matches("Select child")){
             graphView.getLegendRenderer().setVisible(true);
             graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
         }

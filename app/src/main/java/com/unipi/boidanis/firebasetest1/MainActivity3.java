@@ -96,12 +96,13 @@ public class MainActivity3 extends AppCompatActivity {
             }
             return true;
         });*/
-
-        myToolbar = findViewById(R.id.myToolbar);
-        setSupportActionBar(myToolbar);
-        database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        myToolbar = findViewById(R.id.myToolbar);
+        setSupportActionBar(myToolbar);
+        myToolbar.setTitle(user.getDisplayName());
+        database = FirebaseDatabase.getInstance();
+
         ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton3);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +128,7 @@ public class MainActivity3 extends AppCompatActivity {
 
             }
         });
-        list.add("Add child");
+        list.add("Select child");
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

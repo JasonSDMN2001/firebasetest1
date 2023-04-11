@@ -63,6 +63,10 @@ public class MainActivity7 extends AppCompatActivity implements AdapterView.OnIt
         if (user!=null){
             reference=database.getReference("Users").child(user.getUid());
             babyname = getIntent().getStringExtra("babyname");
+        }else{
+            Toast.makeText(MainActivity7.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            finish();
+            startActivity(getIntent());
         }
         //"moments"->"ταδε μομεντ ονομα"->"imageurl"
         imageview = findViewById(R.id.imageView5);
