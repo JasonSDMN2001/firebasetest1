@@ -153,7 +153,11 @@ public class WeightFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),MainActivity4.class);
-                intent.putExtra("last date",String.valueOf( temp_date[temp_date.length-1].getTime()));
+                if(temp_date[temp_date.length-1]!=null){
+                    intent.putExtra("last date",temp_date[temp_date.length-1]);
+                }else{
+                    intent.putExtra("last date",birthdate);
+                }
                 resultLauncher.launch(intent);
                 //resultLauncher.launch(new Intent(getActivity(), MainActivity4.class));
             }
@@ -311,50 +315,60 @@ public class WeightFragment extends Fragment {
     }
 
     public void RecyclerUpdate(String s) {
-        reference = database.getReference("Users").child(mAuth.getUid()).child(s).child("weightData");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                DataPoint[] dp = new DataPoint[(int) snapshot.getChildrenCount()];
-                int index = 0;
-                temp_date = new Date[(int) snapshot.getChildrenCount()];
-                float[] temp_weight = new float[(int) snapshot.getChildrenCount()];
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    WeightData weightData = dataSnapshot.getValue(WeightData.class);
-                    list.add(weightData);
+        try {
+            reference = database.getReference("Users").child(mAuth.getUid()).child(s).child("weightData");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    list.clear();
+                    DataPoint[] dp = new DataPoint[(int) snapshot.getChildrenCount()];
+                    int index = 0;
+                    temp_date = new Date[(int) snapshot.getChildrenCount()];
+                    float[] temp_weight = new float[(int) snapshot.getChildrenCount()];
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        WeightData weightData = dataSnapshot.getValue(WeightData.class);
+                        list.add(weightData);
+                        temp_date[index] = weightData.getDate();
+                        temp_weight[index] = weightData.getWeight();
+                        if (dp.length > 2) {
+
+                            WeightGraphPoints points = new WeightGraphPoints(weightData.getWeek(), weightData.getWeight());
+                            dp[index] = new DataPoint(points.x, points.y);
+                            index++;
+                        }
+                    }
                     if (dp.length > 2) {
-                        temp_date[index]=weightData.getDate();
-                        temp_weight[index]=weightData.getWeight();
-                        WeightGraphPoints points = new WeightGraphPoints(weightData.getWeek(), weightData.getWeight());
-                        dp[index] = new DataPoint(points.x, points.y);
-                        index++;
-                    }
-                }
-                if(weightdp[(int)(Math.floor((int)snapshot.getChildrenCount()/4.0) )]!=null) {
-                    if (Math.abs(dp[((int) snapshot.getChildrenCount())-1].getY()
-                            - weightdp[(int) (Math.floor((int) snapshot.getChildrenCount() / 4.0)) ].getY()) > 0.65) {
-                        WeightNotification();
-                    }
-                }
-                if(dp[0]!=null&&temp_date[(int) snapshot.getChildrenCount()-1]!=null){
-                    textView9.setText(String.format("%.2f",dp[0].getY())+" kg");
-                    textView15.setText(temp_weight[(int) snapshot.getChildrenCount()-1]+" kg");
-                    java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
-                    textView16.setText(dateFormat.format(temp_date[(int) snapshot.getChildrenCount()-1]));
-                    textView23.setText(String.format("%.2f",  temp_weight[(int) snapshot.getChildrenCount()-1]-dp[0].getY())+" kg");
-                }
-                if (dp.length > 2) {
-                    series.resetData(dp);
-                }
-                myAdapter.notifyDataSetChanged();
-            }
+                        if (weightdp[(int) (Math.floor((int) snapshot.getChildrenCount() / 4.0))] != null) {
+                            if (Math.abs(dp[((int) snapshot.getChildrenCount()) - 1].getY()
+                                    - weightdp[(int) (Math.floor((int) snapshot.getChildrenCount() / 4.0))].getY()) > 0.65) {
+                                WeightNotification();
+                            }
+                        }
+                        if (dp[0] != null && temp_date[(int) snapshot.getChildrenCount() - 1] != null) {
+                            try {
+                                textView9.setText(String.format("%.2f", dp[0].getY()) + " kg");
+                                textView15.setText(temp_weight[(int) snapshot.getChildrenCount() - 1] + " kg");
+                                java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
+                                textView16.setText(dateFormat.format(temp_date[(int) snapshot.getChildrenCount() - 1]));
+                                textView23.setText(String.format("%.2f", temp_weight[(int) snapshot.getChildrenCount() - 1] - dp[0].getY()) + " kg");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                        series.resetData(dp);
+                    }
+                    myAdapter.notifyDataSetChanged();
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void WeightNotification() {
@@ -383,7 +397,7 @@ public class WeightFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    if (!dataSnapshot.getKey().matches("weightData")&&!dataSnapshot.getKey().matches("moments")) {
+                    if (!dataSnapshot.getKey().matches("weightData")&&!dataSnapshot.getKey().matches("moments")&&!dataSnapshot.getKey().matches("milestones")) {
                         ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
                         birthdate = childInfo.getbirthDate();
                         java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());

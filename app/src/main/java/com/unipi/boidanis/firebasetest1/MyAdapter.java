@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +48,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.weight.setText(String.valueOf(weightData.getWeight()));
         holder.key=weightData.getKey();
         holder.babyName=weightData.getBabyName();
+        holder.intweek = weightData.getWeek();
     }
 
     @Override
@@ -58,6 +60,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         TextView date,week,weight;
         Button button;
         String key,babyName;
+        int intweek;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             date=itemView.findViewById(R.id.textView18);
@@ -70,8 +73,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     FirebaseAuth mAuth;
                     mAuth = FirebaseAuth.getInstance();
-                    DatabaseReference reference = database.getReference().child("Users").child(mAuth.getUid()).child(babyName).child("weightData").child(key);
-                    reference.removeValue();
+                    if(intweek!=0){
+                        DatabaseReference reference = database.getReference().child("Users").child(mAuth.getUid()).child(babyName).child("weightData").child(key);
+                        reference.removeValue();
+                    }else{
+                        Toast.makeText(itemView.getContext(), "Cant delete birthdate", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 

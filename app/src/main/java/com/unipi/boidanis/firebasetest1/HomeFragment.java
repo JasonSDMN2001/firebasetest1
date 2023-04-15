@@ -98,11 +98,13 @@ public class HomeFragment extends Fragment {
         shapeableImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                getActivity().finish();
                 Intent intent = new Intent(getContext(), MainActivity5.class);
                 startActivity(intent);
             }
         });
+
+
         //shapeableImageView.setImageURI(null);
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -113,7 +115,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                    if (!dataSnapshot.getKey().matches("weightData")) {
+                    if (!dataSnapshot.getKey().matches("weightData")&&!dataSnapshot.getKey().matches("milestones")&&!dataSnapshot.getKey().matches("moments")) {
                         ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
                         if(getActivity()!=null) {
                             Glide.with(getContext()).load(childInfo.getImageUrl()).into(shapeableImageView);

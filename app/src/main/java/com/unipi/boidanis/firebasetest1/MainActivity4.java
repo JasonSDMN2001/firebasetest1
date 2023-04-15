@@ -20,15 +20,15 @@ public class MainActivity4 extends AppCompatActivity {
     EditText editText;
     CalendarView calendarView;
     private String weight;
-    Date date;
-    long date1;
+    Date date,date1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
         editText = findViewById(R.id.editTextTextPersonName8);
         calendarView = findViewById(R.id.calendarView);
-        date1 = Long.parseLong(getIntent().getStringExtra("last date"));
+        //date1 = Long.parseLong(getIntent().getStringExtra("last date"));
+        date1 = (Date) getIntent().getExtras().getSerializable("last date");
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
             @Override
@@ -51,14 +51,16 @@ public class MainActivity4 extends AppCompatActivity {
             if(check){
 
                 int difference = WeekCalculation(date1,date);
-                if(date.getTime()>date1&&difference<=1){
+                if(date.getTime()>date1.getTime()&&difference<=1){
                     Intent intent = new Intent();
                     intent.putExtra("weight",weight);
                     intent.putExtra("date",date);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 }else{
-                    Toast.makeText(this, "Please enter a later date than your last recorded:"+date + "and no more than 7 days away from the last", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "Please enter a later date than your last recorded:"+date1 + "and no more than 7 days away from the last", Toast.LENGTH_SHORT).show();
+                    showMessage("Please enter a later date than your last recorded:"+date1,"and no more than 7 days away from the last.Also keep in mind that during the first week your child's weight will drop,so feel free" +
+                            "to check again in a couple of days and input it in the app");
                 }
             }else{
                 Toast.makeText(this, "Check your parameters or remove space", Toast.LENGTH_SHORT).show();
@@ -69,8 +71,8 @@ public class MainActivity4 extends AppCompatActivity {
         }
 
     }
-    public int WeekCalculation(Long date1,Date date) {
-        long i = date1;
+    public int WeekCalculation(Date date1,Date date) {
+        long i = date1.getTime();
         long j = date.getTime();
         long daysDiff = TimeUnit.DAYS.convert(j - i, TimeUnit.MILLISECONDS);//604800//1 week
         long k = (long) Math.floor(daysDiff / 7.0);

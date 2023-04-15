@@ -129,9 +129,10 @@ public class MainActivity5 extends AppCompatActivity implements AdapterView.OnIt
                                         String key2 = reference.push().getKey();
                                         reference.child(key2).setValue(weightData);*/
                                         StatisticsCalculation(Float.parseFloat(weight),0);
+                                        milestonePreperation(childInfo.name);
                                         finish();
-                                        //Intent intent = new Intent(getApplicationContext(), MainActivity3.class);
-                                        //startActivity(intent);
+                                        Intent intent = new Intent(getApplicationContext(), MainActivity3.class);
+                                        startActivity(intent);
                                     }
                                 });
                             }
@@ -156,6 +157,50 @@ public class MainActivity5 extends AppCompatActivity implements AdapterView.OnIt
             }
         });
     }
+
+    private void milestonePreperation(@NonNull String babyname) {
+        DatabaseReference ref = database.getReference("Users").child(user.getUid()).child(babyname).child("milestones");
+        String key = ref.push().getKey();
+        Milestones milestones = new Milestones("Follows object to midline",1,5,false,key,babyname);
+        ref.child(key).setValue(milestones);
+        String key2 = ref.push().getKey();
+        Milestones milestones2 = new Milestones("Follows object past midline",5,10,false,key2,babyname);
+        ref.child(key2).setValue(milestones2);
+        String key3 = ref.push().getKey();
+        Milestones milestones3 = new Milestones("Lifts head 45 degrees",7,16,false,key3,babyname);
+        ref.child(key3).setValue(milestones3);
+        String key4 = ref.push().getKey();
+        Milestones milestones4 = new Milestones("Sits supported",11,19,false,key4,babyname);
+        ref.child(key4).setValue(milestones4);
+        String key5 = ref.push().getKey();
+        Milestones milestones5 = new Milestones("Lifts chest with arm support",9,15,false,key5,babyname);
+        ref.child(key5).setValue(milestones5);
+        String key6 = ref.push().getKey();
+        Milestones milestones6 = new Milestones("Rolls over",12,20,false,key6,babyname);
+        ref.child(key6).setValue(milestones6);
+        String key7 = ref.push().getKey();
+        Milestones milestones7 = new Milestones("Reaches for an object",13,16,false,key7,babyname);
+        ref.child(key7).setValue(milestones7);
+        String key8 = ref.push().getKey();
+        Milestones milestones8 = new Milestones("Gramp noises",13,16,false,key8,babyname);
+        ref.child(key8).setValue(milestones8);
+        String key9 = ref.push().getKey();
+        Milestones milestones9 = new Milestones("Puts hands together",15,18,false,key9,babyname);
+        ref.child(key9).setValue(milestones9);
+        String key10 = ref.push().getKey();
+        Milestones milestones10 = new Milestones("Looks in direction of voice",1,7,false,key10,babyname);
+        ref.child(key10).setValue(milestones10);
+        String key11 = ref.push().getKey();
+        Milestones milestones11 = new Milestones("Smiles spontaneously",1,3,false,key11,babyname);
+        ref.child(key11).setValue(milestones11);
+        String key12 = ref.push().getKey();
+        Milestones milestones12 = new Milestones("Ooo/Aah sounds",4,12,false,key12,babyname);
+        ref.child(key12).setValue(milestones12);
+        String key13 = ref.push().getKey();
+        Milestones milestones13 = new Milestones("Social smile",4,8,false,key13,babyname);
+        ref.child(key13).setValue(milestones13);
+    }
+
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
