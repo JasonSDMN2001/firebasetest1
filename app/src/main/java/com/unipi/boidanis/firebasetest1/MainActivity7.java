@@ -11,9 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,6 +38,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainActivity7 extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     String moment,babyname;
@@ -61,6 +67,7 @@ public class MainActivity7 extends AppCompatActivity implements AdapterView.OnIt
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -135,6 +142,7 @@ public class MainActivity7 extends AppCompatActivity implements AdapterView.OnIt
                 }
             }
         });
+
     }
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -159,6 +167,11 @@ public class MainActivity7 extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         moment = (String)adapterView.getItemAtPosition(i);
+        for(String s : list) {
+            if(moment.matches(s)) {
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.RED);
+            }
+        }
 
     }
 
