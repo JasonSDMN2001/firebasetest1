@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -24,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +43,7 @@ public class MomentFragment extends Fragment {
     MomentsAdapter momentsAdapter;
     MomentImages momentImages;
     ArrayList<MomentImages>list;
+    ArrayList<String>momentNameList;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -88,17 +92,7 @@ public class MomentFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_moment, container, false);
         Spinner getbabyname = (Spinner) getActivity().findViewById(R.id.spinner);
         babyname = getbabyname.getSelectedItem().toString();
-        Button button = view.findViewById(R.id.button11);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!babyname.matches("")) {
-                    Intent intent = new Intent(getActivity(),MainActivity7.class);
-                    intent.putExtra("babyname",String.valueOf( babyname));
-                    startActivity(intent);
-                }
-            }
-        });
+
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -107,15 +101,18 @@ public class MomentFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         list =new ArrayList<>();
+        momentNameList = new ArrayList<>();
         momentsAdapter =new MomentsAdapter(getContext(),list);
         recyclerView.setAdapter(momentsAdapter);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
+                momentNameList.clear();
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()) {
                     momentImages = dataSnapshot.getValue(MomentImages.class);
                     list.add(momentImages);
+                    momentNameList.add(momentImages.momentName);
                 }
                 momentsAdapter.notifyDataSetChanged();
             }
@@ -125,6 +122,31 @@ public class MomentFragment extends Fragment {
 
             }
         });
+        Button button = view.findViewById(R.id.button11);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!babyname.matches("")&& list!=null && list.toArray().length>0) {
+                    Intent intent = new Intent(getActivity(),MainActivity7.class);
+                    intent.putExtra("babyname",String.valueOf( babyname));
+                    intent.putExtra("momentList", momentNameList);
+                    startActivity(intent);
+                }else{
+                    showMessage("oops","try again ");
+                }
+            }
+        });
+        ImageButton imageButton = (ImageButton) view.findViewById(R.id.imageButton5);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMessage("How to use moments", "These are your baby's important moments,better capture a picture" +
+                        "in order to capture a picture press the button, then select the moment which you would like to assign the photo");
+            }
+        });
         return view;
+    }
+    void showMessage(String title, String message) {
+        new AlertDialog.Builder(getActivity()).setTitle(title).setMessage(message).setCancelable(true).show();
     }
 }

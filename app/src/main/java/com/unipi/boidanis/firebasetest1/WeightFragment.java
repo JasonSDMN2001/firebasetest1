@@ -152,14 +152,19 @@ public class WeightFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),MainActivity4.class);
-                if(temp_date[temp_date.length-1]!=null){
-                    intent.putExtra("last date",temp_date[temp_date.length-1]);
+                if(!babyname.matches("Select child")) {
+                    Intent intent = new Intent(getActivity(), MainActivity4.class);
+                    if (temp_date[temp_date.length - 1] != null) {
+                        intent.putExtra("last date", temp_date[temp_date.length - 1]);
+                    } else {
+                        intent.putExtra("last date", birthdate);
+                    }
+                    resultLauncher.launch(intent);
+                    //resultLauncher.launch(new Intent(getActivity(), MainActivity4.class));
                 }else{
-                    intent.putExtra("last date",birthdate);
+                    Toast.makeText(getContext(), "Please select a child", Toast.LENGTH_SHORT).show();
+
                 }
-                resultLauncher.launch(intent);
-                //resultLauncher.launch(new Intent(getActivity(), MainActivity4.class));
             }
         });
 
@@ -184,11 +189,6 @@ public class WeightFragment extends Fragment {
         graphView.getViewport().setScrollable(true);
         graphView.getViewport().setScalableY(true);
         graphView.getViewport().setScrollableY(true);
-
-        if(!babyname.matches("Select child")){
-            graphView.getLegendRenderer().setVisible(true);
-            graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
-        }
         series3 = new LineGraphSeries();
         series3.setColor(Color.YELLOW);
         series3.setTitle("Users average");
@@ -225,6 +225,8 @@ public class WeightFragment extends Fragment {
         series11.setTitle("97th percentile");
         graphView.addSeries(series11);
 
+
+
         textView9 = view.findViewById(R.id.textView9);
         textView10 = view.findViewById(R.id.textView10);
         textView15=view.findViewById(R.id.textView15);
@@ -239,6 +241,10 @@ public class WeightFragment extends Fragment {
                         "Child Growth Standards. ");
             }
         });
+        if(!babyname.matches("Select child")){
+            graphView.getLegendRenderer().setVisible(true);
+            graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+        }
         return view;
     }
 
@@ -247,6 +253,7 @@ public class WeightFragment extends Fragment {
             BirthDayFind(babyname);
             RecyclerUpdate(babyname);
             ref2 = database.getReference("Users").child(mAuth.getUid()).child(babyname).child("weightData");
+
         }
     }
 
@@ -380,7 +387,7 @@ public class WeightFragment extends Fragment {
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        startActivity(new Intent(getContext(),MainActivity7.class));
+                        startActivity(new Intent(getContext(),MainActivity8.class));
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {

@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -33,6 +34,8 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+
 public class MainActivity7 extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     String moment,babyname;
     FirebaseAuth mAuth;
@@ -44,6 +47,7 @@ public class MainActivity7 extends AppCompatActivity implements AdapterView.OnIt
     StorageReference storreference = FirebaseStorage.getInstance().getReference();
     private final int GALLERY_REQ_CODE = 1000;
     ProgressBar progressBar;
+    ArrayList<String> list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +72,6 @@ public class MainActivity7 extends AppCompatActivity implements AdapterView.OnIt
             finish();
             startActivity(getIntent());
         }
-        //"moments"->"ταδε μομεντ ονομα"->"imageurl"
         imageview = findViewById(R.id.imageView5);
         progressBar = findViewById(R.id.progressBar4);
         progressBar.setVisibility(View.INVISIBLE);
@@ -81,40 +84,52 @@ public class MainActivity7 extends AppCompatActivity implements AdapterView.OnIt
                 someActivityResultLauncher.launch(galleryIntent);
             }
         });
+        //list = (ArrayList<String>) getIntent().getExtras().getSerializable("momentList");
+        list = (ArrayList<String>) getIntent().getExtras().getSerializable("momentList");
         Button button = (Button) findViewById(R.id.button3);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Boolean check=true;
                 if(imageUri != null) {
-                    StorageReference fileRef = storreference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
-                    fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    String key1 = reference.push().getKey();
-                                    MomentImages momentImages = new MomentImages(key1,moment,uri.toString(),babyname);
-                                    reference.child(babyname).child("moments").child(key1).setValue(momentImages);
-                                    progressBar.setVisibility(View.INVISIBLE);
-                                    imageview.setImageResource(R.drawable.ic_baseline_add_photo_alternate_24);
-                                    finish();
-                                    //Intent intent = new Intent(getApplicationContext(), MainActivity3.class);
-                                    //startActivity(intent);
-                                }
-                            });
+                    for(String s : list) {
+                        if(moment.matches(s)){
+                            check=false;
                         }
-                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            progressBar.setVisibility(View.VISIBLE);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressBar.setVisibility(View.INVISIBLE);
-                        }
-                    });
+                    }
+                    if(check) {
+                        StorageReference fileRef = storreference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+                        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        String key1 = reference.push().getKey();
+                                        MomentImages momentImages = new MomentImages(key1, moment, uri.toString(), babyname);
+                                        reference.child(babyname).child("moments").child(key1).setValue(momentImages);
+                                        progressBar.setVisibility(View.INVISIBLE);
+                                        imageview.setImageResource(R.drawable.ic_baseline_add_photo_alternate_24);
+                                        finish();
+                                        //Intent intent = new Intent(getApplicationContext(), MainActivity3.class);
+                                        //startActivity(intent);
+                                    }
+                                });
+                            }
+                        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                                progressBar.setVisibility(View.VISIBLE);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressBar.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                    }else{
+                        Toast.makeText(MainActivity7.this, "You've already captured this moment", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     Toast.makeText(MainActivity7.this, "Please select picture", Toast.LENGTH_SHORT).show();
                 }
@@ -150,5 +165,8 @@ public class MainActivity7 extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+    void showMessage(String title, String message) {
+        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
     }
 }

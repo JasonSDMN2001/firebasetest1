@@ -3,6 +3,7 @@ package com.unipi.boidanis.firebasetest1;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -102,7 +104,32 @@ public class MilestoneFragment extends Fragment {
         recyclerView3 = (RecyclerView)view.findViewById(R.id.recyclerView3);
         recyclerView4 = (RecyclerView)view.findViewById(R.id.recyclerView4);
 
-
+        ImageButton imageButton = (ImageButton) view.findViewById(R.id.imageButton4);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMessage("How to use milestones:","You'll probably be wondering how" +
+                        "your little one is developing based on our milestone schedule" +
+                        "Keep in mind, there are several reasons why your little one may not be " +
+                        "developing as quickly as some babies. Babies who are premature need a little" +
+                        " time to catch up. If your baby had a medical problem or illness, some of the" +
+                        " development milestones might be delayed. A baby’s temperament may also play " +
+                        "a role in how fast he or she develops.\n" +
+                        "The milestone schedule is provided to you on a general information basis " +
+                        "only and is not a substitute for personalized medical advice. Remember," +
+                        " every baby is different, and if you have any concerns about your baby's " +
+                        "development always contact your healthcare provider.\n" +
+                        "\n" +
+                        "To encourage your baby’s development, provide her with plenty of opportunities " +
+                        "to play and learn. Get down on the floor and play simple games, read books " +
+                        "and talk with your little one. Be careful, not to go overboard and over" +
+                        " stimulate your baby. Lastly, encourage your baby to do some things for" +
+                        " himself when possible.\n" +
+                        "You can view your child's already completed milestones, edit them,and delete them.\n" +
+                        "Based on the current week there are some on going milestones that your child can complete." +
+                        "there are also the next near milestones that you can prepare for ");
+            }
+        });
         return view;
     }
     public void RecyclerUpdate(){
@@ -207,5 +234,8 @@ public class MilestoneFragment extends Fragment {
 
             }
         });
+    }
+    void showMessage(String title, String message) {
+        new AlertDialog.Builder(getActivity()).setTitle(title).setMessage(message).setCancelable(true).show();
     }
 }

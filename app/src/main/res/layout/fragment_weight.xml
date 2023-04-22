@@ -238,6 +238,7 @@
         android:layout_height="38dp"
         android:text="Add Weight"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:backgroundTint="#2ECFB0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />

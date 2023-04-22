@@ -37,13 +37,26 @@
 
             <Button
                 android:id="@+id/button11"
-                android:layout_width="138dp"
+                android:layout_width="wrap_content"
                 android:layout_height="38dp"
                 android:text="add moment"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:backgroundTint="#2ECFB0"/>
+
+            <ImageButton
+                android:id="@+id/imageButton5"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:backgroundTint="#FFFFFF"
+                android:src="@android:drawable/ic_menu_info_details"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/button11"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="#2ECFB0" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
