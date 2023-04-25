@@ -8,7 +8,36 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <FrameLayout
+        android:id="@+id/idFrame3"
+        android:layout_width="111dp"
+        android:layout_height="110dp"
+        android:layout_marginBottom="500dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintStart_toStartOf="parent">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="70dp"
+            android:clickable="false"
+            android:text="Guides"
+            android:textColor="#9D9E9E"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_button2"
+            android:padding="1dp"
+            android:src="@drawable/ic_book" />
+
+
+    </FrameLayout>
     <ImageButton
         android:id="@+id/imageButton2"
         android:layout_width="63dp"

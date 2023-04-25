@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -64,12 +65,12 @@ public class MainActivity3 extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         int id = item.getItemId();
-                        if (integerDeque.contains(id)){
-                            if(id==R.id.home){
-                                if(integerDeque.size()!=1){
-                                    if(flag){
+                        if (integerDeque.contains(id)) {
+                            if (id == R.id.home) {
+                                if (integerDeque.size() != 1) {
+                                    if (flag) {
                                         integerDeque.addFirst(R.id.home);
-                                        flag=false;
+                                        flag = false;
                                     }
                                 }
                             }
@@ -111,13 +112,13 @@ public class MainActivity3 extends AppCompatActivity {
         });
         ArrayList<String> list = new ArrayList<String>();
         spinner = findViewById(R.id.spinner);
-        DatabaseReference reference =  database.getReference("Users").child(mAuth.getUid());
+        DatabaseReference reference = database.getReference("Users").child(mAuth.getUid());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     babyname = dataSnapshot.getKey();
-                    if(babyname!=null&&!babyname.matches("parent info and settings")){
+                    if (babyname != null && !babyname.matches("parent info and settings")) {
                         list.add(babyname);
                     }
                 }
@@ -141,10 +142,16 @@ public class MainActivity3 extends AppCompatActivity {
 
             }
         });
-        ArrayAdapter<String> adapter= new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, list);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        ImageButton imageButton2 = (ImageButton) findViewById(R.id.imageButton4);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
     }
 
     private Fragment getFragment(int itemId) {
@@ -191,7 +198,8 @@ public class MainActivity3 extends AppCompatActivity {
         if(!integerDeque.isEmpty()){
             replaceFragment(getFragment(integerDeque.peek()));
         }else{
-            finish();
+            //finish();
+            this.moveTaskToBack(true);
         }
     }
 

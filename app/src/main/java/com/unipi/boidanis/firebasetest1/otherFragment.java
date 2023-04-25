@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,6 +83,16 @@ public class otherFragment extends Fragment implements View.OnClickListener {
         user = mAuth.getCurrentUser();
         imageButton = (ImageButton) view.findViewById(R.id.imageButton2);
         imageButton.setOnClickListener(this);
+        ImageButton imageButton2 = (ImageButton) view.findViewById(R.id.imageButton4);
+        imageButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout,new GuidesFragment());
+                fragmentTransaction.commit();
+            }
+        });
         return view;
     }
     void showMessage(String title, String message){
