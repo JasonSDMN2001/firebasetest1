@@ -28,15 +28,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:backgroundTint="#2ECFB0"
-                    android:text="Baby Care" />
+                    android:backgroundTint="#FFFFFF"
+                    android:textColor="#2ECFB0"
+                    android:text="Baby Care"
+                    />
 
                 <Button
                     android:id="@+id/button_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:backgroundTint="#2ECFB0"
+                    android:backgroundTint="#FFFFFF"
+                    android:textColor="#2ECFB0"
                     android:text="Bottle Feeding" />
 
                 <Button
@@ -44,7 +47,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:backgroundTint="#2ECFB0"
+                    android:backgroundTint="#FFFFFF"
+                    android:textColor="#2ECFB0"
                     android:text="Crying" />
 
                 <Button
@@ -52,7 +56,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:backgroundTint="#2ECFB0"
+                    android:backgroundTint="#FFFFFF"
+                    android:textColor="#2ECFB0"
                     android:text="Feeding" />
 
                 <Button
@@ -60,7 +65,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:backgroundTint="#2ECFB0"
+                    android:backgroundTint="#FFFFFF"
+                    android:textColor="#2ECFB0"
                     android:text="Illnesses" />
 
                 <Button
@@ -68,7 +74,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:backgroundTint="#2ECFB0"
+                    android:backgroundTint="#FFFFFF"
+                    android:textColor="#2ECFB0"
                     android:text="Sleeping" />
 
                 <Button
@@ -76,7 +83,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:backgroundTint="#2ECFB0"
+                    android:backgroundTint="#FFFFFF"
+                    android:textColor="#2ECFB0"
                     android:text="Safety" />
             </LinearLayout>
         </HorizontalScrollView>

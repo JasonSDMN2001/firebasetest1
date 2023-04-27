@@ -89,6 +89,37 @@ public class GuidesFragment extends Fragment {
                 ReplaceFragment(new BottleFeedingFragment());
             }
         });
+        views[2].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ReplaceFragment(new cryingFragment());
+            }
+        });
+        views[3].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ReplaceFragment(new feedingFragment());
+            }
+        });
+        views[4].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ReplaceFragment(new IllnessFragment());
+            }
+        });
+        views[5].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ReplaceFragment(new sleepingFragment());
+            }
+        });
+        views[6].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ReplaceFragment(new feedingFragment());
+            }
+        });
+        ReplaceFragment(new BabycareFragment());
         return view;
     }
     private void ReplaceFragment(Fragment fragment){
