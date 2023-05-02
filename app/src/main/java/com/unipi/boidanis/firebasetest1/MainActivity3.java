@@ -3,6 +3,7 @@ package com.unipi.boidanis.firebasetest1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -53,6 +54,7 @@ public class MainActivity3 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         binding = ActivityMain3Binding.inflate(getLayoutInflater());
         //bottomNavigationView = findViewById(R.id.bottomNavigationView);
         //setContentView(R.layout.activity_main3);
@@ -133,8 +135,12 @@ public class MainActivity3 extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                try{
                 ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 replaceFragment(getFragment(integerDeque.peek()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

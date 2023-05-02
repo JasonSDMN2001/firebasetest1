@@ -16,8 +16,10 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,7 +39,7 @@ public class MainActivity2 extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference myRef,reference;
     FirebaseUser user;
-
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +51,41 @@ public class MainActivity2 extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         myRef = database.getReference("myMessage");
         reference = database.getReference("message");
+        progressBar = findViewById(R.id.progressBar5);
+        progressBar.setVisibility(View.INVISIBLE);
         ImageView mImageView ;
         mImageView = (ImageView)findViewById(R.id.imageView);
         //mImageView .setImageDrawable(getResources().getDrawable( R.drawable.blink));
         mImageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.blink,null));
         AnimationDrawable frameAnimation = (AnimationDrawable) mImageView.getDrawable(); frameAnimation.start();
+        Button button = (Button) findViewById(R.id.button8);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                button.setClickable(false);
+                progressBar.setVisibility(View.VISIBLE);
+                if(!email.getText().toString().matches("")&&!password.getText().toString().matches("")) {
+                    mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                            .addOnCompleteListener((task) -> {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(MainActivity2.this, "Success", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                    Intent intent = new Intent(getApplication(), MainActivity3.class);
+                                    startActivity(intent);
+                                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+                                } else {
+                                    showMessage("Error", task.getException().getLocalizedMessage());
+                                    button.setClickable(true);
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                }
+                            });
+
+                }else {
+                    Toast.makeText(MainActivity2.this, "Please fill the remaining fields", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
     void showMessage(String title, String message){
         new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
@@ -67,8 +99,6 @@ public class MainActivity2 extends AppCompatActivity {
                             showMessage("Success!","User authenticated");
                             showMessage("Success!",mAuth.getUid());
                             user = mAuth.getCurrentUser();
-                            changeUserProfile("Electra",
-                                    "https://thumbs.gfycat.com/SharpCookedGiraffe-size_restricted.gif",user);
 
                         }else {
                             showMessage("Error",task.getException().getLocalizedMessage());
@@ -78,23 +108,7 @@ public class MainActivity2 extends AppCompatActivity {
 
     }
     public void signin(View view){
-        if(!email.getText().toString().matches("")&&!password.getText().toString().matches("")) {
-            mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                    .addOnCompleteListener((task) -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(MainActivity2.this, "Success", Toast.LENGTH_SHORT).show();
-                            finish();
-                            Intent intent = new Intent(this, MainActivity3.class);
-                            startActivity(intent);
-                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                        } else {
-                            showMessage("Error", task.getException().getLocalizedMessage());
-                        }
-                    });
 
-        }else {
-            Toast.makeText(MainActivity2.this, "Please fill the remaining fields", Toast.LENGTH_SHORT).show();
-        }
 
     }
     @Override
@@ -113,19 +127,5 @@ public class MainActivity2 extends AppCompatActivity {
         }
         return super.dispatchTouchEvent( event );
     }
-    private void changeUserProfile(String displayName, String imageUrl, FirebaseUser user){
-        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
-                .setDisplayName(displayName)
-                .setPhotoUri(Uri.parse(imageUrl))
-                .build();
-        //user.updatePhoneNumber();
-        user.updateProfile(profileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful())
-                    Toast.makeText(MainActivity2.this, "User profile updated!", Toast.LENGTH_SHORT).show();
-                else showMessage("Error",task.getException().getLocalizedMessage());
-            }
-        });
-    }
+
 }

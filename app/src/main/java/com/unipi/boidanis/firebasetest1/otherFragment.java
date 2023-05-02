@@ -93,6 +93,36 @@ public class otherFragment extends Fragment implements View.OnClickListener {
                 fragmentTransaction.commit();
             }
         });
+        ImageButton imageButton3 = (ImageButton) view.findViewById(R.id.imageButton5);
+        imageButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout,new SettingsFragment());
+                fragmentTransaction.commit();
+            }
+        });
+        ImageButton imageButton4 = (ImageButton) view.findViewById(R.id.imageButton6);
+        imageButton4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout,new QyestionsFragment());
+                fragmentTransaction.commit();
+            }
+        });
+        ImageButton imageButton5 = (ImageButton) view.findViewById(R.id.imageButton7);
+        imageButton5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout,new RateFragment());
+                fragmentTransaction.commit();
+            }
+        });
         return view;
     }
     void showMessage(String title, String message){

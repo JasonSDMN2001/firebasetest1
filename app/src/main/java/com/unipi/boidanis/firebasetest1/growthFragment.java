@@ -96,6 +96,16 @@ public class growthFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+        ImageButton imageButton3 = (ImageButton) view.findViewById(R.id.imageButton4);
+        imageButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout,new FaceFragment());
+                fragmentTransaction.commit();
+            }
+        });
         return view;
     }
 
