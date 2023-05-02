@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link feedingFragment#newInstance} factory method to
+ * Use the {@link weight_guideFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class feedingFragment extends Fragment {
+public class weight_guideFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +24,7 @@ public class feedingFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public feedingFragment() {
+    public weight_guideFragment() {
         // Required empty public constructor
     }
 
@@ -37,8 +37,8 @@ public class feedingFragment extends Fragment {
      * @return A new instance of fragment feedingFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static feedingFragment newInstance(String param1, String param2) {
-        feedingFragment fragment = new feedingFragment();
+    public static weight_guideFragment newInstance(String param1, String param2) {
+        weight_guideFragment fragment = new weight_guideFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +59,6 @@ public class feedingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_feeding, container, false);
+        return inflater.inflate(R.layout.fragment_weight_guide, container, false);
     }
 }

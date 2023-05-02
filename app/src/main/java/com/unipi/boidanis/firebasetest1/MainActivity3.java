@@ -149,7 +149,7 @@ public class MainActivity3 extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                showMessage("How to add a child","click on the baby's profile picture");
             }
         });
     }

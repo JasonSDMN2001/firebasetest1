@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,11 +45,14 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.unipi.boidanis.firebasetest1.databinding.ActivityMain3Binding;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Deque;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -75,6 +79,7 @@ public class WeightFragment extends Fragment {
     DataPoint[] weightdp = new DataPoint[14];
     Date[] temp_date;
     TextView textView9,textView10,textView15,textView16,textView23;
+    BottomNavigationView bottomNavigationView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -125,7 +130,7 @@ public class WeightFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-
+        bottomNavigationView = (BottomNavigationView) getActivity().findViewById(R.id.bottomNavigationView);
         Spinner getbabyname = (Spinner) getActivity().findViewById(R.id.spinner);
         babyname = getbabyname.getSelectedItem().toString();
         whichBaby();
@@ -387,7 +392,16 @@ public class WeightFragment extends Fragment {
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        startActivity(new Intent(getContext(),MainActivity8.class));
+                        bottomNavigationView.setSelectedItemId(R.id.other);
+                        FragmentTransaction fragmentTransaction = getActivity()
+                                .getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.frame_layout, new GuidesFragment());
+                        fragmentTransaction.commit();
+                        /*FragmentTransaction fragmentTransaction2 = getActivity()
+                                .getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction2.replace(R.id.frame_layout_guides, new weight_guideFragment());
+                        fragmentTransaction2.commit();*/
+                        showMessage("To access the weight guides","please press the weight button");
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {

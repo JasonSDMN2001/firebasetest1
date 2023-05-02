@@ -9,16 +9,17 @@
 
     <FrameLayout
         android:id="@+id/idFrame"
-        android:layout_width="111dp"
-        android:layout_height="110dp"
-        android:layout_marginBottom="556dp"
+        android:layout_width="121dp"
+        android:layout_height="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="0.206"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.09">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="31dp"
             android:layout_marginTop="70dp"
@@ -29,23 +30,25 @@
 
         <ImageButton
             android:id="@+id/imageButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="109dp"
+            android:layout_height="109dp"
             android:background="@drawable/custom_button2"
             android:padding="5dp"
             android:src="@drawable/ic_insights" />
 
 
     </FrameLayout>
+
     <FrameLayout
         android:id="@+id/idFrame2"
-        android:layout_width="111dp"
-        android:layout_height="110dp"
-        android:layout_marginBottom="556dp"
+        android:layout_width="121dp"
+        android:layout_height="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.78"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="0.304"
+        app:layout_constraintStart_toEndOf="@+id/idFrame"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.09">
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,23 +62,25 @@
 
         <ImageButton
             android:id="@+id/imageButton2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="109dp"
+            android:layout_height="109dp"
             android:background="@drawable/custom_button2"
             android:padding="5dp"
             android:src="@drawable/ic_baseline_star" />
 
 
     </FrameLayout>
+
     <FrameLayout
         android:id="@+id/idFrame3"
-        android:layout_width="111dp"
-        android:layout_height="110dp"
-        android:layout_marginBottom="390dp"
+        android:layout_width="121dp"
+        android:layout_height="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="0.206"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idFrame"
+        app:layout_constraintVertical_bias="0.05">
 
         <TextView
             android:layout_width="wrap_content"
@@ -89,11 +94,43 @@
 
         <ImageButton
             android:id="@+id/imageButton3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="109dp"
+            android:layout_height="109dp"
             android:background="@drawable/custom_button2"
             android:padding="5dp"
             android:src="@drawable/ic_baseline_photo_library_24" />
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/idFrame4"
+        android:layout_width="121dp"
+        android:layout_height="120dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.302"
+        app:layout_constraintStart_toEndOf="@+id/idFrame3"
+        app:layout_constraintTop_toBottomOf="@+id/idFrame2"
+        app:layout_constraintVertical_bias="0.05">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="70dp"
+            android:clickable="false"
+            android:text="Face a day"
+            android:textColor="#9D9E9E"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="109dp"
+            android:layout_height="109dp"
+            android:background="@drawable/custom_button2"
+            android:padding="5dp"
+            android:src="@drawable/ic_face" />
 
 
     </FrameLayout>

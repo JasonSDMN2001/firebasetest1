@@ -98,7 +98,7 @@ public class GuidesFragment extends Fragment {
         views[3].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ReplaceFragment(new feedingFragment());
+                ReplaceFragment(new weight_guideFragment());
             }
         });
         views[4].setOnClickListener(new View.OnClickListener() {
@@ -116,7 +116,7 @@ public class GuidesFragment extends Fragment {
         views[6].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ReplaceFragment(new feedingFragment());
+                ReplaceFragment(new weight_guideFragment());
             }
         });
         ReplaceFragment(new BabycareFragment());

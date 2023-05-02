@@ -10,13 +10,14 @@
 
     <FrameLayout
         android:id="@+id/idFrame3"
-        android:layout_width="111dp"
-        android:layout_height="110dp"
-        android:layout_marginBottom="500dp"
+        android:layout_width="121dp"
+        android:layout_height="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="0.206"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.09">
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,14 +31,111 @@
 
         <ImageButton
             android:id="@+id/imageButton4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="109dp"
+            android:layout_height="109dp"
             android:background="@drawable/custom_button2"
             android:padding="1dp"
             android:src="@drawable/ic_book" />
 
 
     </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/idFrame4"
+        android:layout_width="121dp"
+        android:layout_height="120dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.304"
+        app:layout_constraintStart_toEndOf="@+id/idFrame3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.09">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="70dp"
+            android:clickable="false"
+            android:text="Settings"
+            android:textColor="#9D9E9E"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/imageButton5"
+            android:layout_width="109dp"
+            android:layout_height="109dp"
+            android:background="@drawable/custom_button2"
+            android:padding="1dp"
+            android:src="@drawable/ic_settings" />
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/idFrame5"
+        android:layout_width="121dp"
+        android:layout_height="120dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.206"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idFrame3"
+        app:layout_constraintVertical_bias="0.05">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="70dp"
+            android:clickable="false"
+            android:text="Questions"
+            android:textColor="#9D9E9E"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/imageButton6"
+            android:layout_width="109dp"
+            android:layout_height="109dp"
+            android:background="@drawable/custom_button2"
+            android:padding="1dp"
+            android:src="@drawable/ic_baseline_question_mark_24" />
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/idFrame6"
+        android:layout_width="121dp"
+        android:layout_height="120dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.302"
+        app:layout_constraintStart_toEndOf="@+id/idFrame5"
+        app:layout_constraintTop_toBottomOf="@+id/idFrame4"
+        app:layout_constraintVertical_bias="0.05">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="29dp"
+            android:layout_marginTop="70dp"
+            android:clickable="false"
+            android:text="Rate us"
+            android:textColor="#9D9E9E"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/imageButton7"
+            android:layout_width="109dp"
+            android:layout_height="109dp"
+            android:background="@drawable/custom_button2"
+            android:padding="1dp"
+            android:src="@drawable/ic_star_half" />
+
+
+    </FrameLayout>
+
     <ImageButton
         android:id="@+id/imageButton2"
         android:layout_width="63dp"
