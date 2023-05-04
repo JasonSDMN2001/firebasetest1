@@ -1,18 +1,28 @@
 package com.unipi.boidanis.firebasetest1;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,6 +43,7 @@ public class SettingsFragment extends Fragment {
     FirebaseDatabase database;
     DatabaseReference myRef,reference;
     FirebaseUser user;
+    SharedPreferences sharedPreferences;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -87,6 +98,7 @@ public class SettingsFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         Button button = (Button) view.findViewById(R.id.button5);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,8 +111,46 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
-
-
+        SwitchCompat simpleSwitch = (SwitchCompat) view.findViewById(R.id.switch1);
+        simpleSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean notificationcheck = simpleSwitch.isChecked();
+                if(simpleSwitch.isChecked()){
+                    NotificationChannel channel = new NotificationChannel("1345", "notifications",
+                            NotificationManager.IMPORTANCE_DEFAULT);
+                    NotificationManager notificationManager =
+                            (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.createNotificationChannel(channel);
+                    NotificationCompat.Builder builder =
+                            new NotificationCompat.Builder(getContext(), "1345");
+                    builder.setContentTitle("Ready to")
+                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentText("receive notifications")
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setAutoCancel(true);
+                    notificationManager.notify(3, builder.build());
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("notifications", notificationcheck);
+                    editor.putString("user",mAuth.getUid());
+                    editor.apply();
+                }else{
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("notifications", notificationcheck);
+                    editor.putString("user",mAuth.getUid());
+                    editor.apply();
+                }
+            }
+        });
+        boolean notificationpreference = sharedPreferences.getBoolean("notifications", false);
+        String userpref = sharedPreferences.getString("user", "");
+        if(userpref.matches(user.getUid())){
+            if (notificationpreference ){
+                simpleSwitch.setChecked(true);
+            }else{
+                simpleSwitch.setChecked(false);
+            }
+        }
         return view;
     }
     private void changeUserProfile(String displayName, @Nullable String imageUrl, FirebaseUser user){
