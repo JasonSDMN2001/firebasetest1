@@ -126,7 +126,7 @@ public class MomentFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!babyname.matches("")&& list!=null && list.toArray().length>0) {
+                if (!babyname.matches("")&& list!=null ) {
                     Intent intent = new Intent(getActivity(),MainActivity7.class);
                     intent.putExtra("babyname",String.valueOf( babyname));
                     intent.putExtra("momentList", momentNameList);

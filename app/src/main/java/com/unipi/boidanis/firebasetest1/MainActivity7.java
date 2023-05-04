@@ -167,10 +167,16 @@ public class MainActivity7 extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         moment = (String)adapterView.getItemAtPosition(i);
-        for(String s : list) {
-            if(moment.matches(s)) {
-                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.RED);
+        try{
+            if(list.toArray().length>0){
+                for(String s : list) {
+                    if(moment.matches(s)) {
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.RED);
+                    }
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }

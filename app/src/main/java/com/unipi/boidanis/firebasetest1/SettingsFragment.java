@@ -2,10 +2,12 @@ package com.unipi.boidanis.firebasetest1;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
@@ -117,6 +120,11 @@ public class SettingsFragment extends Fragment {
             public void onClick(View view) {
                 boolean notificationcheck = simpleSwitch.isChecked();
                 if(simpleSwitch.isChecked()){
+                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_NOTIFICATION_POLICY)
+                            != PackageManager.PERMISSION_GRANTED ) {
+                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_NOTIFICATION_POLICY},
+                                123);
+                    }
                     NotificationChannel channel = new NotificationChannel("1345", "notifications",
                             NotificationManager.IMPORTANCE_DEFAULT);
                     NotificationManager notificationManager =
@@ -145,11 +153,7 @@ public class SettingsFragment extends Fragment {
         boolean notificationpreference = sharedPreferences.getBoolean("notifications", false);
         String userpref = sharedPreferences.getString("user", "");
         if(userpref.matches(user.getUid())){
-            if (notificationpreference ){
-                simpleSwitch.setChecked(true);
-            }else{
-                simpleSwitch.setChecked(false);
-            }
+            simpleSwitch.setChecked(notificationpreference);
         }
         return view;
     }
