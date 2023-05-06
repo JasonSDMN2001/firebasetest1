@@ -115,7 +115,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                    if (!dataSnapshot.getKey().matches("weightData")&&!dataSnapshot.getKey().matches("milestones")&&!dataSnapshot.getKey().matches("moments")) {
+                    if (!dataSnapshot.getKey().matches("weightData")&&
+                            !dataSnapshot.getKey().matches("milestones")&&
+                            !dataSnapshot.getKey().matches("moments")&&
+                    !dataSnapshot.getKey().matches("Face A Day")) {
                         ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
                         if(getActivity()!=null) {
                             Glide.with(getContext()).load(childInfo.getImageUrl()).into(shapeableImageView);

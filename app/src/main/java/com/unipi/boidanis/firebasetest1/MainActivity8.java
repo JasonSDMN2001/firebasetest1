@@ -32,6 +32,8 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+
 public class MainActivity8 extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -45,6 +47,7 @@ public class MainActivity8 extends AppCompatActivity {
     StorageReference storreference = FirebaseStorage.getInstance().getReference();
     private final int GALLERY_REQ_CODE = 1000;
     ProgressBar progressBar;
+    ArrayList<String> list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,13 +79,20 @@ public class MainActivity8 extends AppCompatActivity {
                 someActivityResultLauncher.launch(galleryIntent);
             }
         });
+        list = (ArrayList<String>) getIntent().getExtras().getSerializable("facelist");
         Button button = (Button) findViewById(R.id.button2);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!editText.getText().toString().matches("")) {
                     boolean check = validateinfo(editText.getText().toString());
-                    if (check) {
+                    boolean check2=true;
+                    for(String s : list){
+                        if(editText.getText().toString().matches(s)){
+                            check2=false;
+                        }
+                    }
+                    if (check && check2) {
                         if (imageUri != null) {
                             StorageReference fileRef = storreference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
                             fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -92,7 +102,7 @@ public class MainActivity8 extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Uri uri) {
                                             String key1 = reference.push().getKey();
-                                            FacePicture facePicture = new FacePicture(uri.toString(), key1, Integer.parseInt(editText.getText().toString()));
+                                            FacePicture facePicture = new FacePicture(uri.toString(), key1, Integer.parseInt(editText.getText().toString()),babyname);
                                             reference.child(babyname).child("Face A Day").child(key1).setValue(facePicture);
                                             progressBar.setVisibility(View.INVISIBLE);
                                             imageview.setImageResource(R.drawable.ic_baseline_add_photo_alternate_24);
@@ -117,7 +127,7 @@ public class MainActivity8 extends AppCompatActivity {
                             Toast.makeText(MainActivity8.this, "Please select picture", Toast.LENGTH_SHORT).show();
                         }
                     }else{
-                        Toast.makeText(getApplicationContext(), "Check your parameters or remove space", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "You've already submitted a picture for this day", Toast.LENGTH_SHORT).show();
 
                     }
                 }else {

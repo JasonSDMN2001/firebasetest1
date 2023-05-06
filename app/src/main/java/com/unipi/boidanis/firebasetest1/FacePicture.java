@@ -1,8 +1,16 @@
 package com.unipi.boidanis.firebasetest1;
 
 public class FacePicture {
-    String imageUrl,key;
+    String imageUrl,key,babyname;
     int day;
+
+    public String getBabyname() {
+        return babyname;
+    }
+
+    public void setBabyname(String babyname) {
+        this.babyname = babyname;
+    }
 
     public int getDay() {
         return day;
@@ -29,9 +37,10 @@ public class FacePicture {
     }
     public FacePicture(){}
 
-    public FacePicture(String imageUrl,String key,int day) {
+    public FacePicture(String imageUrl,String key,int day,String babyname) {
         this.imageUrl = imageUrl;
         this.key=key;
         this.day=day;
+        this.babyname=babyname;
     }
 }
