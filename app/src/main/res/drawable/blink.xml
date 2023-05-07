@@ -9,5 +9,4 @@
     <item android:drawable="@drawable/bab11" android:duration="15000" />
     <item android:drawable="@drawable/bab12" android:duration="15000" />
     <item android:drawable="@drawable/bab13" android:duration="15000" />
-
 </animation-list>

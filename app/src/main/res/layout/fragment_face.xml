@@ -33,8 +33,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <VideoView
-                android:id="@+id/videoView"
+            <ImageView
+                android:id="@+id/imageview11"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 app:layout_constraintBottom_toTopOf="@+id/button6"
@@ -42,7 +42,9 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button9"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintVertical_bias="1.0"
+                android:scaleType="centerCrop"
+                />
 
             <Button
                 android:id="@+id/button6"
@@ -51,7 +53,8 @@
                 android:text="PLay Video"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:backgroundTint="#2ECFB0"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView5"
@@ -69,6 +72,7 @@
                 android:text="Add a daily picture"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                android:backgroundTint="#2ECFB0"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerView5" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
