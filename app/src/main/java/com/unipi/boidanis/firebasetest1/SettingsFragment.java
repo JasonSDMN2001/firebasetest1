@@ -2,6 +2,8 @@ package com.unipi.boidanis.firebasetest1;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -20,6 +22,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +38,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -114,6 +118,31 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
+        Button button2 = (Button) view.findViewById(R.id.button14);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseMessaging.getInstance().getToken()
+                        .addOnCompleteListener(new OnCompleteListener<String>() {
+                            @Override
+                            public void onComplete(@NonNull Task<String> task) {
+                                if (!task.isSuccessful()) {
+                                    Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                                    return;
+                                }
+
+                                // Get new FCM registration token
+                                String token = task.getResult();
+
+                                // Log and toast
+                                Log.d(TAG, token);
+                                Toast.makeText(getContext(), "You will now be able to receive news notifications", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+            }
+        });
+
         SwitchCompat simpleSwitch = (SwitchCompat) view.findViewById(R.id.switch1);
         simpleSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +171,7 @@ public class SettingsFragment extends Fragment {
                     editor.putBoolean("notifications", notificationcheck);
                     editor.putString("user",mAuth.getUid());
                     editor.apply();
+
                 }else{
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean("notifications", notificationcheck);

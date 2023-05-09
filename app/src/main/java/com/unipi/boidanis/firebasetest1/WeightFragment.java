@@ -418,7 +418,10 @@ public class WeightFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    if (!dataSnapshot.getKey().matches("weightData")&&!dataSnapshot.getKey().matches("moments")&&!dataSnapshot.getKey().matches("milestones")) {
+                    if (!dataSnapshot.getKey().matches("weightData")&&
+                            !dataSnapshot.getKey().matches("moments")&&
+                            !dataSnapshot.getKey().matches("milestones")&&
+                    !dataSnapshot.getKey().matches("Face A Day")) {
                         ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
                         birthdate = childInfo.getbirthDate();
                         java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());

@@ -35,6 +35,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
@@ -190,30 +191,34 @@ public class FaceFragment extends Fragment {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                handler = new Handler();
-                updateImageRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        // Update the ImageView with the next image
-                        Glide.with(getContext()).load(imageUris.get(currentImageIndex))
-                                //.apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop())
-                                .transition(DrawableTransitionOptions.withCrossFade())
-                                .into(imageView);
-                        // Increment the currentImageIndex
-                        currentImageIndex = (currentImageIndex + 1) % imageUris.size();
-                        if (currentImageIndex == 0) {
-                            // Remove the callback to stop the execution
-                            handler.removeCallbacks(updateImageRunnable);
-                            button2.setEnabled(true);
-                        } else {
-                            // Post the updateImageRunnable to run again in 5 seconds
-                            handler.postDelayed(updateImageRunnable, 5000);
+                if(!imageUris.isEmpty()) {
+                    handler = new Handler();
+                    updateImageRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            // Update the ImageView with the next image
+                            Glide.with(getContext()).load(imageUris.get(currentImageIndex))
+                                    //.apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop())
+                                    .transition(DrawableTransitionOptions.withCrossFade())
+                                    .into(imageView);
+                            // Increment the currentImageIndex
+                            currentImageIndex = (currentImageIndex + 1) % imageUris.size();
+                            if (currentImageIndex == 0) {
+                                // Remove the callback to stop the execution
+                                handler.removeCallbacks(updateImageRunnable);
+                                button2.setEnabled(true);
+                            } else {
+                                // Post the updateImageRunnable to run again in 5 seconds
+                                handler.postDelayed(updateImageRunnable, 5000);
+                            }
                         }
-                    }
-                };
-                handler.postDelayed(updateImageRunnable, 0); // Start the first update after 30 seconds
-                button2.setEnabled(false);
+                    };
+                    handler.postDelayed(updateImageRunnable, 0); // Start the first update after 30 seconds
+                    button2.setEnabled(false);
+                }else{
+                    Toast.makeText(getContext(), "You'll need to add more pictures to play the video", Toast.LENGTH_SHORT).show();
+
+                }
 
             }
         });
