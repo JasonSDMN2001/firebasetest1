@@ -11,11 +11,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.LogRecord;
 
 
@@ -29,7 +32,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         }
    }
-   private void sendNotification(String messageTitle,String messageBody){
+
+    private void sendNotification(String messageTitle, String messageBody){
        Intent intent = new Intent(this, MainActivity.class);
        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

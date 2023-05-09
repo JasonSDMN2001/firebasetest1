@@ -118,28 +118,38 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
-        Button button2 = (Button) view.findViewById(R.id.button14);
-        button2.setOnClickListener(new View.OnClickListener() {
+        SwitchCompat simpleSwitch2 = (SwitchCompat) view.findViewById(R.id.switch2);
+        simpleSwitch2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseMessaging.getInstance().getToken()
-                        .addOnCompleteListener(new OnCompleteListener<String>() {
-                            @Override
-                            public void onComplete(@NonNull Task<String> task) {
-                                if (!task.isSuccessful()) {
-                                    Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-                                    return;
+                boolean notificationcheck = simpleSwitch2.isChecked();
+                if(simpleSwitch2.isChecked()){
+                    FirebaseMessaging.getInstance().getToken()
+                            .addOnCompleteListener(new OnCompleteListener<String>() {
+                                @Override
+                                public void onComplete(@NonNull Task<String> task) {
+                                    if (!task.isSuccessful()) {
+                                        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                                        return;
+                                    }
+
+                                    // Get new FCM registration token
+                                    String token = task.getResult();
+
+                                    // Log and toast
+                                    Log.d(TAG, token);
+                                    Toast.makeText(getContext(), "You will now be able to receive face a day notifications", Toast.LENGTH_SHORT).show();
+
                                 }
-
-                                // Get new FCM registration token
-                                String token = task.getResult();
-
-                                // Log and toast
-                                Log.d(TAG, token);
-                                Toast.makeText(getContext(), "You will now be able to receive news notifications", Toast.LENGTH_SHORT).show();
-
-                            }
-                        });
+                            });
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("notifications2", notificationcheck);
+                    editor.apply();
+                }else{
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("notifications2", notificationcheck);
+                    editor.apply();
+                }
             }
         });
 
@@ -182,8 +192,10 @@ public class SettingsFragment extends Fragment {
         });
         boolean notificationpreference = sharedPreferences.getBoolean("notifications", false);
         String userpref = sharedPreferences.getString("user", "");
+        boolean notificationpreference2 = sharedPreferences.getBoolean("notifications2",false);
         if(userpref.matches(user.getUid())){
             simpleSwitch.setChecked(notificationpreference);
+            simpleSwitch2.setChecked(notificationpreference2);
         }
         return view;
     }
