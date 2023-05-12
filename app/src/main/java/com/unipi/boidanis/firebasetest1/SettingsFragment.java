@@ -139,7 +139,7 @@ public class SettingsFragment extends Fragment {
                                     // Log and toast
                                     Log.d(TAG, token);
                                     Toast.makeText(getContext(), "You will now be able to receive face a day notifications", Toast.LENGTH_SHORT).show();
-
+                                    sendRegistrationToServer(token);
                                 }
                             });
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -213,6 +213,9 @@ public class SettingsFragment extends Fragment {
                 else showMessage("Error",task.getException().getLocalizedMessage());
             }
         });
+    }
+    private void sendRegistrationToServer(String token) {
+        // TODO: Implement this method to send token to your app server.
     }
     void showMessage(String title, String message){
         new AlertDialog.Builder(getContext()).setTitle(title).setMessage(message).setCancelable(true).show();

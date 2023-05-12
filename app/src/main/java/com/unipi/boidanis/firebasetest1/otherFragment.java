@@ -1,6 +1,7 @@
 package com.unipi.boidanis.firebasetest1;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -8,6 +9,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,8 @@ public class otherFragment extends Fragment implements View.OnClickListener {
     FirebaseUser user;
     ImageButton imageButton;
     FirebaseDatabase database;
+    SharedPreferences sharedPreferences;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -82,6 +86,7 @@ public class otherFragment extends Fragment implements View.OnClickListener {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         imageButton = (ImageButton) view.findViewById(R.id.imageButton2);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         imageButton.setOnClickListener(this);
         ImageButton imageButton2 = (ImageButton) view.findViewById(R.id.imageButton4);
         imageButton2.setOnClickListener(new View.OnClickListener() {
@@ -135,6 +140,10 @@ public class otherFragment extends Fragment implements View.OnClickListener {
             case R.id.imageButton2:
                 if (mAuth.getCurrentUser() != null) {
                     FirebaseAuth.getInstance().signOut();
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("current user","");
+                    editor.putString("password","");
+                    editor.apply();
                     Toast.makeText(getContext(), "Signed out successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), MainActivity2.class);
                     startActivity(intent);

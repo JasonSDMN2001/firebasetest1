@@ -9,17 +9,20 @@ import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -33,7 +36,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Random;
 
@@ -44,6 +46,7 @@ public class MainActivity2 extends AppCompatActivity {
     DatabaseReference myRef,reference;
     FirebaseUser user;
     ProgressBar progressBar;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,8 @@ public class MainActivity2 extends AppCompatActivity {
         //mImageView .setImageDrawable(getResources().getDrawable( R.drawable.blink));
         mImageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.blink,null));
         AnimationDrawable frameAnimation = (AnimationDrawable) mImageView.getDrawable(); frameAnimation.start();
+        CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Button button = (Button) findViewById(R.id.button8);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +77,12 @@ public class MainActivity2 extends AppCompatActivity {
                     mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                             .addOnCompleteListener((task) -> {
                                 if (task.isSuccessful()) {
+                                    if(checkBox.isChecked()){
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString("current user",email.getText().toString());
+                                        editor.putString("password",password.getText().toString());
+                                        editor.apply();
+                                    }
                                     Toast.makeText(MainActivity2.this, "Success", Toast.LENGTH_SHORT).show();
                                     finish();
                                     Intent intent = new Intent(getApplication(), MainActivity3.class);
@@ -90,6 +101,8 @@ public class MainActivity2 extends AppCompatActivity {
                 }
             }
         });
+
+
     }
     void showMessage(String title, String message){
         new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
