@@ -116,7 +116,7 @@ public class GuidesFragment extends Fragment {
         views[6].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ReplaceFragment(new weight_guideFragment());
+                ReplaceFragment(new safetyFragment());
             }
         });
         ReplaceFragment(new BabycareFragment());

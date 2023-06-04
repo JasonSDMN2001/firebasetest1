@@ -2,11 +2,13 @@ package com.unipi.boidanis.firebasetest1;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,9 +16,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class cryingFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    View[] views = new View[2];
+    int res[] = {R.id.button_1, R.id.button_2};
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -59,6 +60,33 @@ public class cryingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_crying, container, false);
+        View view=inflater.inflate(R.layout.fragment_crying, container, false);
+        for (int i = 0; i < res.length; i++) {
+            views[i] = view.findViewById(res[i]);
+        }
+        views[0].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMessage("how much crying is normal","All newborns cry and get fussy " +
+                        "sometimes. It's normal for a baby to cry for 2–3 hours a day for the first" +
+                        " 6 weeks. During the first 3 months of life, they cry more than at any " +
+                        "other time. New parents often are low on sleep and getting used to life" +
+                        " with their little one.");
+            }
+        });
+        views[1].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMessage("How to soothe a crying baby","Try stroking your " +
+                        "baby's back firmly and rhythmically, holding them against you or lying" +
+                        " face downwards on your lap. Undress your baby and massage them gently " +
+                        "and firmly. Avoid using any oils or lotions until your baby's at least a " +
+                        "month old. Talk soothingly as you do it and keep the room warm enough.");
+            }
+        });
+        return view;
+    }
+    void showMessage(String title, String message) {
+        new AlertDialog.Builder(getContext()).setTitle(title).setMessage(message).setCancelable(true).show();
     }
 }

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".BabycareFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
 
     <RelativeLayout
@@ -45,14 +44,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:backgroundTint="#FFFFFF"
                             android:text="Burping"
                             android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.525"
                             app:layout_constraintStart_toEndOf="@+id/imageView6"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:backgroundTint="#2ECFB0"/>
 
                         <ImageView
                             android:id="@+id/imageView6"
@@ -87,14 +86,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:backgroundTint="#FFFFFF"
                             android:text="How to Change nappy"
                             android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.525"
                             app:layout_constraintStart_toEndOf="@+id/imageView7"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:backgroundTint="#2ECFB0"/>
 
                         <ImageView
                             android:id="@+id/imageView7"
@@ -129,14 +128,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:backgroundTint="#FFFFFF"
                             android:text="How to bathe your baby"
                             android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.525"
                             app:layout_constraintStart_toEndOf="@+id/imageView8"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:backgroundTint="#2ECFB0"/>
 
                         <ImageView
                             android:id="@+id/imageView8"
@@ -171,14 +170,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:backgroundTint="#FFFFFF"
                             android:text="How to cut Fingernails"
                             android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.525"
                             app:layout_constraintStart_toEndOf="@+id/imageView9"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:backgroundTint="#2ECFB0"/>
 
                         <ImageView
                             android:id="@+id/imageView9"
@@ -194,7 +193,6 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </FrameLayout>
-
                 <FrameLayout
                     android:id="@+id/idFrame5"
                     android:layout_width="wrap_content"
@@ -213,14 +211,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:backgroundTint="#FFFFFF"
-                            android:text="Babycare basics"
+                            android:text="Teeth"
                             android:textColor="@color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.525"
                             app:layout_constraintStart_toEndOf="@+id/imageView10"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:backgroundTint="#2ECFB0"/>
 
                         <ImageView
                             android:id="@+id/imageView10"
@@ -228,7 +226,7 @@
                             android:layout_height="50dp"
                             android:layout_marginStart="16dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/bab23"
+                            android:src="@drawable/babyteeth"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -236,6 +234,7 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </FrameLayout>
+
 
 
             </LinearLayout>

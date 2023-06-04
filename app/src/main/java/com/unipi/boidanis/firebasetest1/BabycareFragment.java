@@ -93,19 +93,58 @@ public class BabycareFragment extends Fragment {
         views[2].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                showMessage("How to bathe your baby","You don't need to bathe your baby every day, but if they really enjoy it, there's no reason why you shouldn't.\n" +
+                        "\n" +
+                        "It's best not to bathe your baby straight after a feed or when they're hungry or tired. Make sure the room you're bathing them in is warm.\n" +
+                        "\n" +
+                        "Have everything you need at hand: a baby bath or clean washing-up bowl filled with warm water, 2 towels, a clean nappy, clean clothes and cotton wool.\n" +
+                        "\n" +
+                        "The water should be warm, not hot. Check it with your wrist or elbow and mix it well so there are no hot patches.\n" +
+                        "Don't add any liquid cleansers to the bath water. Plain water is best for your baby's skin in the first month.\n" +
+                        "Hold your baby on your knee and clean their face.\n" +
+                        "Next, wash their hair with plain water, supporting them over the bowl.\n" +
+                        "Once you've dried their hair gently, you can take off their nappy, wiping away any mess.\n" +
+                        "Lower your baby gently into the bowl or bath using one hand to hold their upper arm and support their head and shoulders. Then use the other hand to gently swish the water over your baby without splashing.\n" +
+                        "Keep your baby's head clear of the water.\n" +
+                        "Never leave your baby alone in the bath, not even for a second.\n" +
+                        "Lift your baby out and pat them dry, paying special attention to the creases in their skin.\n" +
+                        "This is a good time to massage your baby. Massage can help them relax and sleep. Avoid using any oils or lotions until your baby is at least a month old.\n" +
+                        "If your baby seems frightened of bathing and cries, try bathing together. Make sure the water isn't too hot. It's easier if someone else holds your baby while you get in and out of the bath.");
             }
         });
         views[3].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                showMessage("How to cut Fingernails","Some babies are born with " +
+                        "long nails and it's important to cut them in case they scratch themselves. " +
+                        "You can buy special baby nail clippers or small, round-ended safety" +
+                        " scissors. Or you could try filing them down with a fine emery board" +
+                        " instead");
             }
         });
         views[4].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                showMessage("Teeth","Most babies will develop teeth between 6 and 12" +
+                        " months.\n" +
+                        "There is a wide range of variability of when a first tooth may appear—some" +
+                        " babies may not have any teeth by their first birthday! Around 3 months of" +
+                        " age, babies will begin exploring the world with their mouth and have " +
+                        "increased saliva and start to put their hands in their mouth. Many parents" +
+                        " question whether or not this means that their baby is teething," +
+                        " but a first tooth usually appears around 6 months old.\n" +
+                        "\n" +
+                        "Typically, the first teeth to come in are almost always the lower" +
+                        " front teeth (the lower central incisors), and most children will " +
+                        "usually have all of their baby teeth by age 3.\n" +
+                        "\n"+"Fluoride should be added to your child's diet at 6 months of age.\n" +
+                        "Fluoride is a mineral that helps prevent tooth decay by hardening" +
+                        " the enamel of teeth. The good news is that fluoride is often added" +
+                        " to tap water. Give your baby a few ounces of water in a sippy or " +
+                        "straw cup when you begin them on solid foods (about 6 months of age)." +
+                        " Speak with your pediatrician to see if your tap water contains " +
+                        "fluoride or whether your child needs fluoride supplements. " +
+                        "Fluoride is not typically found in most bottled water. ");
             }
         });
         return view;

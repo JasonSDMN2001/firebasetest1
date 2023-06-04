@@ -58,7 +58,7 @@
                     android:layout_margin="5dp"
                     android:backgroundTint="#FFFFFF"
                     android:textColor="#2ECFB0"
-                    android:text="Weight" />
+                    android:text="Weight-Height-Head" />
 
                 <Button
                     android:id="@+id/button_5"

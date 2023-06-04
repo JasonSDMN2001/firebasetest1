@@ -2,11 +2,13 @@ package com.unipi.boidanis.firebasetest1;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,9 +16,9 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class BottleFeedingFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    View[] views = new View[2];
+    int res[] = {R.id.button_1, R.id.button_2};
+    ScrollView scrollView;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -59,6 +61,28 @@ public class BottleFeedingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bottle_feeding, container, false);
+        View view=  inflater.inflate(R.layout.fragment_bottle_feeding, container, false);
+        scrollView = (ScrollView) view.findViewById(R.id.scrollview4);
+        for (int i = 0; i < res.length; i++) {
+            views[i] = view.findViewById(res[i]);
+        }
+        views[0].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMessage("3 positions for easy feeding","Over the shoulder: Drape your baby over your shoulder and firmly pat or rub their back.\n" +
+                        "On the lap: Sit your baby upright, lean them forward against the heel of your hand, and firmly pat or rub their back.\n" +
+                        "Lying down: Place baby stomach-down on your lap and firmly rub or pat their back.");
+            }
+        });
+        views[1].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMessage("how much milk does my baby need","By the end of their first week, most will need around 150 to 200ml per kilo of their weight a day until they're 6 months old. This amount will vary from baby to baby.");
+            }
+        });
+        return view;
+    }
+    void showMessage(String title, String message) {
+        new AlertDialog.Builder(getContext()).setTitle(title).setMessage(message).setCancelable(true).show();
     }
 }

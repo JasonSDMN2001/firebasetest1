@@ -106,6 +106,7 @@ public class SettingsFragment extends Fragment {
             e.printStackTrace();
         }
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
         Button button = (Button) view.findViewById(R.id.button5);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,7 +197,11 @@ public class SettingsFragment extends Fragment {
         if(userpref.matches(user.getUid())){
             simpleSwitch.setChecked(notificationpreference);
             simpleSwitch2.setChecked(notificationpreference2);
+            if(!simpleSwitch.isChecked()){
+                simpleSwitch2.setChecked(false);
+            }
         }
+
         return view;
     }
     private void changeUserProfile(String displayName, @Nullable String imageUrl, FirebaseUser user){
