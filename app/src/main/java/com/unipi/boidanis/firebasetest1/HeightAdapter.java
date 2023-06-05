@@ -42,7 +42,7 @@ public class HeightAdapter extends RecyclerView.Adapter<HeightAdapter.MyViewHold
         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(context);
         holder.date.setText(dateFormat.format(heightData.getDate()).toString());
         holder.week.setText(String.valueOf(heightData.getWeek()));
-        holder.weight.setText(String.valueOf(heightData.getHeight()));
+        holder.height.setText(String.valueOf(heightData.getHeight()));
         holder.key=heightData.getKey();
         holder.babyName=heightData.getBabyName();
         holder.intweek = heightData.getWeek();
@@ -54,7 +54,7 @@ public class HeightAdapter extends RecyclerView.Adapter<HeightAdapter.MyViewHold
     }
 
 public static class MyViewHolder extends RecyclerView.ViewHolder{
-    TextView date,week,weight;
+    TextView date,week,height;
     Button button;
     String key,babyName;
     int intweek;
@@ -62,7 +62,7 @@ public static class MyViewHolder extends RecyclerView.ViewHolder{
         super(itemView);
         date=itemView.findViewById(R.id.textView18);
         week=itemView.findViewById(R.id.textView19);
-        weight=itemView.findViewById(R.id.textView20);
+        height=itemView.findViewById(R.id.textView20);
         button=itemView.findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

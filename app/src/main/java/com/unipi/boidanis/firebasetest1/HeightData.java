@@ -51,7 +51,7 @@ public class HeightData {
         return height;
     }
 
-    public void setHeight(float weight) {
+    public void setHeight(float height) {
         this.height = height;
     }
 }

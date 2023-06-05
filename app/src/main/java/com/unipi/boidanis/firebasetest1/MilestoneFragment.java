@@ -222,7 +222,7 @@ public class MilestoneFragment extends Fragment {
                     if (!dataSnapshot.getKey().matches("weightData") &&
                             !dataSnapshot.getKey().matches("moments") &&
                             !dataSnapshot.getKey().matches("milestones")&&
-                            !dataSnapshot.getKey().matches("Face A Day")) {
+                            !dataSnapshot.getKey().matches("Face A Day")&&!dataSnapshot.getKey().matches("heightData")) {
                         ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
                         birthdate = childInfo.getbirthDate();
                         weekDifference = WeekCalculation(birthdate, currentDate);

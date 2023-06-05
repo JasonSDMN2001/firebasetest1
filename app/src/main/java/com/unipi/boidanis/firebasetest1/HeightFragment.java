@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -61,7 +62,7 @@ import java.util.concurrent.TimeUnit;
  * Use the {@link HeightFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HeightFragment extends Fragment {
+public class HeightFragment extends Fragment implements CustomDialog.CustomDialogListener {
     FirebaseAuth mAuth;
     FirebaseUser user;
     FirebaseDatabase database;
@@ -134,7 +135,7 @@ public class HeightFragment extends Fragment {
 
 
         button = view.findViewById(R.id.button10);
-        resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+        /*resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
@@ -149,11 +150,34 @@ public class HeightFragment extends Fragment {
                             StatisticsCalculation(height,week);
                         }
                     }
-                });
+                });*/
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 if(!babyname.matches("Select child")) {
+
+                    CustomDialog dialog = new CustomDialog();
+                    if(temp_date.length>0){
+                        if (temp_date[temp_date.length - 1] != null) {
+                            dialog.setLastDate(temp_date[temp_date.length - 1]);
+                        } else {
+                            dialog.setLastDate(birthdate);
+                        }
+                    } else {
+                        dialog.setLastDate(birthdate);
+                    }
+                    dialog.setCustomDialogListener(HeightFragment.this);
+
+                    dialog.show(getChildFragmentManager(), "custom_dialog");
+
+                }else{
+                    Toast.makeText(getContext(), "Please select a child", Toast.LENGTH_SHORT).show();
+
+
+                }
+                /*if(!babyname.matches("Select child")) {
                     Intent intent = new Intent(getActivity(), MainActivity4.class);
                     if (temp_date[temp_date.length - 1] != null) {
                         intent.putExtra("last date", temp_date[temp_date.length - 1]);
@@ -164,60 +188,9 @@ public class HeightFragment extends Fragment {
                     //resultLauncher.launch(new Intent(getActivity(), MainActivity4.class));
                 }else{
                     Toast.makeText(getContext(), "Please select a child", Toast.LENGTH_SHORT).show();
-                    /*
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Custom Dialog Title"
-        android:textSize="18sp"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        android:paddingBottom="8dp"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter your text"
-        android:padding="8dp"/>
-
-    <!-- Add more views as needed -->
-
-</LinearLayout>
 
 
-                    // Create a LayoutInflater object to inflate the custom layout
-LayoutInflater inflater = getLayoutInflater();
-View dialogView = inflater.inflate(R.layout.custom_dialog_layout, null);
-
-// Create the dialog with the custom layout
-AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-builder.setView(dialogView);
-
-// Add buttons and set their respective onClick listeners
-builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-    public void onClick(DialogInterface dialog, int id) {
-        // Code to be executed when the positive button is clicked
-    }
-});
-
-builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-    public void onClick(DialogInterface dialog, int id) {
-        // Code to be executed when the negative button is clicked
-        dialog.cancel(); // Close the dialog
-    }
-});
-
-// Create and show the dialog
-AlertDialog dialog = builder.create();
-dialog.show();
-*/
-                }
+                }*/
             }
         });
 
@@ -300,7 +273,16 @@ dialog.show();
         }
         return view;
     }
-
+    @Override
+    public void onDialogResult(Date selectedDate,String returned_height) {
+        height = Float.parseFloat(returned_height);
+        date = selectedDate;
+        week = WeekCalculation(date);
+        key = ref2.push().getKey();
+        HeightData heightData = new HeightData(key,date, week, height,babyname);
+        ref2.child(key).setValue(heightData);
+        StatisticsCalculation(height,week);
+    }
     private void whichBaby() {
         if (!babyname.matches("")) {
             BirthDayFind(babyname);
@@ -311,44 +293,47 @@ dialog.show();
     }
 
     private void StatisticsCalculation(float weight,int week) {
-        DatabaseReference statreference;
-        if(week<10){
-            statreference = database.getReference("All height data").child(gender).child("week 0"+week).child("weight");
-        }else{
-            statreference = database.getReference("All height data").child(gender).child("week "+week).child("weight");
+        try {
+            DatabaseReference statreference;
+            if (week < 10) {
+                statreference = database.getReference("All height data").child(gender).child("week 0" + week).child("height");
+            } else {
+                statreference = database.getReference("All height data").child(gender).child("week " + week).child("height");
+            }
+            statreference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    float stat_height = Float.parseFloat(snapshot.getValue().toString());
+                    statreference.setValue(stat_height + height);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            DatabaseReference reference2;
+            if (week < 10) {
+                reference2 = database.getReference("All height data").child(gender).child("week 0" + week).child("babies");
+            } else {
+                reference2 = database.getReference("All height data").child(gender).child("week " + week).child("babies");
+            }
+
+            reference2.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    int babies = Integer.parseInt(snapshot.getValue().toString());
+                    reference2.setValue(babies + 1);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        statreference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                float stat_height = Float.parseFloat(snapshot.getValue().toString());
-                statreference.setValue(stat_height+height);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        DatabaseReference reference2;
-        if(week<10){
-            reference2 = database.getReference("All height data").child(gender).child("week 0"+week).child("babies");
-        }else{
-            reference2 = database.getReference("All height data").child(gender).child("week "+week).child("babies");
-        }
-
-        reference2.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int babies = Integer.parseInt(snapshot.getValue().toString());
-                reference2.setValue(babies+1);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
     }
     public void StatsGraph(String gender){
         DatabaseReference graphReference = database.getReference("All height data").child(gender);
@@ -401,7 +386,7 @@ dialog.show();
                         if (heightdp[(int) (Math.floor((int) snapshot.getChildrenCount() / 4.0))] != null) {
                             if (Math.abs(dp[((int) snapshot.getChildrenCount()) - 1].getY()
                                     - heightdp[(int) (Math.floor((int) snapshot.getChildrenCount() / 4.0))].getY()) > 0.65) {
-                                WeightNotification();
+                                HeightNotification();
                             }
                         }
                         if (dp[0] != null && temp_date[(int) snapshot.getChildrenCount() - 1] != null) {
@@ -431,7 +416,7 @@ dialog.show();
         }
     }
 
-    private void WeightNotification() {
+    private void HeightNotification() {
         buildAlertMessage("Would you like to learn ways to manage your child's height?");
     }
     private void buildAlertMessage(String s) {
@@ -472,8 +457,7 @@ dialog.show();
                             !dataSnapshot.getKey().matches("Face A Day")&&!dataSnapshot.getKey().matches("heightData")) {
                         ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
                         birthdate = childInfo.getbirthDate();
-                        java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
-                        textView10.setText(dateFormat.format(birthdate));
+                        textView10.setText(DateFormat.format("dd/MM/yyyy",birthdate));
                         gender = childInfo.getGender();
                         StatsGraph(gender);
                         if(Objects.equals(gender, "Boy")){
