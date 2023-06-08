@@ -54,9 +54,27 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/fraunces_bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+        <!--android:fontFamily="@font/fraunces_bold"-->
 
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profile_button4"
+        android:layout_width="match_parent"
+        android:layout_height="277dp"
+        android:layout_marginBottom="460dp"
+        android:background="?android:selectableItemBackground"
+        android:backgroundTint="#9D9E9E"
+        android:padding="3dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_button3"
+        app:layout_constraintVertical_bias="0.0"
+        app:shapeAppearanceOverlay="@style/Circle"
+        app:strokeColor="#2ECFB0"
+        app:strokeWidth="5dp"
+        tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

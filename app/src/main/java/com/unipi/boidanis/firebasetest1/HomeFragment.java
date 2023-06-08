@@ -35,6 +35,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -151,8 +152,37 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
                     ParentInfo parentInfo = dataSnapshot.getValue(ParentInfo.class);
+                    String s = parentInfo.getImageUrl();
                     if(getActivity()!=null){
-                        Glide.with(getContext()).load(parentInfo.getImageUrl()).into(shapeableImageView2);
+                        Glide.with(getContext()).load(s).into(shapeableImageView2);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        ShapeableImageView shapeableImageView3 = (ShapeableImageView) view.findViewById(R.id.profile_button4);
+        shapeableImageView3.setScaleType(ImageView.ScaleType.CENTER);
+        shapeableImageView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                CustomDialog2 dialog = new CustomDialog2();
+                dialog.show(getChildFragmentManager(), "custom_dialog2");
+
+            }
+        });
+        DatabaseReference ref3 = database.getReference("Users").child(mAuth.getUid()).child("togetherpicture").child("image");
+        ref3.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    String s = dataSnapshot.toString();
+                    if(getActivity()!=null){
+                        Glide.with(getContext()).load(s).into(shapeableImageView3);
                     }
                 }
             }

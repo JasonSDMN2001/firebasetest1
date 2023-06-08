@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.Paint;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -188,6 +192,7 @@ public class WeightFragment extends Fragment {
         series.setColor(Color.CYAN);
         series.setTitle(babyname+"'s weight");
         series.setThickness(14);
+
         graphView.addSeries(series);
         graphView.setTitle("Weight History");
         graphView.getGridLabelRenderer().setVerticalAxisTitle("Weight in kg");
@@ -213,6 +218,7 @@ public class WeightFragment extends Fragment {
         graphView.addSeries(series6);
         series7 = new LineGraphSeries();
         series7.setTitle("25th percentile");
+        series7.setColor(Color.LTGRAY);
         graphView.addSeries(series7);
 
         series2 = new LineGraphSeries();
@@ -221,6 +227,7 @@ public class WeightFragment extends Fragment {
 
         series8 = new LineGraphSeries();
         series8.setTitle("75th percentile");
+        series8.setColor(Color.LTGRAY);
         graphView.addSeries(series8);
         series9 = new LineGraphSeries();
         series9.setTitle("90th percentile");
@@ -452,6 +459,12 @@ public class WeightFragment extends Fragment {
                                 weightdp = dp;
                                 series2.resetData(dp);
                                 series4.setColor(Color.RED);
+                                Paint dottedLinePaint = new Paint();
+                                dottedLinePaint.setColor(Color.RED);
+                                dottedLinePaint.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint.setStrokeWidth(11);
+                                dottedLinePaint.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series4.setCustomPaint(dottedLinePaint);
                                 DataPoint[] dp4 = new DataPoint[14];
                                 dp4[0] = new DataPoint(0, 2.35);
                                 dp4[1] = new DataPoint(4, 3.5);
@@ -469,6 +482,12 @@ public class WeightFragment extends Fragment {
                                 dp4[13] = new DataPoint(52, 8.76);
                                 series4.resetData(dp4);
                                 series5.setColor(Color.MAGENTA);
+                                Paint dottedLinePaint2 = new Paint();
+                                dottedLinePaint2.setColor(Color.MAGENTA);
+                                dottedLinePaint2.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint2.setStrokeWidth(11);
+                                dottedLinePaint2.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series5.setCustomPaint(dottedLinePaint2);
                                 DataPoint[] dp5 = new DataPoint[14];
                                 dp5[0] = new DataPoint(0, 2.52);
                                 dp5[1] = new DataPoint(4, 3.77);
@@ -486,6 +505,12 @@ public class WeightFragment extends Fragment {
                                 dp5[13] = new DataPoint(52, 8.9);
                                 series5.resetData(dp5);
                                 series6.setColor(Color.BLUE);
+                                Paint dottedLinePaint3 = new Paint();
+                                dottedLinePaint3.setColor(Color.BLUE);
+                                dottedLinePaint3.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint3.setStrokeWidth(11);
+                                dottedLinePaint3.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series6.setCustomPaint(dottedLinePaint3);
                                 DataPoint[] dp6 = new DataPoint[14];
                                 dp6[0] = new DataPoint(0, 2.773802);
                                 dp6[1] = new DataPoint(4, 4.020561);
@@ -502,6 +527,12 @@ public class WeightFragment extends Fragment {
                                 dp6[12] = new DataPoint(48, 9.098246);
                                 dp6[13] = new DataPoint(52, 9.339688);
                                 series6.resetData(dp6);
+                                Paint dottedLinePaint4 = new Paint();
+                                dottedLinePaint4.setColor(Color.LTGRAY);
+                                dottedLinePaint4.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint4.setStrokeWidth(11);
+                                dottedLinePaint4.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series7.setCustomPaint(dottedLinePaint4);
                                 DataPoint[] dp7 = new DataPoint[14];
                                 dp7[0] = new DataPoint(0, 3.150611);
                                 dp7[1] = new DataPoint(4, 4.428873);
@@ -518,7 +549,12 @@ public class WeightFragment extends Fragment {
                                 dp7[12] = new DataPoint(48, 9.714942);
                                 dp7[13] = new DataPoint(52, 9.970338);
                                 series7.resetData(dp7);
-
+                                Paint dottedLinePaint6 = new Paint();
+                                dottedLinePaint6.setColor(Color.LTGRAY);
+                                dottedLinePaint6.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint6.setStrokeWidth(11);
+                                dottedLinePaint6.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series8.setCustomPaint(dottedLinePaint6);
                                 DataPoint[] dp8 = new DataPoint[14];
                                 dp8[0] = new DataPoint(0, 3.979077);
                                 dp8[1] = new DataPoint(4, 5.427328);
@@ -536,6 +572,12 @@ public class WeightFragment extends Fragment {
                                 dp8[13] = new DataPoint(52, 11.55996);
                                 series8.resetData(dp8);
                                 series9.setColor(Color.BLUE);
+                                Paint dottedLinePaint5 = new Paint();
+                                dottedLinePaint5.setColor(Color.BLUE);
+                                dottedLinePaint5.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint5.setStrokeWidth(11);
+                                dottedLinePaint5.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series9.setCustomPaint(dottedLinePaint5);
                                 DataPoint[] dp9 = new DataPoint[14];
                                 dp9[0] = new DataPoint(0, 4.172493);
                                 dp9[1] = new DataPoint(4, 5.728153);
@@ -553,6 +595,12 @@ public class WeightFragment extends Fragment {
                                 dp9[13] = new DataPoint(52, 12.37145);
                                 series9.resetData(dp9);
                                 series10.setColor(Color.MAGENTA);
+                                Paint dottedLinePaint7 = new Paint();
+                                dottedLinePaint7.setColor(Color.MAGENTA);
+                                dottedLinePaint7.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint7.setStrokeWidth(11);
+                                dottedLinePaint7.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series10.setCustomPaint(dottedLinePaint7);
                                 DataPoint[] dp10 = new DataPoint[14];
                                 dp10[0] = new DataPoint(0, 4.340293);
                                 dp10[1] = new DataPoint(4, 5.967102);
@@ -570,6 +618,12 @@ public class WeightFragment extends Fragment {
                                 dp10[13] = new DataPoint(52, 12.88911);
                                 series10.resetData(dp10);
                                 series11.setColor(Color.RED);
+                                Paint dottedLinePaint8 = new Paint();
+                                dottedLinePaint8.setColor(Color.RED);
+                                dottedLinePaint8.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint8.setStrokeWidth(11);
+                                dottedLinePaint8.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series11.setCustomPaint(dottedLinePaint8);
                                 DataPoint[] dp11 = new DataPoint[14];
                                 dp11[0] = new DataPoint(0, 4.446488);
                                 dp11[1] = new DataPoint(4, 6.121929);
@@ -606,6 +660,12 @@ public class WeightFragment extends Fragment {
                                 weightdp = dp;
                                 series2.resetData(dp);
                                 series4.setColor(Color.RED);
+                                Paint dottedLinePaint8 = new Paint();
+                                dottedLinePaint8.setColor(Color.RED);
+                                dottedLinePaint8.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint8.setStrokeWidth(11);
+                                dottedLinePaint8.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series4.setCustomPaint(dottedLinePaint8);
                                 DataPoint[] dp4 = new DataPoint[14];
                                 dp4[0] = new DataPoint(0, 2.414112);
                                 dp4[1] = new DataPoint(4, 3.402293);
@@ -623,6 +683,12 @@ public class WeightFragment extends Fragment {
                                 dp4[13] = new DataPoint(52, 8.179356);
                                 series4.resetData(dp4);
                                 series5.setColor(Color.BLUE);
+                                Paint dottedLinePaint1 = new Paint();
+                                dottedLinePaint1.setColor(Color.BLUE);
+                                dottedLinePaint1.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint1.setStrokeWidth(11);
+                                dottedLinePaint1.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series5.setCustomPaint(dottedLinePaint1);
                                 DataPoint[] dp5 = new DataPoint[14];
                                 dp5[0] = new DataPoint(0, 2.547905);
                                 dp5[1] = new DataPoint(4, 3.54761);
@@ -639,6 +705,13 @@ public class WeightFragment extends Fragment {
                                 dp5[12] = new DataPoint(48, 8.127621);
                                 dp5[13] = new DataPoint(52, 8.378425);
                                 series5.resetData(dp5);
+                                series6.setColor(Color.LTGRAY);
+                                Paint dottedLinePaint2 = new Paint();
+                                dottedLinePaint2.setColor(Color.LTGRAY);
+                                dottedLinePaint2.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint2.setStrokeWidth(11);
+                                dottedLinePaint2.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series6.setCustomPaint(dottedLinePaint2);
                                 DataPoint[] dp6 = new DataPoint[14];
                                 dp6[0] = new DataPoint(0, 2.747222);
                                 dp6[1] = new DataPoint(4, 3.770157);
@@ -656,6 +729,12 @@ public class WeightFragment extends Fragment {
                                 dp6[13] = new DataPoint(52, 8.696684);
                                 series6.resetData(dp6);
                                 series7.setColor(Color.GREEN);
+                                Paint dottedLinePaint3 = new Paint();
+                                dottedLinePaint3.setColor(Color.GREEN);
+                                dottedLinePaint3.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint3.setStrokeWidth(11);
+                                dottedLinePaint3.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series7.setCustomPaint(dottedLinePaint3);
                                 DataPoint[] dp7 = new DataPoint[14];
                                 dp7[0] = new DataPoint(0, 3.064865);
                                 dp7[1] = new DataPoint(4, 4.138994);
@@ -673,6 +752,12 @@ public class WeightFragment extends Fragment {
                                 dp7[13] = new DataPoint(52, 9.262185);
                                 series7.resetData(dp7);
                                 series8.setColor(Color.GREEN);
+                                Paint dottedLinePaint4 = new Paint();
+                                dottedLinePaint4.setColor(Color.GREEN);
+                                dottedLinePaint4.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint4.setStrokeWidth(11);
+                                dottedLinePaint4.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series8.setCustomPaint(dottedLinePaint4);
                                 DataPoint[] dp8 = new DataPoint[14];
                                 dp8[0] = new DataPoint(0, 3.717519);
                                 dp8[1] = new DataPoint(4, 4.946766);
@@ -689,6 +774,13 @@ public class WeightFragment extends Fragment {
                                 dp8[12] = new DataPoint(48, 10.39258);
                                 dp8[13] = new DataPoint(52, 10.68874);
                                 series8.resetData(dp8);
+                                series9.setColor(Color.LTGRAY);
+                                Paint dottedLinePaint5 = new Paint();
+                                dottedLinePaint5.setColor(Color.LTGRAY);
+                                dottedLinePaint5.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint5.setStrokeWidth(11);
+                                dottedLinePaint5.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series9.setCustomPaint(dottedLinePaint5);
                                 DataPoint[] dp9 = new DataPoint[14];
                                 dp9[0] = new DataPoint(0, 3.992572);
                                 dp9[1] = new DataPoint(4, 5.305632);
@@ -706,6 +798,12 @@ public class WeightFragment extends Fragment {
                                 dp9[13] = new DataPoint(52, 11.41792);
                                 series9.resetData(dp9);
                                 series10.setColor(Color.BLUE);
+                                Paint dottedLinePaint6 = new Paint();
+                                dottedLinePaint6.setColor(Color.BLUE);
+                                dottedLinePaint6.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint6.setStrokeWidth(11);
+                                dottedLinePaint6.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series10.setCustomPaint(dottedLinePaint6);
                                 DataPoint[] dp10 = new DataPoint[14];
                                 dp10[0] = new DataPoint(0, 4.152637);
                                 dp10[1] = new DataPoint(4, 5.519169);
@@ -723,6 +821,12 @@ public class WeightFragment extends Fragment {
                                 dp10[13] = new DataPoint(52, 11.88348);
                                 series10.resetData(dp10);
                                 series11.setColor(Color.RED);
+                                Paint dottedLinePaint7 = new Paint();
+                                dottedLinePaint7.setColor(Color.RED);
+                                dottedLinePaint7.setStyle(Paint.Style.STROKE);
+                                dottedLinePaint7.setStrokeWidth(11);
+                                dottedLinePaint7.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+                                series11.setCustomPaint(dottedLinePaint7);
                                 DataPoint[] dp11 = new DataPoint[14];
                                 dp11[0] = new DataPoint(0, 4.254922);
                                 dp11[1] = new DataPoint(4, 5.657379);
