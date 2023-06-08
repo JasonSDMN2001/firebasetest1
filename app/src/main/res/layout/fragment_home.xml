@@ -67,7 +67,7 @@
         android:background="?android:selectableItemBackground"
         android:backgroundTint="#9D9E9E"
         android:padding="3dp"
-        android:scaleType="centerCrop"
+        android:scaleType=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

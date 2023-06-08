@@ -175,12 +175,14 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        DatabaseReference ref3 = database.getReference("Users").child(mAuth.getUid()).child("togetherpicture").child("image");
+        DatabaseReference ref3 = database.getReference("Users").child(mAuth.getUid()).child("togetherpicture");
         ref3.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    String s = dataSnapshot.toString();
+
+                    String s = dataSnapshot.getValue().toString();
                     if(getActivity()!=null){
                         Glide.with(getContext()).load(s).into(shapeableImageView3);
                     }
