@@ -118,7 +118,9 @@ public class HomeFragment extends Fragment {
                     if (!dataSnapshot.getKey().matches("weightData")&&
                             !dataSnapshot.getKey().matches("milestones")&&
                             !dataSnapshot.getKey().matches("moments")&&
-                    !dataSnapshot.getKey().matches("Face A Day")&&!dataSnapshot.getKey().matches("heightData")) {
+                    !dataSnapshot.getKey().matches("Face A Day")&&
+                            !dataSnapshot.getKey().matches("heightData")&&
+                            !dataSnapshot.getKey().matches("headData")) {
                         ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
                         if(getActivity()!=null) {
                             Glide.with(getContext()).load(childInfo.getImageUrl()).into(shapeableImageView);

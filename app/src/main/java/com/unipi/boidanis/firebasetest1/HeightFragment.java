@@ -169,7 +169,9 @@ public class HeightFragment extends Fragment implements CustomDialog.CustomDialo
                         dialog.setLastDate(birthdate);
                     }
                     dialog.setCustomDialogListener(HeightFragment.this);
-
+                    dialog.setHint("Height");
+                    dialog.setCondition("^(4[4-9]\\.[0-9]|[5-7][0-9]\\.[0-9]|8[0-1]\\.[0-9]|82\\.0)$");
+                    dialog.setError_message("height between 44.9-82.0 cm");
                     dialog.show(getChildFragmentManager(), "custom_dialog");
 
                 }else{
@@ -262,9 +264,9 @@ public class HeightFragment extends Fragment implements CustomDialog.CustomDialo
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showMessage("How to use growth chart:","The growth tracker is a dynamic chart" +
-                        " that displays the World Health Organisation(WHO)" +
-                        "Child Growth Standards. ");
+                showMessage("How to use growth chart:","press the button to add your " +
+                        "baby's data,remember to add not only each week but twice in the first few " +
+                        "days,as your baby's dimensions will change shortly after birth");
             }
         });
         if(!babyname.matches("Select child")){
@@ -385,7 +387,7 @@ public class HeightFragment extends Fragment implements CustomDialog.CustomDialo
                     if (dp.length > 2) {
                         if (heightdp[(int) (Math.floor((int) snapshot.getChildrenCount() / 4.0))] != null) {
                             if (Math.abs(dp[((int) snapshot.getChildrenCount()) - 1].getY()
-                                    - heightdp[(int) (Math.floor((int) snapshot.getChildrenCount() / 4.0))].getY()) > 0.65) {
+                                    - heightdp[(int) (Math.floor((int) snapshot.getChildrenCount() / 4.0))].getY()) > 2.5) {
                                 HeightNotification();
                             }
                         }
@@ -395,7 +397,7 @@ public class HeightFragment extends Fragment implements CustomDialog.CustomDialo
                                 textView15.setText(temp_height[(int) snapshot.getChildrenCount() - 1] + " kg");
                                 java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
                                 textView16.setText(dateFormat.format(temp_date[(int) snapshot.getChildrenCount() - 1]));
-                                textView23.setText(String.format("%.2f", temp_height[(int) snapshot.getChildrenCount() - 1] - dp[0].getY()) + " kg");
+                                textView23.setText(String.format("%.2f", temp_height[(int) snapshot.getChildrenCount() - 1] - dp[0].getY()) + " cm");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -420,30 +422,34 @@ public class HeightFragment extends Fragment implements CustomDialog.CustomDialo
         buildAlertMessage("Would you like to learn ways to manage your child's height?");
     }
     private void buildAlertMessage(String s) {
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
-        builder.setMessage(s)
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        bottomNavigationView.setSelectedItemId(R.id.other);
-                        FragmentTransaction fragmentTransaction = getActivity()
-                                .getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.frame_layout, new GuidesFragment());
-                        fragmentTransaction.commit();
+        try {
+            final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+            builder.setMessage(s)
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            bottomNavigationView.setSelectedItemId(R.id.other);
+                            FragmentTransaction fragmentTransaction = getActivity()
+                                    .getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.frame_layout, new GuidesFragment());
+                            fragmentTransaction.commit();
                         /*FragmentTransaction fragmentTransaction2 = getActivity()
                                 .getSupportFragmentManager().beginTransaction();
                         fragmentTransaction2.replace(R.id.frame_layout_guides, new weight_guideFragment());
                         fragmentTransaction2.commit();*/
-                        showMessage("To access the height guides","please press the height button");
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        dialog.cancel();
-                    }
-                });
-        final android.app.AlertDialog alert = builder.create();
-        alert.show();
+                            showMessage("To access the height guides", "please press the height button");
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            dialog.cancel();
+                        }
+                    });
+            final android.app.AlertDialog alert = builder.create();
+            alert.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public void BirthDayFind(String s) {
         DatabaseReference reference2 = database.getReference("Users").child(mAuth.getUid()).child(s);
@@ -454,7 +460,9 @@ public class HeightFragment extends Fragment implements CustomDialog.CustomDialo
                     if (!dataSnapshot.getKey().matches("weightData")&&
                             !dataSnapshot.getKey().matches("moments")&&
                             !dataSnapshot.getKey().matches("milestones")&&
-                            !dataSnapshot.getKey().matches("Face A Day")&&!dataSnapshot.getKey().matches("heightData")) {
+                            !dataSnapshot.getKey().matches("Face A Day")&&
+                            !dataSnapshot.getKey().matches("heightData")&&
+                            !dataSnapshot.getKey().matches("headData")) {
                         ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
                         birthdate = childInfo.getbirthDate();
                         textView10.setText(DateFormat.format("dd/MM/yyyy",birthdate));
@@ -463,309 +471,309 @@ public class HeightFragment extends Fragment implements CustomDialog.CustomDialo
                         if(Objects.equals(gender, "Boy")){
                             series2.setColor(Color.GREEN);
                             DataPoint[] dp = new DataPoint[14];
-                            dp[0] = new DataPoint(0, 3.530203);
-                            dp[1] = new DataPoint(4, 4.879525);
-                            dp[2] = new DataPoint(8, 5.672889);
-                            dp[3] = new DataPoint(12, 6.391392);
-                            dp[4] = new DataPoint(16, 7.041836);
-                            dp[5] = new DataPoint(20, 7.630425);
-                            dp[6] = new DataPoint(24, 8.162951);
-                            dp[7] = new DataPoint(28, 8.644832);
-                            dp[8] = new DataPoint(32, 9.08112);
-                            dp[9] = new DataPoint(36, 9.4765);
-                            dp[10] = new DataPoint(40, 9.835308);
-                            dp[11] = new DataPoint(44, 10.16154);
-                            dp[12] = new DataPoint(48, 10.45885);
-                            dp[13] = new DataPoint(52, 10.73063);
+                            dp[0] = new DataPoint(0, 49.98888);
+                            dp[1] = new DataPoint(4, 52.69598);
+                            dp[2] = new DataPoint(8, 56.62843);
+                            dp[3] = new DataPoint(12, 59.60895);
+                            dp[4] = new DataPoint(16, 62.077);
+                            dp[5] = new DataPoint(20, 64.21686);
+                            dp[6] = new DataPoint(24, 66.12531);
+                            dp[7] = new DataPoint(28, 67.86018);
+                            dp[8] = new DataPoint(32, 69.45908);
+                            dp[9] = new DataPoint(36, 70.94804);
+                            dp[10] = new DataPoint(40, 72.34586);
+                            dp[11] = new DataPoint(44, 73.66665);
+                            dp[12] = new DataPoint(48, 74.9213);
+                            dp[13] = new DataPoint(52, 76.11838);
                             heightdp=dp;
                             series2.resetData(dp);
                             series4.setColor(Color.RED);
                             DataPoint[] dp4 = new DataPoint[14];
-                            dp4[0] = new DataPoint(0, 2.35);
-                            dp4[1] = new DataPoint(4, 3.5);
-                            dp4[2] = new DataPoint(8, 4.3);
-                            dp4[3] = new DataPoint(12, 4.9);
-                            dp4[4] = new DataPoint(16, 5.57);
-                            dp4[5] = new DataPoint(20, 6.09);
-                            dp4[6] = new DataPoint(24, 6.5);
-                            dp4[7] = new DataPoint(28, 6.98);
-                            dp4[8] = new DataPoint(32, 7.36);
-                            dp4[9] = new DataPoint(36, 7.7);
-                            dp4[10] = new DataPoint(40, 8.0);
-                            dp4[11] = new DataPoint(44, 8.2);
-                            dp4[12] = new DataPoint(48, 8.53);
-                            dp4[13] = new DataPoint(52, 8.76);
+                            dp4[0] = new DataPoint(0, 44.9251);
+                            dp4[1] = new DataPoint(4, 47.97812);
+                            dp4[2] = new DataPoint(8, 52.19859);
+                            dp4[3] = new DataPoint(12, 55.26322);
+                            dp4[4] = new DataPoint(16, 57.7304957);
+                            dp4[5] = new DataPoint(20, 59.82569);
+                            dp4[6] = new DataPoint(24, 61.66384);
+                            dp4[7] = new DataPoint(28, 63.31224	);
+                            dp4[8] = new DataPoint(32, 64.81395);
+                            dp4[9] = new DataPoint(36, 66.19833);
+                            dp4[10] = new DataPoint(40, 67.48635);
+                            dp4[11] = new DataPoint(44, 68.6936);
+                            dp4[12] = new DataPoint(48, 69.832);
+                            dp4[13] = new DataPoint(52, 70.91088);
                             series4.resetData(dp4);
                             series5.setColor(Color.MAGENTA);
                             DataPoint[] dp5 = new DataPoint[14];
-                            dp5[0] = new DataPoint(0, 2.52);
-                            dp5[1] = new DataPoint(4, 3.77);
-                            dp5[2] = new DataPoint(8, 4.5);
-                            dp5[3] = new DataPoint(12, 5.1);
-                            dp5[4] = new DataPoint(16, 5.7);
-                            dp5[5] = new DataPoint(20, 6.2);
-                            dp5[6] = new DataPoint(24, 6.74);
-                            dp5[7] = new DataPoint(28, 7.17);
-                            dp5[8] = new DataPoint(32, 7.55);
-                            dp5[9] = new DataPoint(36, 7.9);
-                            dp5[10] = new DataPoint(40, 8.2);
-                            dp5[11] = new DataPoint(44, 8.4);
-                            dp5[12] = new DataPoint(48, 8.75);
-                            dp5[13] = new DataPoint(52, 8.9);
+                            dp5[0] = new DataPoint(0, 45.56841);
+                            dp5[1] = new DataPoint(4, 48.55809);
+                            dp5[2] = new DataPoint(8, 52.72611);
+                            dp5[3] = new DataPoint(12, 55.77345);
+                            dp5[4] = new DataPoint(16, 58.23744);
+                            dp5[5] = new DataPoint(20, 60.33647);
+                            dp5[6] = new DataPoint(24, 62.18261);
+                            dp5[7] = new DataPoint(28, 63.84166	);
+                            dp5[8] = new DataPoint(32, 65.35584);
+                            dp5[9] = new DataPoint(36, 66.75398);
+                            dp5[10] = new DataPoint(40, 68.05675);
+                            dp5[11] = new DataPoint(44, 69.27949);
+                            dp5[12] = new DataPoint(48, 70.43397);
+                            dp5[13] = new DataPoint(52, 71.52941);
                             series5.resetData(dp5);
                             series6.setColor(Color.BLUE);
                             DataPoint[] dp6 = new DataPoint[14];
-                            dp6[0] = new DataPoint(0, 2.773802);
-                            dp6[1] = new DataPoint(4, 4.020561);
-                            dp6[2] = new DataPoint(8, 4.754479);
-                            dp6[3] = new DataPoint(12, 5.416803);
-                            dp6[4] = new DataPoint(16, 6.013716);
-                            dp6[5] = new DataPoint(20, 6.551379);
-                            dp6[6] = new DataPoint(24, 7.035656);
-                            dp6[7] = new DataPoint(28, 7.472021);
-                            dp6[8] = new DataPoint(32, 7.865533);
-                            dp6[9] = new DataPoint(36, 8.220839);
-                            dp6[10] = new DataPoint(40, 8.542195);
-                            dp6[11] = new DataPoint(44, 8.833486);
-                            dp6[12] = new DataPoint(48, 9.098246);
-                            dp6[13] = new DataPoint(52, 9.339688);
+                            dp6[0] = new DataPoint(0, 46.55429);
+                            dp6[1] = new DataPoint(4, 49.4578);
+                            dp6[2] = new DataPoint(8, 53.55365);
+                            dp6[3] = new DataPoint(12, 56.57772);
+                            dp6[4] = new DataPoint(16, 59.0383);
+                            dp6[5] = new DataPoint(20, 61.1441);
+                            dp6[6] = new DataPoint(24, 63.00296	);
+                            dp6[7] = new DataPoint(28, 64.67854);
+                            dp6[8] = new DataPoint(32, 66.21181);
+                            dp6[9] = new DataPoint(36, 67.63088);
+                            dp6[10] = new DataPoint(40, 68.95591);
+                            dp6[11] = new DataPoint(44, 70.20192);
+                            dp6[12] = new DataPoint(48, 71.38046);
+                            dp6[13] = new DataPoint(52, 72.50055);
                             series6.resetData(dp6);
                             DataPoint[] dp7 = new DataPoint[14];
-                            dp7[0] = new DataPoint(0, 3.150611);
-                            dp7[1] = new DataPoint(4, 4.428873);
-                            dp7[2] = new DataPoint(8, 5.183378);
-                            dp7[3] = new DataPoint(12, 5.866806);
-                            dp7[4] = new DataPoint(16, 6.484969);
-                            dp7[5] = new DataPoint(20, 7.043627);
-                            dp7[6] = new DataPoint(24, 7.548346);
-                            dp7[7] = new DataPoint(28, 8.004399);
-                            dp7[8] = new DataPoint(32, 8.416719);
-                            dp7[9] = new DataPoint(36, 8.789882);
-                            dp7[10] = new DataPoint(40, 9.12811);
-                            dp7[11] = new DataPoint(44, 9.435279);
-                            dp7[12] = new DataPoint(48, 9.714942);
-                            dp7[13] = new DataPoint(52, 9.970338);
+                            dp7[0] = new DataPoint(0, 48.18937);
+                            dp7[1] = new DataPoint(4, 50.97919);
+                            dp7[2] = new DataPoint(8, 54.9791);
+                            dp7[3] = new DataPoint(12, 57.9744);
+                            dp7[4] = new DataPoint(16, 60.43433);
+                            dp7[5] = new DataPoint(20, 62.55409);
+                            dp7[6] = new DataPoint(24, 64.43546);
+                            dp7[7] = new DataPoint(28, 66.13896);
+                            dp7[8] = new DataPoint(32, 67.70375);
+                            dp7[9] = new DataPoint(36, 69.15682);
+                            dp7[10] = new DataPoint(40, 70.51761);
+                            dp7[11] = new DataPoint(44, 71.80065);
+                            dp7[12] = new DataPoint(48, 73.01712);
+                            dp7[13] = new DataPoint(52, 74.17581);
                             series7.resetData(dp7);
 
                             DataPoint[] dp8 = new DataPoint[14];
-                            dp8[0] = new DataPoint(0, 3.979077);
-                            dp8[1] = new DataPoint(4, 5.427328);
-                            dp8[2] = new DataPoint(8, 6.275598);
-                            dp8[3] = new DataPoint(12, 7.042217);
-                            dp8[4] = new DataPoint(16, 7.735323);
-                            dp8[5] = new DataPoint(20, 8.262033);
-                            dp8[6] = new DataPoint(24, 8.828786);
-                            dp8[7] = new DataPoint(28, 9.34149);
-                            dp8[8] = new DataPoint(32, 9.805593);
-                            dp8[9] = new DataPoint(36, 10.22612);
-                            dp8[10] = new DataPoint(40, 10.60772);
-                            dp8[11] = new DataPoint(44, 10.95466);
-                            dp8[12] = new DataPoint(48, 11.27087);
-                            dp8[13] = new DataPoint(52, 11.55996);
+                            dp8[0] = new DataPoint(0, 51.77126);
+                            dp8[1] = new DataPoint(4, 54.44054);
+                            dp8[2] = new DataPoint(8, 58.35059);
+                            dp8[3] = new DataPoint(12, 61.33788);
+                            dp8[4] = new DataPoint(16, 63.82543);
+                            dp8[5] = new DataPoint(20, 65.99131);
+                            dp8[6] = new DataPoint(24, 67.92935);
+                            dp8[7] = new DataPoint(28, 69.69579);
+                            dp8[8] = new DataPoint(32, 71.32735);
+                            dp8[9] = new DataPoint(36, 72.84947);
+                            dp8[10] = new DataPoint(40, 74.2806);
+                            dp8[11] = new DataPoint(44, 75.63462);
+                            dp8[12] = new DataPoint(48, 76.92224);
+                            dp8[13] = new DataPoint(52, 78.15196);
                             series8.resetData(dp8);
                             series9.setColor(Color.BLUE);
                             DataPoint[] dp9 = new DataPoint[14];
-                            dp9[0] = new DataPoint(0, 4.172493);
-                            dp9[1] = new DataPoint(4, 5.728153);
-                            dp9[2] = new DataPoint(8, 6.638979);
-                            dp9[3] = new DataPoint(12, 7.460702);
-                            dp9[4] = new DataPoint(16, 8.202193);
-                            dp9[5] = new DataPoint(20, 8.871384);
-                            dp9[6] = new DataPoint(24, 9.475466);
-                            dp9[7] = new DataPoint(28, 10.02101);
-                            dp9[8] = new DataPoint(32, 10.51406);
-                            dp9[9] = new DataPoint(36, 10.96017);
-                            dp9[10] = new DataPoint(40, 11.36445);
-                            dp9[11] = new DataPoint(44, 11.7316);
-                            dp9[12] = new DataPoint(48, 12.06595);
-                            dp9[13] = new DataPoint(52, 12.37145);
+                            dp9[0] = new DataPoint(0, 53.36153);
+                            dp9[1] = new DataPoint(4, 56.03444);
+                            dp9[2] = new DataPoint(8, 59.9664);
+                            dp9[3] = new DataPoint(12, 62.98158);
+                            dp9[4] = new DataPoint(16, 65.49858);
+                            dp9[5] = new DataPoint(20, 67.69405);
+                            dp9[6] = new DataPoint(24, 69.66122);
+                            dp9[7] = new DataPoint(28, 71.45609);
+                            dp9[8] = new DataPoint(32, 73.11525);
+                            dp9[9] = new DataPoint(36, 74.6641);
+                            dp9[10] = new DataPoint(40, 76.1211);
+                            dp9[11] = new DataPoint(44, 77.50016);
+                            dp9[12] = new DataPoint(48, 78.81202);
+                            dp9[13] = new DataPoint(52, 80.0652);
                             series9.resetData(dp9);
                             series10.setColor(Color.MAGENTA);
                             DataPoint[] dp10 = new DataPoint[14];
-                            dp10[0] = new DataPoint(0, 4.340293);
-                            dp10[1] = new DataPoint(4, 5.967102);
-                            dp10[2] = new DataPoint(8, 6.921119);
-                            dp10[3] = new DataPoint(12, 7.781401);
-                            dp10[4] = new DataPoint(16, 8.556813);
-                            dp10[5] = new DataPoint(20, 9.255615);
-                            dp10[6] = new DataPoint(24, 9.885436);
-                            dp10[7] = new DataPoint(28, 10.45331);
-                            dp10[8] = new DataPoint(32, 10.96574);
-                            dp10[9] = new DataPoint(36, 11.42868);
-                            dp10[10] = new DataPoint(40, 11.84763);
-                            dp10[11] = new DataPoint(44, 12.22766);
-                            dp10[12] = new DataPoint(48, 12.5734);
-                            dp10[13] = new DataPoint(52, 12.88911);
+                            dp10[0] = new DataPoint(0, 54.30721);
+                            dp10[1] = new DataPoint(4, 56.99908);
+                            dp10[2] = new DataPoint(8, 60.96465);
+                            dp10[3] = new DataPoint(12, 64.00789);
+                            dp10[4] = new DataPoint(16, 66.54889);
+                            dp10[5] = new DataPoint(20, 68.76538);
+                            dp10[6] = new DataPoint(24, 70.75128);
+                            dp10[7] = new DataPoint(28, 72.56307);
+                            dp10[8] = new DataPoint(32, 74.23767);
+                            dp10[9] = new DataPoint(36, 75.80074);
+                            dp10[10] = new DataPoint(40, 77.27095);
+                            dp10[11] = new DataPoint(44, 78.66234);
+                            dp10[12] = new DataPoint(48, 79.98578);
+                            dp10[13] = new DataPoint(52, 81.2499);
                             series10.resetData(dp10);
                             series11.setColor(Color.RED);
                             DataPoint[] dp11 = new DataPoint[14];
-                            dp11[0] = new DataPoint(0, 4.446488);
-                            dp11[1] = new DataPoint(4, 6.121929);
-                            dp11[2] = new DataPoint(8, 7.10625);
-                            dp11[3] = new DataPoint(12, 7.993878);
-                            dp11[4] = new DataPoint(16, 8.793444);
-                            dp11[5] = new DataPoint(20, 9.513307);
-                            dp11[6] = new DataPoint(24, 10.16135);
-                            dp11[7] = new DataPoint(28, 10.74492);
-                            dp11[8] = new DataPoint(32, 11.27084);
-                            dp11[9] = new DataPoint(36, 11.74538);
-                            dp11[10] = new DataPoint(40, 12.17436);
-                            dp11[11] = new DataPoint(44, 12.56308);
-                            dp11[12] = new DataPoint(48, 12.91645);
-                            dp11[13] = new DataPoint(52, 13.23893);
+                            dp11[0] = new DataPoint(0, 54.919);
+                            dp11[1] = new DataPoint(4, 57.62984);
+                            dp11[2] = new DataPoint(8, 61.62591);
+                            dp11[3] = new DataPoint(12, 64.69241);
+                            dp11[4] = new DataPoint(16, 67.2519);
+                            dp11[5] = new DataPoint(20, 69.48354);
+                            dp11[6] = new DataPoint(24, 71.48218);
+                            dp11[7] = new DataPoint(28, 73.30488);
+                            dp11[8] = new DataPoint(32, 74.98899);
+                            dp11[9] = new DataPoint(36, 76.56047);
+                            dp11[10] = new DataPoint(40, 78.03819);
+                            dp11[11] = new DataPoint(44, 79.43637);
+                            dp11[12] = new DataPoint(48, 80.76602);
+                            dp11[13] = new DataPoint(52, 82.03585);
                             series11.resetData(dp11);
                         }else if (Objects.equals(gender, "Girl")){
                             series2.setColor(Color.MAGENTA);
                             DataPoint[] dp = new DataPoint[14];
-                            dp[0] = new DataPoint(0, 3.399186);
-                            dp[1] = new DataPoint(4, 4.544777);
-                            dp[2] = new DataPoint(8, 5.230584);
-                            dp[3] = new DataPoint(12, 5.859961);
-                            dp[4] = new DataPoint(16, 6.437588);
-                            dp[5] = new DataPoint(20, 6.96785);
-                            dp[6] = new DataPoint(24, 7.454854);
-                            dp[7] = new DataPoint(28, 7.902436);
-                            dp[8] = new DataPoint(32, 8.314178);
-                            dp[9] = new DataPoint(36, 8.693418);
-                            dp[10] = new DataPoint(40, 9.043262);
-                            dp[11] = new DataPoint(44, 9.366594);
-                            dp[12] = new DataPoint(48, 9.666089);
-                            dp[13] = new DataPoint(52, 9.944226);
+                            dp[0] = new DataPoint(0, 49.2864);
+                            dp[1] = new DataPoint(4, 51.68358);
+                            dp[2] = new DataPoint(8, 55.28613);
+                            dp[3] = new DataPoint(12, 58.09382);
+                            dp[4] = new DataPoint(16, 60.45981);
+                            dp[5] = new DataPoint(20, 62.5367);
+                            dp[6] = new DataPoint(24, 64.40633);
+                            dp[7] = new DataPoint(28, 66.11842);
+                            dp[8] = new DataPoint(32, 67.70574);
+                            dp[9] = new DataPoint(36, 69.19124);
+                            dp[10] = new DataPoint(40, 70.59164);
+                            dp[11] = new DataPoint(44, 71.91962);
+                            dp[12] = new DataPoint(48, 73.18501);
+                            dp[13] = new DataPoint(52, 74.39564);
                             heightdp=dp;
                             series2.resetData(dp);
                             series4.setColor(Color.RED);
                             DataPoint[] dp4 = new DataPoint[14];
-                            dp4[0] = new DataPoint(0, 2.414112);
-                            dp4[1] = new DataPoint(4, 3.402293);
-                            dp4[2] = new DataPoint(8, 3.997806);
-                            dp4[3] = new DataPoint(12, 4.547383);
-                            dp4[4] = new DataPoint(16, 5.054539);
-                            dp4[5] = new DataPoint(20, 5.5225);
-                            dp4[6] = new DataPoint(24, 5.954272);
-                            dp4[7] = new DataPoint(28, 6.352668);
-                            dp4[8] = new DataPoint(32, 6.720328);
-                            dp4[9] = new DataPoint(36, 7.059732);
-                            dp4[10] = new DataPoint(40, 7.373212	);
-                            dp4[11] = new DataPoint(44, 7.662959);
-                            dp4[12] = new DataPoint(48, 7.93103);
-                            dp4[13] = new DataPoint(52, 8.179356);
+                            dp4[0] = new DataPoint(0, 45.09488);
+                            dp4[1] = new DataPoint(4, 47.46916);
+                            dp4[2] = new DataPoint(8, 50.95701);
+                            dp4[3] = new DataPoint(12, 53.62925);
+                            dp4[4] = new DataPoint(16, 55.8594);
+                            dp4[5] = new DataPoint(20, 57.8047);
+                            dp4[6] = new DataPoint(24, 59.54799);
+                            dp4[7] = new DataPoint(28, 61.13893);
+                            dp4[8] = new DataPoint(32, 62.60993);
+                            dp4[9] = new DataPoint(36, 63.98348);
+                            dp4[10] = new DataPoint(40, 65.2759	);
+                            dp4[11] = new DataPoint(44, 66.49948);
+                            dp4[12] = new DataPoint(48, 67.66371);
+                            dp4[13] = new DataPoint(52, 68.77613);
                             series4.resetData(dp4);
                             series5.setColor(Color.BLUE);
                             DataPoint[] dp5 = new DataPoint[14];
-                            dp5[0] = new DataPoint(0, 2.547905);
-                            dp5[1] = new DataPoint(4, 3.54761);
-                            dp5[2] = new DataPoint(8, 4.150639);
-                            dp5[3] = new DataPoint(12, 4.707123);
-                            dp5[4] = new DataPoint(16, 5.220488);
-                            dp5[5] = new DataPoint(20, 5.693974);
-                            dp5[6] = new DataPoint(24, 6.130641);
-                            dp5[7] = new DataPoint(28, 6.533373);
-                            dp5[8] = new DataPoint(32, 6.904886);
-                            dp5[9] = new DataPoint(36, 7.247736);
-                            dp5[10] = new DataPoint(40, 7.564327);
-                            dp5[11] = new DataPoint(44, 7.856916);
-                            dp5[12] = new DataPoint(48, 8.127621);
-                            dp5[13] = new DataPoint(52, 8.378425);
+                            dp5[0] = new DataPoint(0, 45.57561);
+                            dp5[1] = new DataPoint(4, 47.96324);
+                            dp5[2] = new DataPoint(8, 51.47996);
+                            dp5[3] = new DataPoint(12, 54.17907);
+                            dp5[4] = new DataPoint(16, 56.43335);
+                            dp5[5] = new DataPoint(20, 58.40032);
+                            dp5[6] = new DataPoint(24, 60.16323);
+                            dp5[7] = new DataPoint(28, 61.77208);
+                            dp5[8] = new DataPoint(32, 63.25958);
+                            dp5[9] = new DataPoint(36, 64.64845);
+                            dp5[10] = new DataPoint(40, 65.9552);
+                            dp5[11] = new DataPoint(44, 67.19226);
+                            dp5[12] = new DataPoint(48, 68.36925);
+                            dp5[13] = new DataPoint(52, 69.4938);
                             series5.resetData(dp5);
                             DataPoint[] dp6 = new DataPoint[14];
-                            dp6[0] = new DataPoint(0, 2.747222);
-                            dp6[1] = new DataPoint(4, 3.770157);
-                            dp6[2] = new DataPoint(8, 4.387042);
-                            dp6[3] = new DataPoint(12, 4.955926);
-                            dp6[4] = new DataPoint(16, 5.480295);
-                            dp6[5] = new DataPoint(20, 5.96351);
-                            dp6[6] = new DataPoint(24, 6.408775);
-                            dp6[7] = new DataPoint(28, 6.819122);
-                            dp6[8] = new DataPoint(32, 7.197414);
-                            dp6[9] = new DataPoint(36, 7.546342);
-                            dp6[10] = new DataPoint(40, 7.868436);
-                            dp6[11] = new DataPoint(44, 8.166069);
-                            dp6[12] = new DataPoint(48, 8.44146);
-                            dp6[13] = new DataPoint(52, 8.696684);
+                            dp6[0] = new DataPoint(0, 46.33934);
+                            dp6[1] = new DataPoint(4, 48.74248);
+                            dp6[2] = new DataPoint(8, 52.29627);
+                            dp6[3] = new DataPoint(12, 55.03144);
+                            dp6[4] = new DataPoint(16, 57.31892);
+                            dp6[5] = new DataPoint(20, 59.31633);
+                            dp6[6] = new DataPoint(24, 61.10726);
+                            dp6[7] = new DataPoint(28, 62.7421);
+                            dp6[8] = new DataPoint(32, 64.25389);
+                            dp6[9] = new DataPoint(36, 65.66559);
+                            dp6[10] = new DataPoint(40, 66.99394);
+                            dp6[11] = new DataPoint(44, 68.25154);
+                            dp6[12] = new DataPoint(48, 69.44814);
+                            dp6[13] = new DataPoint(52, 70.59149);
                             series6.resetData(dp6);
                             series7.setColor(Color.GREEN);
                             DataPoint[] dp7 = new DataPoint[14];
-                            dp7[0] = new DataPoint(0, 3.064865);
-                            dp7[1] = new DataPoint(4, 4.138994);
-                            dp7[2] = new DataPoint(8, 4.78482);
-                            dp7[3] = new DataPoint(12, 5.379141);
-                            dp7[4] = new DataPoint(16, 5.925888);
-                            dp7[5] = new DataPoint(20, 6.428828);
-                            dp7[6] = new DataPoint(24, 6.891533);
-                            dp7[7] = new DataPoint(28, 7.317373);
-                            dp7[8] = new DataPoint(32, 7.709516);
-                            dp7[9] = new DataPoint(36, 8.070932);
-                            dp7[10] = new DataPoint(40, 8.4044);
-                            dp7[11] = new DataPoint(44, 8.712513);
-                            dp7[12] = new DataPoint(48, 8.997692);
-                            dp7[13] = new DataPoint(52, 9.262185);
+                            dp7[0] = new DataPoint(0, 47.68345);
+                            dp7[1] = new DataPoint(4, 50.09686);
+                            dp7[2] = new DataPoint(8, 53.69078);
+                            dp7[3] = new DataPoint(12, 56.47125);
+                            dp7[4] = new DataPoint(16, 58.80346);
+                            dp7[5] = new DataPoint(20, 60.84386);
+                            dp7[6] = new DataPoint(24, 62.6759);
+                            dp7[7] = new DataPoint(28, 64.35005);
+                            dp7[8] = new DataPoint(32, 65.89952);
+                            dp7[9] = new DataPoint(36, 67.34745);
+                            dp7[10] = new DataPoint(40, 68.7107);
+                            dp7[11] = new DataPoint(44, 70.00202);
+                            dp7[12] = new DataPoint(48, 71.23128);
+                            dp7[13] = new DataPoint(52, 72.40633);
                             series7.resetData(dp7);
                             series8.setColor(Color.GREEN);
                             DataPoint[] dp8 = new DataPoint[14];
-                            dp8[0] = new DataPoint(0, 3.717519);
-                            dp8[1] = new DataPoint(4, 4.946766);
-                            dp8[2] = new DataPoint(8, 5.680083);
-                            dp8[3] = new DataPoint(12, 6.351512);
-                            dp8[4] = new DataPoint(16, 6.966524);
-                            dp8[5] = new DataPoint(20, 7.53018);
-                            dp8[6] = new DataPoint(24, 8.047178);
-                            dp8[7] = new DataPoint(28, 8.521877);
-                            dp8[8] = new DataPoint(32, 8.958324);
-                            dp8[9] = new DataPoint(36, 9.360271);
-                            dp8[10] = new DataPoint(40, 9.731193);
-                            dp8[11] = new DataPoint(44, 10.07431);
-                            dp8[12] = new DataPoint(48, 10.39258);
-                            dp8[13] = new DataPoint(52, 10.68874);
+                            dp8[0] = new DataPoint(0, 51.0187);
+                            dp8[1] = new DataPoint(4, 53.36362);
+                            dp8[2] = new DataPoint(8, 56.93136);
+                            dp8[3] = new DataPoint(12, 59.74045);
+                            dp8[4] = new DataPoint(16, 62.1233);
+                            dp8[5] = new DataPoint(20, 64.22507);
+                            dp8[6] = new DataPoint(24, 66.12418);
+                            dp8[7] = new DataPoint(28, 67.8685);
+                            dp8[8] = new DataPoint(32, 69.48975);
+                            dp8[9] = new DataPoint(36, 71.01019);
+                            dp8[10] = new DataPoint(40, 72.44614);
+                            dp8[11] = new DataPoint(44, 73.80997);
+                            dp8[12] = new DataPoint(48, 75.11133);
+                            dp8[13] = new DataPoint(52, 76.35791);
                             series8.resetData(dp8);
                             DataPoint[] dp9 = new DataPoint[14];
-                            dp9[0] = new DataPoint(0, 3.992572);
-                            dp9[1] = new DataPoint(4, 5.305632);
-                            dp9[2] = new DataPoint(8, 6.087641);
-                            dp9[3] = new DataPoint(12, 6.80277);
-                            dp9[4] = new DataPoint(16, 7.457119);
-                            dp9[5] = new DataPoint(20, 8.056331);
-                            dp9[6] = new DataPoint(24, 8.605636);
-                            dp9[7] = new DataPoint(28, 9.109878);
-                            dp9[8] = new DataPoint(32, 9.573546);
-                            dp9[9] = new DataPoint(36, 10.00079);
-                            dp9[10] = new DataPoint(40, 10.39545);
-                            dp9[11] = new DataPoint(44, 10.76106);
-                            dp9[12] = new DataPoint(48, 11.10089);
-                            dp9[13] = new DataPoint(52, 11.41792);
+                            dp9[0] = new DataPoint(0, 52.7025);
+                            dp9[1] = new DataPoint(4, 54.96222);
+                            dp9[2] = new DataPoint(8, 58.45612);
+                            dp9[3] = new DataPoint(12, 61.24306);
+                            dp9[4] = new DataPoint(16, 63.62648);
+                            dp9[5] = new DataPoint(20, 65.74096);
+                            dp9[6] = new DataPoint(24, 67.65995);
+                            dp9[7] = new DataPoint(28, 69.42868	);
+                            dp9[8] = new DataPoint(32, 71.07731);
+                            dp9[9] = new DataPoint(36, 72.62711);
+                            dp9[10] = new DataPoint(40, 74.09378);
+                            dp9[11] = new DataPoint(44, 75.48923);
+                            dp9[12] = new DataPoint(48, 76.82282);
+                            dp9[13] = new DataPoint(52, 78.10202);
                             series9.resetData(dp9);
                             series10.setColor(Color.BLUE);
                             DataPoint[] dp10 = new DataPoint[14];
-                            dp10[0] = new DataPoint(0, 4.152637);
-                            dp10[1] = new DataPoint(4, 5.519169);
-                            dp10[2] = new DataPoint(8, 6.332837);
-                            dp10[3] = new DataPoint(12, 7.076723);
-                            dp10[4] = new DataPoint(16, 7.757234);
-                            dp10[5] = new DataPoint(20, 8.38033);
-                            dp10[6] = new DataPoint(24, 8.951544);
-                            dp10[7] = new DataPoint(28, 9.476009);
-                            dp10[8] = new DataPoint(32, 9.95848);
-                            dp10[9] = new DataPoint(36, 10.40335);
-                            dp10[10] = new DataPoint(40, 10.8147);
-                            dp10[11] = new DataPoint(44, 11.19625);
-                            dp10[12] = new DataPoint(48, 11.55145);
-                            dp10[13] = new DataPoint(52, 11.88348);
+                            dp10[0] = new DataPoint(0, 53.77291);
+                            dp10[1] = new DataPoint(4, 55.96094);
+                            dp10[2] = new DataPoint(8, 59.38911);
+                            dp10[3] = new DataPoint(12, 62.15166);
+                            dp10[4] = new DataPoint(16, 64.52875);
+                            dp10[5] = new DataPoint(20, 66.64653);
+                            dp10[6] = new DataPoint(24, 68.57452);
+                            dp10[7] = new DataPoint(28, 70.35587);
+                            dp10[8] = new DataPoint(32, 72.01952);
+                            dp10[9] = new DataPoint(36, 73.58601);
+                            dp10[10] = new DataPoint(40, 75.0705);
+                            dp10[11] = new DataPoint(44, 76.4846);
+                            dp10[12] = new DataPoint(48, 77.83742);
+                            dp10[13] = new DataPoint(52, 79.13625);
                             series10.resetData(dp10);
                             series11.setColor(Color.RED);
                             DataPoint[] dp11 = new DataPoint[14];
-                            dp11[0] = new DataPoint(0, 4.254922);
-                            dp11[1] = new DataPoint(4, 5.657379);
-                            dp11[2] = new DataPoint(8, 6.492574);
-                            dp11[3] = new DataPoint(12, 7.256166);
-                            dp11[4] = new DataPoint(16, 7.95473);
-                            dp11[5] = new DataPoint(20, 8.594413);
-                            dp11[6] = new DataPoint(24, 9.180938);
-                            dp11[7] = new DataPoint(28, 9.719621);
-                            dp11[8] = new DataPoint(32, 10.21539);
-                            dp11[9] = new DataPoint(36, 10.6728);
-                            dp11[10] = new DataPoint(40, 11.09607);
-                            dp11[11] = new DataPoint(44, 11.48908);
-                            dp11[12] = new DataPoint(48, 11.85539);
-                            dp11[13] = new DataPoint(52, 12.19829);
+                            dp11[0] = new DataPoint(0, 54.49527);
+                            dp11[1] = new DataPoint(4, 56.62728);
+                            dp11[2] = new DataPoint(8, 60.00338);
+                            dp11[3] = new DataPoint(12, 62.74547);
+                            dp11[4] = new DataPoint(16, 65.11577);
+                            dp11[5] = new DataPoint(20, 67.23398);
+                            dp11[6] = new DataPoint(24, 69.16668);
+                            dp11[7] = new DataPoint(28, 70.95545);
+                            dp11[8] = new DataPoint(32, 72.62835);
+                            dp11[9] = new DataPoint(36, 74.20532);
+                            dp11[10] = new DataPoint(40, 75.70118);
+                            dp11[11] = new DataPoint(44, 77.12729);
+                            dp11[12] = new DataPoint(48, 78.49257);
+                            dp11[13] = new DataPoint(52, 79.80419);
                             series11.resetData(dp11);
                         }
                     }

@@ -22,7 +22,7 @@ public class CustomDialog extends DialogFragment {
     private EditText editText;
     private Button button;
     CalendarView calendarView;
-    private String height;
+    private String height,hint,condition,error_message;
     Date date, lastDate;
     private CustomDialogListener listener;
 
@@ -37,6 +37,31 @@ public class CustomDialog extends DialogFragment {
         this.lastDate = lastDate;
     }
 
+    public String getHint() {
+        return hint;
+    }
+
+    public void setHint(String hint) {
+        this.hint = hint;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
+    public String getError_message() {
+        return error_message;
+    }
+
+    public void setError_message(String error_message) {
+        this.error_message = error_message;
+    }
+
+
 
     @NonNull
     @Override
@@ -47,6 +72,7 @@ public class CustomDialog extends DialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.custom_dialog_layout, null);
         editText = dialogView.findViewById(R.id.editTextTextPersonName8);
+        editText.setHint(hint);
         calendarView = dialogView.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -74,14 +100,15 @@ public class CustomDialog extends DialogFragment {
                             listener.onDialogResult(date,height);
                             dismiss();
                         }else{
-                            Toast.makeText(getContext(), "Please enter a later date than your last recorded:"+lastDate + "and no more than 7 days away from the last", Toast.LENGTH_LONG).show();
+                            showMessage("Please enter a later date than your last recorded:",""+lastDate+"and no more than 7 days away from the last");
+                            //Toast.makeText(getContext(), "Please enter a later date than your last recorded:"+lastDate + "and no more than 7 days away from the last", Toast.LENGTH_LONG).show();
                         }
                     }else{
                         Toast.makeText(getContext(), "Check your parameters or remove space", Toast.LENGTH_SHORT).show();
 
                     }
                 }else {
-                    Toast.makeText(getContext(), "Please Enter height", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please Enter "+hint, Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -101,14 +128,16 @@ public class CustomDialog extends DialogFragment {
         return (int) k;
     }
     private boolean validateinfo(String height) {
-        if(!height.matches("^(?:4[9-9]|[5-6][0-9]|7[0-6])\\.\\d$")){
+        if(!height.matches(condition)){
             editText.requestFocus();
-            editText.setError("height between 49.0-76.0 cm");
+            editText.setError(error_message);
             return false;
         }else{
             return true;
         }
     }
-
+    void showMessage(String title, String message) {
+        new androidx.appcompat.app.AlertDialog.Builder(getActivity()).setTitle(title).setMessage(message).setCancelable(true).show();
+    }
 
 }

@@ -243,9 +243,9 @@ public class WeightFragment extends Fragment {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showMessage("How to use growth chart:","The growth tracker is a dynamic chart" +
-                        " that displays the World Health Organisation(WHO)" +
-                        "Child Growth Standards. ");
+                showMessage("How to use growth chart:","press the button to add your " +
+                        "baby's data,remember to add not only each week but twice in the first few " +
+                        "days,as your baby's dimensions will change shortly after birth");
             }
         });
         if(!babyname.matches("Select child")){
@@ -425,7 +425,8 @@ public class WeightFragment extends Fragment {
                                 !dataSnapshot.getKey().matches("moments") &&
                                 !dataSnapshot.getKey().matches("milestones") &&
                                 !dataSnapshot.getKey().matches("Face A Day") &&
-                                !dataSnapshot.getKey().matches("heightData")) {
+                                !dataSnapshot.getKey().matches("heightData")&&
+                                !dataSnapshot.getKey().matches("headData")) {
                             ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
                             birthdate = childInfo.getbirthDate();
                             textView10.setText(DateFormat.format("dd/MM/yyyy",birthdate));
