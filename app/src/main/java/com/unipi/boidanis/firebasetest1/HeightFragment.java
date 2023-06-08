@@ -257,7 +257,14 @@ public class HeightFragment extends Fragment implements CustomDialog.CustomDialo
         series11 = new LineGraphSeries();
         series11.setTitle("97th percentile");
         graphView.addSeries(series11);
+        graphView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(), "Pinch to zoom in/out", Toast.LENGTH_SHORT).show();
 
+                return false;
+            }
+        });
 
 
         textView9 = view.findViewById(R.id.textView9);

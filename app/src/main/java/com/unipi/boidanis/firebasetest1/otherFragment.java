@@ -88,6 +88,14 @@ public class otherFragment extends Fragment implements View.OnClickListener {
         imageButton = (ImageButton) view.findViewById(R.id.imageButton2);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         imageButton.setOnClickListener(this);
+        imageButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(), "Sign-Out", Toast.LENGTH_SHORT).show();
+
+                return false;
+            }
+        });
         ImageButton imageButton2 = (ImageButton) view.findViewById(R.id.imageButton4);
         imageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +104,14 @@ public class otherFragment extends Fragment implements View.OnClickListener {
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout,new GuidesFragment());
                 fragmentTransaction.commit();
+            }
+        });
+        imageButton2.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(), "Guides", Toast.LENGTH_SHORT).show();
+
+                return false;
             }
         });
         ImageButton imageButton3 = (ImageButton) view.findViewById(R.id.imageButton5);
@@ -108,6 +124,14 @@ public class otherFragment extends Fragment implements View.OnClickListener {
                 fragmentTransaction.commit();
             }
         });
+        imageButton3.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(), "Settings", Toast.LENGTH_SHORT).show();
+
+                return false;
+            }
+        });
         ImageButton imageButton4 = (ImageButton) view.findViewById(R.id.imageButton6);
         imageButton4.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +142,14 @@ public class otherFragment extends Fragment implements View.OnClickListener {
                 fragmentTransaction.commit();
             }
         });
+        imageButton4.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(), "Questions", Toast.LENGTH_SHORT).show();
+
+                return false;
+            }
+        });
         ImageButton imageButton5 = (ImageButton) view.findViewById(R.id.imageButton7);
         imageButton5.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +158,14 @@ public class otherFragment extends Fragment implements View.OnClickListener {
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout,new RateFragment());
                 fragmentTransaction.commit();
+            }
+        });
+        imageButton5.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(), "Rate us", Toast.LENGTH_SHORT).show();
+
+                return false;
             }
         });
         return view;

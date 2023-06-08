@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.text.format.DateFormat;
@@ -104,7 +105,14 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        shapeableImageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(), "Press to add your baby's photo", Toast.LENGTH_SHORT).show();
 
+                return false;
+            }
+        });
 
         //shapeableImageView.setImageURI(null);
         database = FirebaseDatabase.getInstance();
@@ -146,6 +154,14 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        shapeableImageView2.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(), "Press to add a profile photo", Toast.LENGTH_SHORT).show();
+
+                return false;
+            }
+        });
         DatabaseReference ref2 = database.getReference("Users").child(mAuth.getUid()).child("parent info and settings");
         ref2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -175,6 +191,13 @@ public class HomeFragment extends Fragment {
 
             }
         });
+        shapeableImageView3.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showMessage("Press","to add a photo together");
+                return false;
+            }
+        });
         DatabaseReference ref3 = database.getReference("Users").child(mAuth.getUid()).child("togetherpicture");
         ref3.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -196,5 +219,7 @@ public class HomeFragment extends Fragment {
         });
         return view;
     }
-
+    void showMessage(String title, String message) {
+        new AlertDialog.Builder(getContext()).setTitle(title).setMessage(message).setCancelable(true).show();
+    }
 }

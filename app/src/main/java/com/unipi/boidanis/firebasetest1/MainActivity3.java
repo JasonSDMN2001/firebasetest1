@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -107,11 +108,7 @@ public class MainActivity3 extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton3);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
+
         ArrayList<String> list = new ArrayList<String>();
         spinner = findViewById(R.id.spinner);
         DatabaseReference reference = database.getReference("Users").child(mAuth.getUid());
@@ -151,11 +148,18 @@ public class MainActivity3 extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        ImageButton imageButton2 = (ImageButton) findViewById(R.id.imageButton4);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showMessage("How to add a child","click on the baby's profile picture");
+            }
+        });
+        spinner.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getApplicationContext(), "Press to select a child", Toast.LENGTH_SHORT).show();
+
+                return false;
             }
         });
     }

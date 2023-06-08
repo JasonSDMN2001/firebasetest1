@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,6 +76,14 @@ public class growthFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+        imageButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(), "Growth", Toast.LENGTH_SHORT).show();
+
+                return false;
+            }
+        });
         imageButton3 = (ImageButton) view.findViewById(R.id.imageButton3);
         imageButton3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +93,14 @@ public class growthFragment extends Fragment {
                 fragmentTransaction.replace(R.id.frame_layout,new MomentFragment());
                 //fragmentTransaction.replace(R.id.frame_layout,new growth2Fragment()).addToBackStack( "tag" );
                 fragmentTransaction.commit();
+            }
+        });
+        imageButton3.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(), "Moments", Toast.LENGTH_SHORT).show();
+
+                return false;
             }
         });
         imageButton2 = (ImageButton) view.findViewById(R.id.imageButton2);
@@ -96,14 +113,30 @@ public class growthFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-        ImageButton imageButton3 = (ImageButton) view.findViewById(R.id.imageButton4);
-        imageButton3.setOnClickListener(new View.OnClickListener() {
+        imageButton2.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(), "Milestones", Toast.LENGTH_SHORT).show();
+
+                return false;
+            }
+        });
+        ImageButton imageButton4 = (ImageButton) view.findViewById(R.id.imageButton4);
+        imageButton4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentTransaction fragmentTransaction = getActivity()
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout,new FaceFragment());
                 fragmentTransaction.commit();
+            }
+        });
+        imageButton4.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(), "Face a day", Toast.LENGTH_SHORT).show();
+
+                return false;
             }
         });
         return view;

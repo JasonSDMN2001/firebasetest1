@@ -93,13 +93,13 @@ public class CustomDialog2  extends DialogFragment {
                 someActivityResultLauncher.launch(galleryIntent);
             }
         });
-        ref=database.getReference("Users").child(user.getUid()).child("togetherpicture");
+        ref=database.getReference("Users").child(user.getUid()).child("togetherpicture").child("image");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    ParentInfo parentInfo = dataSnapshot.getValue(ParentInfo.class);
-                    if(parentInfo!=null){
+                    String s = dataSnapshot.getValue().toString();
+                    if(!s.matches("")){
                         check=true;
                     }
                 }

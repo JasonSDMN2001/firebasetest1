@@ -231,7 +231,14 @@ public class HeadFragment extends Fragment implements CustomDialog.CustomDialogL
         series11.setTitle("97th percentile");
         graphView.addSeries(series11);
 
+        graphView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(), "Pinch to zoom in/out", Toast.LENGTH_SHORT).show();
 
+                return false;
+            }
+        });
 
         textView9 = view.findViewById(R.id.textView9);
         textView10 = view.findViewById(R.id.textView10);
