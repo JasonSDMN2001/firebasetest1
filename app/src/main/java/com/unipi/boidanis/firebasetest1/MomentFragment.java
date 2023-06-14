@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -92,7 +93,10 @@ public class MomentFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_moment, container, false);
         Spinner getbabyname = (Spinner) getActivity().findViewById(R.id.spinner);
         babyname = getbabyname.getSelectedItem().toString();
-
+        if (!NetworkUtils.isNetworkAvailable(getActivity())) {
+            Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+            onPause();
+        }
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();

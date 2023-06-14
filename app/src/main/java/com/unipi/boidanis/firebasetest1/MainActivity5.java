@@ -106,6 +106,10 @@ public class MainActivity5 extends AppCompatActivity implements AdapterView.OnIt
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!NetworkUtils.isNetworkAvailable(MainActivity5.this)) {
+                    Toast.makeText(MainActivity5.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                    onPause();
+                }else{
                 if(!editText.getText().toString().matches("")&&!editText2.getText().toString().matches("")&&imageUri != null){
                     String weight = editText2.getText().toString();
                     boolean check = validateinfo(weight);
@@ -154,7 +158,7 @@ public class MainActivity5 extends AppCompatActivity implements AdapterView.OnIt
                 }else{
                     Toast.makeText(getApplicationContext(), "Incorrect arguments", Toast.LENGTH_SHORT).show();
                 }
-            }
+            }}
         });
     }
 

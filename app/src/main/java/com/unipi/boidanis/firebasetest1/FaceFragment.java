@@ -187,6 +187,10 @@ public class FaceFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!NetworkUtils.isNetworkAvailable(getActivity())) {
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    onPause();
+                }else{
                 if (!babyname.matches("")&&list!=null) {
                     Intent intent = new Intent(getActivity(),MainActivity8.class);
                     intent.putExtra("babyname",String.valueOf( babyname));
@@ -194,13 +198,17 @@ public class FaceFragment extends Fragment {
                     startActivity(intent);
                 }else{
                     showMessage("oops","try again ");
-                }
+                }}
             }
         });
         Button button2 = view.findViewById(R.id.button6);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!NetworkUtils.isNetworkAvailable(getActivity())) {
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    onPause();
+                }else{
                 if(!imageUris.isEmpty()) {
                     handler = new Handler();
                     updateImageRunnable = new Runnable() {
@@ -230,7 +238,7 @@ public class FaceFragment extends Fragment {
 
                 }
 
-            }
+            }}
         });
         /*AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         Intent notificationIntent = new Intent(getContext(), NotificationReceiver.class);

@@ -88,12 +88,16 @@ public class RateFragment extends Fragment {
         button .setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!NetworkUtils.isNetworkAvailable(getActivity())) {
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    onPause();
+                }else{
                 String key = ref.push().getKey();
                 Rating rating = new Rating(myRating);
                 ref.child(key).setValue(rating);
                 Toast.makeText(getContext(), "Your rating has been submited", Toast.LENGTH_SHORT).show();
                 button.setClickable(false);
-            }
+            }}
         });
         return view;
     }

@@ -160,7 +160,10 @@ public class HeightFragment extends Fragment implements CustomDialog.CustomDialo
             @Override
             public void onClick(View v) {
 
-
+                if (!NetworkUtils.isNetworkAvailable(getActivity())) {
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    onPause();
+                }else{
                 if(!babyname.matches("Select child")) {
 
                     CustomDialog dialog = new CustomDialog();
@@ -198,6 +201,7 @@ public class HeightFragment extends Fragment implements CustomDialog.CustomDialo
 
 
                 }*/
+            }
             }
         });
 

@@ -90,6 +90,10 @@ public class CustomDialog extends DialogFragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!NetworkUtils.isNetworkAvailable(getActivity())) {
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    onPause();
+                }else{
                 if(!editText.getText().toString().matches("")) {
                     height = editText.getText().toString();
 
@@ -111,6 +115,7 @@ public class CustomDialog extends DialogFragment {
                     Toast.makeText(getContext(), "Please Enter "+hint, Toast.LENGTH_SHORT).show();
 
                 }
+            }
             }
         });
         builder.setView(dialogView);

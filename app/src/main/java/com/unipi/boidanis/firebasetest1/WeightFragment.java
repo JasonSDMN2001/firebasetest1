@@ -160,6 +160,10 @@ public class WeightFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!NetworkUtils.isNetworkAvailable(getActivity())) {
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    onPause();
+                }else{
                 if(!babyname.matches("Select child")) {
                     Intent intent = new Intent(getActivity(), MainActivity4.class);
                     if(temp_date.length>0){
@@ -176,6 +180,7 @@ public class WeightFragment extends Fragment {
                     Toast.makeText(getContext(), "Please select a child", Toast.LENGTH_SHORT).show();
 
                 }
+            }
             }
         });
 

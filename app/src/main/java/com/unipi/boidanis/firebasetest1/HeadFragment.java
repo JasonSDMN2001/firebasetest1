@@ -144,31 +144,35 @@ public class HeadFragment extends Fragment implements CustomDialog.CustomDialogL
             @Override
             public void onClick(View v) {
 
+                if (!NetworkUtils.isNetworkAvailable(getActivity())) {
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    onPause();
+                }else{
+                    if(!babyname.matches("Select child")) {
 
-                if(!babyname.matches("Select child")) {
-
-                    CustomDialog dialog = new CustomDialog();
-                    if(temp_date.length>0){
-                        if (temp_date[temp_date.length - 1] != null) {
-                            dialog.setLastDate(temp_date[temp_date.length - 1]);
+                        CustomDialog dialog = new CustomDialog();
+                        if(temp_date.length>0){
+                            if (temp_date[temp_date.length - 1] != null) {
+                                dialog.setLastDate(temp_date[temp_date.length - 1]);
+                            } else {
+                                dialog.setLastDate(birthdate);
+                            }
                         } else {
                             dialog.setLastDate(birthdate);
                         }
-                    } else {
-                        dialog.setLastDate(birthdate);
+                        dialog.setCustomDialogListener(HeadFragment.this);
+                        dialog.setHint("Head circumference");
+                        dialog.setCondition("^(3[1-9]\\.[0-9]|4[0-8]\\.[0-9]|48\\.9)$");
+                        dialog.setError_message("circumference must be between 31.4-48.9 cm");
+                        dialog.show(getChildFragmentManager(), "custom_dialog");
+
+                    }else{
+                        Toast.makeText(getContext(), "Please select a child", Toast.LENGTH_SHORT).show();
+
+
                     }
-                    dialog.setCustomDialogListener(HeadFragment.this);
-                    dialog.setHint("Head circumference");
-                    dialog.setCondition("^(3[1-9]\\.[0-9]|4[0-8]\\.[0-9]|48\\.9)$");
-                    dialog.setError_message("circumference must be between 31.4-48.9 cm");
-                    dialog.show(getChildFragmentManager(), "custom_dialog");
-
-                }else{
-                    Toast.makeText(getContext(), "Please select a child", Toast.LENGTH_SHORT).show();
-
 
                 }
-
             }
         });
 

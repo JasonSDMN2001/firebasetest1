@@ -96,6 +96,10 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        if (!NetworkUtils.isNetworkAvailable(getActivity())) {
+            Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+            onPause();
+        }
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -123,6 +127,10 @@ public class SettingsFragment extends Fragment {
         simpleSwitch2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!NetworkUtils.isNetworkAvailable(getActivity())) {
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    onPause();
+                }else{
                 boolean notificationcheck = simpleSwitch2.isChecked();
                 if(simpleSwitch2.isChecked()){
                     FirebaseMessaging.getInstance().getToken()
@@ -151,13 +159,17 @@ public class SettingsFragment extends Fragment {
                     editor.putBoolean("notifications2", notificationcheck);
                     editor.apply();
                 }
-            }
+            }}
         });
 
         SwitchCompat simpleSwitch = (SwitchCompat) view.findViewById(R.id.switch1);
         simpleSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!NetworkUtils.isNetworkAvailable(getActivity())) {
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    onPause();
+                }else{
                 boolean notificationcheck = simpleSwitch.isChecked();
                 if(simpleSwitch.isChecked()){
                     if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_NOTIFICATION_POLICY)
@@ -189,7 +201,7 @@ public class SettingsFragment extends Fragment {
                     editor.putString("user",mAuth.getUid());
                     editor.apply();
                 }
-            }
+            }}
         });
         boolean notificationpreference = sharedPreferences.getBoolean("notifications", false);
         String userpref = sharedPreferences.getString("user", "");

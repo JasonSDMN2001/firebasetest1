@@ -97,6 +97,10 @@ public class MainActivity7 extends AppCompatActivity implements AdapterView.OnIt
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!NetworkUtils.isNetworkAvailable(MainActivity7.this)) {
+                    Toast.makeText(MainActivity7.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                    onPause();
+                }else{
                 Boolean check=true;
                 if(imageUri != null) {
                     for(String s : list) {
@@ -140,7 +144,7 @@ public class MainActivity7 extends AppCompatActivity implements AdapterView.OnIt
                 }else{
                     Toast.makeText(MainActivity7.this, "Please select picture", Toast.LENGTH_SHORT).show();
                 }
-            }
+            }}
         });
 
     }

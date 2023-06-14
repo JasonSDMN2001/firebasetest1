@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (!NetworkUtils.isNetworkAvailable(MainActivity.this)) {
+                    Toast.makeText(MainActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                    onPause();
+                }else{
                 if(!currentUser.matches("")&&!password.matches("")){
                     try{
                         mAuth.signInWithEmailAndPassword(currentUser,password).addOnCompleteListener((task) -> {
@@ -63,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
 
-            }
+            }}
         },2000);
     }
 }

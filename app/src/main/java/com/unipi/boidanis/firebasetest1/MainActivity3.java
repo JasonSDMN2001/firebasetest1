@@ -56,6 +56,10 @@ public class MainActivity3 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        if (!NetworkUtils.isNetworkAvailable(this)) {
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+            onPause();
+        }
         binding = ActivityMain3Binding.inflate(getLayoutInflater());
         //bottomNavigationView = findViewById(R.id.bottomNavigationView);
         //setContentView(R.layout.activity_main3);

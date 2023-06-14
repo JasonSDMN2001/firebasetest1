@@ -114,6 +114,10 @@ public class CustomDialog2  extends DialogFragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!NetworkUtils.isNetworkAvailable(getActivity())) {
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    onPause();
+                }else{
                 if(!check) {
                     if (imageUri != null) {
                         StorageReference fileRef = storreference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
@@ -147,6 +151,7 @@ public class CustomDialog2  extends DialogFragment {
                 }else{
                     Toast.makeText(getContext(), "Already selected picture", Toast.LENGTH_SHORT).show();
                 }
+            }
             }
         });
         builder.setView(dialogView);

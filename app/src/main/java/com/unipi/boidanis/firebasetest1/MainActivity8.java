@@ -84,6 +84,10 @@ public class MainActivity8 extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!NetworkUtils.isNetworkAvailable(MainActivity8.this)) {
+                    Toast.makeText(MainActivity8.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                    onPause();
+                }else{
                 if (!editText.getText().toString().matches("")) {
                     boolean check = validateinfo(editText.getText().toString());
                     boolean check2=true;
@@ -133,7 +137,7 @@ public class MainActivity8 extends AppCompatActivity {
                 }else {
                     Toast.makeText(getApplicationContext(), "Please enter the day", Toast.LENGTH_SHORT).show();
                 }
-            }
+            }}
         });
     }
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(

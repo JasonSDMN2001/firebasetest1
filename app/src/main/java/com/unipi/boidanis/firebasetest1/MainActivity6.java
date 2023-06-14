@@ -91,6 +91,10 @@ public class MainActivity6 extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!NetworkUtils.isNetworkAvailable(MainActivity6.this)) {
+                    Toast.makeText(MainActivity6.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                    onPause();
+                }else{
                 if(!check) {
                     if (imageUri != null) {
                         StorageReference fileRef = storreference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
@@ -128,7 +132,7 @@ public class MainActivity6 extends AppCompatActivity {
                 }else{
                     Toast.makeText(MainActivity6.this, "Already selected profile picture", Toast.LENGTH_SHORT).show();
                 }
-            }
+            }}
         });
     }
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -92,7 +93,10 @@ public class MilestoneFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_milestone, container, false);
          textView24 = (TextView) view.findViewById(R.id.textView24);
-
+        if (!NetworkUtils.isNetworkAvailable(getActivity())) {
+            Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+            onPause();
+        }
         Spinner getbabyname = (Spinner) getActivity().findViewById(R.id.spinner);
         babyname = getbabyname.getSelectedItem().toString();
         database = FirebaseDatabase.getInstance();
