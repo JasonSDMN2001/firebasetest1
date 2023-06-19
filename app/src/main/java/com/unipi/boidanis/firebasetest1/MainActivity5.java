@@ -121,22 +121,27 @@ public class MainActivity5 extends AppCompatActivity implements AdapterView.OnIt
                                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        ChildInfo childInfo = new ChildInfo(editText.getText().toString(),date,uri.toString(),gender);
-                                        String key1 = reference.push().getKey();
-                                        WeightData weightData = new WeightData(key1,date,0,Float.parseFloat(editText2.getText().toString()),childInfo.name);
-                                        reference.child(childInfo.name).child("weightData").child(key1).setValue(weightData);
-                                        String key = reference.push().getKey();
-                                        reference.child(childInfo.name).child(key).setValue(childInfo);
-                                        progressBar.setVisibility(View.INVISIBLE);
-                                        imageview.setImageResource(R.drawable.ic_baseline_add_photo_alternate_24);
+                                        if (date != null) {
+                                            ChildInfo childInfo = new ChildInfo(editText.getText().toString(), date, uri.toString(), gender);
+                                            String key1 = reference.push().getKey();
+                                            WeightData weightData = new WeightData(key1, date, 0, Float.parseFloat(editText2.getText().toString()), childInfo.name);
+                                            reference.child(childInfo.name).child("weightData").child(key1).setValue(weightData);
+                                            String key = reference.push().getKey();
+                                            reference.child(childInfo.name).child(key).setValue(childInfo);
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            imageview.setImageResource(R.drawable.ic_baseline_add_photo_alternate_24);
                                         /*DatabaseReference reference = database.getReference("All Weight Data");
                                         String key2 = reference.push().getKey();
                                         reference.child(key2).setValue(weightData);*/
-                                        StatisticsCalculation(Float.parseFloat(weight),0);
-                                        milestonePreperation(childInfo.name);
-                                        finish();
-                                        Intent intent = new Intent(getApplicationContext(), MainActivity3.class);
-                                        startActivity(intent);
+                                            StatisticsCalculation(Float.parseFloat(weight), 0);
+                                            milestonePreperation(childInfo.name);
+                                            finish();
+                                            Intent intent = new Intent(getApplicationContext(), MainActivity3.class);
+                                            startActivity(intent);
+                                        }else{
+                                            Toast.makeText(getApplicationContext(), "Please select a date", Toast.LENGTH_SHORT).show();
+                                        }
+
                                     }
                                 });
                             }

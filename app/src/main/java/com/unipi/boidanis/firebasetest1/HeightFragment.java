@@ -409,8 +409,8 @@ public class HeightFragment extends Fragment implements CustomDialog.CustomDialo
                         }
                         if (dp[0] != null && temp_date[(int) snapshot.getChildrenCount() - 1] != null) {
                             try {
-                                textView9.setText(String.format("%.2f", dp[0].getY()) + " kg");
-                                textView15.setText(temp_height[(int) snapshot.getChildrenCount() - 1] + " kg");
+                                textView9.setText(String.format("%.2f", dp[0].getY()) + " cm");
+                                textView15.setText(temp_height[(int) snapshot.getChildrenCount() - 1] + " cm");
                                 java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
                                 textView16.setText(dateFormat.format(temp_date[(int) snapshot.getChildrenCount() - 1]));
                                 textView23.setText(String.format("%.2f", temp_height[(int) snapshot.getChildrenCount() - 1] - dp[0].getY()) + " cm");

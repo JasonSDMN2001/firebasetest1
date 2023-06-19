@@ -373,8 +373,12 @@ public class WeightFragment extends Fragment {
                     if (dp.length > 2) {
                         if (weightdp[(int) (Math.floor((int) snapshot.getChildrenCount() / 4.0))] != null) {
                             if (Math.abs(dp[((int) snapshot.getChildrenCount()) - 1].getY()
-                                    - weightdp[(int) (Math.floor((int) snapshot.getChildrenCount() / 4.0))].getY()) > 0.65) {
+                                    - weightdp[(int) (Math.floor((int) snapshot.getChildrenCount() / 4.0))].getY()) > 1.2) {
+                                try{
                                 WeightNotification();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                         if (dp[0] != null && temp_date[(int) snapshot.getChildrenCount() - 1] != null) {
