@@ -3,7 +3,6 @@ package com.unipi.boidanis.firebasetest1;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -36,7 +35,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +48,9 @@ import java.util.Date;
 public class HomeFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseDatabase database;
+    private Date currentDate,birthdate;
+    TextView textView6;
+    int weekDifference;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -94,6 +98,10 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         TextView dateTimeDisplay = (TextView) view.findViewById(R.id.textView2);
+        textView6 = (TextView) view.findViewById(R.id.textView6);
+        currentDate = Calendar.getInstance().getTime();
+
+
         dateTimeDisplay.setText("" + DateFormat.format("EEE,d MMM", System.currentTimeMillis()));
         ShapeableImageView shapeableImageView = (ShapeableImageView) view.findViewById(R.id.profile_button3);
         shapeableImageView.setScaleType(ImageView.ScaleType.CENTER);
@@ -119,6 +127,11 @@ public class HomeFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         Spinner getbabyname = (Spinner) getActivity().findViewById(R.id.spinner);
         String babyname = getbabyname.getSelectedItem().toString();
+        try {
+            BirthDayFind(babyname);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         DatabaseReference reference = database.getReference("Users").child(mAuth.getUid()).child(babyname);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -221,5 +234,38 @@ public class HomeFragment extends Fragment {
     }
     void showMessage(String title, String message) {
         new AlertDialog.Builder(getContext()).setTitle(title).setMessage(message).setCancelable(true).show();
+    }
+    public int WeekCalculation(Date date1, Date date) {
+        long i = date1.getTime();
+        long j = date.getTime();
+        long daysDiff = TimeUnit.DAYS.convert(j - i, TimeUnit.MILLISECONDS);//604800//1 week
+        long k = (long) Math.floor(daysDiff / 7.0);
+        return (int) k;
+    }
+    public void BirthDayFind(String s) {
+        DatabaseReference reference2 = database.getReference("Users").child(mAuth.getUid()).child(s);
+        reference2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()) {
+                    if (!dataSnapshot.getKey().matches("weightData") &&
+                            !dataSnapshot.getKey().matches("moments") &&
+                            !dataSnapshot.getKey().matches("milestones")&&
+                            !dataSnapshot.getKey().matches("Face A Day")&&
+                            !dataSnapshot.getKey().matches("heightData")&&
+                            !dataSnapshot.getKey().matches("headData")) {
+                        ChildInfo childInfo = dataSnapshot.getValue(ChildInfo.class);
+                        birthdate = childInfo.getbirthDate();
+                        weekDifference = WeekCalculation(birthdate, currentDate);
+                        textView6.setText(s+" is "+weekDifference+" weeks old!");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

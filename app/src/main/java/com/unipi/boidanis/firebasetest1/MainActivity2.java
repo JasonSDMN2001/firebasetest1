@@ -108,6 +108,7 @@ public class MainActivity2 extends AppCompatActivity {
         new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
     }
     public void signup(View view){
+        if(!email.getText().toString().matches("")&&!password.getText().toString().matches("")) {
         mAuth.createUserWithEmailAndPassword(email.getText().toString(),password.getText().toString())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -122,13 +123,13 @@ public class MainActivity2 extends AppCompatActivity {
                         }
                     }
                 });
+        }else {
+            Toast.makeText(MainActivity2.this, "Please fill the remaining fields", Toast.LENGTH_SHORT).show();
+        }
 
 
     }
-    public void signin(View view){
 
-
-    }
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
