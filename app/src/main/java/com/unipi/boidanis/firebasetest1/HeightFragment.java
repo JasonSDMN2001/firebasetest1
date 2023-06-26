@@ -287,7 +287,7 @@ public class HeightFragment extends Fragment implements CustomDialog.CustomDialo
         });
         if(!babyname.matches("Select child")){
             graphView.getLegendRenderer().setVisible(true);
-            graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+            graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.BOTTOM);
         }
         return view;
     }

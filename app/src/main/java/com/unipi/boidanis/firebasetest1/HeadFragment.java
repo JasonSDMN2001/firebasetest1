@@ -260,7 +260,7 @@ public class HeadFragment extends Fragment implements CustomDialog.CustomDialogL
         });
         if(!babyname.matches("Select child")){
             graphView.getLegendRenderer().setVisible(true);
-            graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+            graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.BOTTOM);
         }
         return view;
     }
